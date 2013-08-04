@@ -1,0 +1,314 @@
+/* CSS Meyer Reset ----- */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+/* Misc ----- */
+body {
+	background-color:#f4f4f4;
+	font-size:15px;
+	line-height:130%;
+	font-family:'Helvetica Neue', Helvetica, arial, sans-serif;
+}
+.inner {
+	width:990px;
+	margin:0 auto;
+	position: relative;
+}
+
+
+/* Header ----- */
+#header {
+	background:url('../img/bg_header.jpg') no-repeat top center;
+	-webkit-background-size:cover;
+	-ms-background-size:cover;
+	-moz-background-size:cover;
+	-o-background-size:cover;
+	-khtml-background-size:cover;
+	background-size:cover;
+
+	color:#fff;
+	padding:40px 0 0;
+}
+#header #pricespaid_logo {
+	float:left;
+}
+#header #gsa_logo {
+	color:#777777;
+	font-size:12px;
+	float:right;
+}
+
+/* Comm nav -------- */
+#header #nav {
+	display:block;
+	background-color:#373533;
+	background-color:rgba(255,255,255,.1);
+
+	border-top:1px solid #57a95e;
+	border-top:1px solid rgba(87,169,94, .5);
+
+	margin-top:35px;
+}
+#header #nav .commodity {
+	float:left;
+	text-align:center;
+	height:140px;
+}
+#header #nav .commodity a {
+	padding:30px 33px;
+	display:block;
+	color:#fff;
+	text-decoration:none;
+}
+#header #nav .commodity:hover {
+	background-color:rgba(255,255,255,.1);
+}
+#header #nav .commodity img {
+	margin-bottom:10px;
+	opacity:.5;
+}
+#header #nav .commodity strong {
+	display:block;
+	font-weight:bold;
+}
+
+
+/* Selected commod ----- */
+#header #nav .commodity.selected {
+	background-color:#fff;
+	background-color:rgba(255,255,255,.2);
+}
+#header #nav .commodity.selected img {
+	opacity:1;
+}
+
+
+/* Commoditiy next/prev arrows ------- */
+#header #nav .commodities_arrows {
+	position: absolute;
+	top:55px;
+	width:40px;
+	height:40px;
+	display:block;
+	text-indent:-999999px;
+	background-color:#9c9b9a;
+
+	-webkit-border-radius:50%;
+	-moz-border-radius:50%;
+	-ms-border-radius:50%;
+	-o-border-radius:50%;
+	-khtml-border-radius:50%;
+	border-radius:50%;
+}
+#header #nav .commodities_arrows#previous_commodities {
+	left:-50px;
+}
+#header #nav .commodities_arrows#next_commodities {
+	right:-50px;
+}
+
+.hideShowToggle {
+  padding: 20px;
+}
+
+/* Search ------- */
+#search {
+	padding:60px;
+}
+
+#search_form {
+        position: relative;
+}
+
+#search_string {
+	font-size:24px;
+        width: 70%;
+        height: 50px;
+}
+
+#search_button {
+        position: absolute;
+        float: right;       
+}
+
+
+/* Graph ----- */
+#graph {
+	margin-bottom:70px;
+}
+
+
+/* Results ----- */
+#results-header {
+	border-top:1px solid #ddd;
+	border-bottom:1px solid #ddd;
+	padding:20px 0;
+	margin-bottom:30px;
+}
+#results-header h2 {
+	font-size:24px;
+	font-weight:bold;
+	float:left;
+}
+#results-sortby {
+	float:right;
+}
+#results-sortby label {
+	font-size:13px;
+	color:#666;
+}
+
+/* Result ------- */
+.result {
+	background-color:#fff;
+	margin-bottom:25px;
+}
+.result .result-image {
+	float:left;
+}
+.result .result-details {
+	float:left;
+	border-left:2px solid #eee;
+	font-size:18px;
+	width:570px;
+	padding:25px 0 0 25px;
+	min-height:95px;
+	color:#333;
+}
+.result .result-details strong {
+	font-weight:bold;
+	font-size:21px;
+	display:block;
+	margin-bottom:15px;
+}
+.result .result-meta {
+	float:right;
+	width:180px;
+	padding:20px;
+	border-left:2px solid #eee;
+	min-height:70px;
+	text-align:right;
+	font-size:13px;
+	color:#555;
+}
+.result .result-meta .result-unitscost {
+	margin-bottom:15px;
+	font-size:14px;
+}
+.result .result-meta .result-unitscost strong {
+	font-size:21px;
+	display:block;
+	font-weight:bold;
+	color:#5ab162;
+}
+.result .result-meta .result-whenwho {
+	font-style:italic;
+	font-size:12px;
+	line-height:120%;
+}
+.result .result-meta .result-whenwho strong {
+	display:block;
+	font-weight:bold;
+	font-style:normal;
+}
+.result .result-smallprint {
+	font-size:11px;
+	color:#777;
+	background-color:#ececec;
+}
+.result .result-smallprint .indicator {
+	display:block;
+	float:left;
+	width:35px;
+	height:35px;
+}
+.indicator.red {
+	background-color:#f7aaaa;
+}
+.indicator.orange {
+	background-color:#f7d4aa;
+}
+.indicator.purple {
+	background-color:#aab5f7;
+}
+.indicator.green {
+	background-color:#aecabc;
+}
+.result .result-smallprint p {
+	padding:8px 0 0 50px;
+}
+.result .result-smallprint p strong {
+	font-weight:bold;
+	color:#333;
+}
+.result .result-smallprint .result-more {
+	color:#0b94eb;
+	font-weight:bold;
+	float:right;
+	padding-right:40px;
+	text-decoration:none;
+	vertical-align:middle;
+	text-align:right;
+}
+.result .result-smallprint .result-more img {
+	margin-left:2px;
+	vertical-align:middle;
+	margin-top:-5px;
+}
+
+
+/* Loading more ------- */
+#loading-more {
+	padding:50px;
+	font-weight:bold;
+	color:#b8b8b7;
+	text-align:center;
+	vertical-align:middle;
+	text-transform:uppercase;
+}
+#loading-more img {
+	margin:-5px 10px 0;
+	vertical-align:middle;
+}
