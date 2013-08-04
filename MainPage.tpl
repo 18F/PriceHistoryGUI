@@ -176,6 +176,11 @@
     </style>
 
 <script>
+
+// This is an ugly global variable hack that seems to be 
+// needed to events properly bound to dynamically created elements!
+var SCRATCH_NUMBER = 0;
+
 $("#hideShowGrid").click(function() { 
     $("#myGrid").toggle();
 });
@@ -197,8 +202,8 @@ var timeSearchBegan;
 
 function renderDetailArea(dataRow,i) {
     var html = "";
-    html +=      ' <div  class="itemDetails" id="itemDetails'+i+'">';
-    html +=      dataRow.longDescription;
+    html +=      ' <div  class="itemDetails">';
+    html +=    dataRow.longDescription || "No Long Description.";
     html +=      '</div>';
     return html;
 }
@@ -426,15 +431,8 @@ function processAjaxSearch(dataFromSearch) {
     // These strings really need to transferred to the server
     // In order for us to have proper abstraction and language translation    
 
-    function renderDetailArea(dataRow,i) {
-	var html = "";
-	html +=      ' <div  class="itemDetails" id="detailArea'+i+'">';
-	html +=      dataRow.productDescription;
-	html +=      '</div>';
-	return html;
-    }
 
-    function renderStyledDetail(dataRow,i) {
+    function renderStyledDetail(dataRow,scratchNumber) {
 	var html = "";
 	html +=      ' <div class="result">';
 	html +=      '<img src="http://placehold.it/120x120" class="result-image" />';
@@ -447,8 +445,8 @@ function processAjaxSearch(dataFromSearch) {
 	html +=      '<div class="result-smallprint">';
 	html +=          '<span class="indicator red" style="background-color:'+dataRow.color+';" ></span>';
 	html +=          '<p><strong>Vendor:</strong> '+dataRow.vendor.substring(0,50)+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Award ID/IDV:</strong> '+dataRow.awardIdIdv+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>PSC:</strong> '+dataRow.psc+ '</span>';
-	var itemDetails = "itemDetails"+i;
-	var expandArea = "expandArea"+i;
+	var itemDetails = "itemDetails"+scratchNumber;
+	var expandArea = "expandArea"+scratchNumber;
 	html +=          '<section class="result-more">Display Item Details  <img id="'+itemDetails+'" src="theme/img/display-details.png" /><span id="'+expandArea+'"></span></section>';
 	html +=          '<div style="clear:both;"></div>';
 	html +=      '</div>';
@@ -463,15 +461,15 @@ function processAjaxSearch(dataFromSearch) {
 	detailAreaDiv.empty();
 	var smallSlice = transactionData.slice(0,Math.min(10,transactionData.length));
 	smallSlice.forEach(function (e,i,a) {
-            detailAreaDiv.append(renderStyledDetail(e,i));
+            detailAreaDiv.append(renderStyledDetail(e,SCRATCH_NUMBER));
+//	    alert("elements returned = "+$("#itemDetails"+SCRATCH_NUMBER).length);
+//	    alert("SCRATCH_NUMBER = "+SCRATCH_NUMBER);
+	    $(document).on( "click", "#itemDetails"+SCRATCH_NUMBER, detailItemHandler );
+	    SCRATCH_NUMBER++;
 	});
     }
 
     redrawDetailArea();
-
-    // This is necessary if you are doing live construction,
-    // I don't know why.
-    $(document).on( "click", "[id*=itemDetails]", detailItemHandler );
 
     function renderStarredTransactionsInDetailArea() {
 	var div = document.getElementById('detailArea');
