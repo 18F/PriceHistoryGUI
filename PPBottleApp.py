@@ -4,12 +4,12 @@ from bottle import Bottle, run, template,request,TEMPLATE_PATH,static_file,Heade
 import urllib
 import ast
  
-from ppconfig import MasterPassword,MasterUsername
+from ppconfig import MasterPassword,MasterUsername,URLToPPSearchApi
 
 # Hopefully this will work!
 PathToBottleWebApp = "./"
 PathToExternalFiles = "../"
-PathToDataFilesOnRobsMachine = "../cookedData"
+
 
 PathToJSFiles=PathToExternalFiles+"js/"
 PathToCSSFiles=PathToExternalFiles+"css/"
@@ -105,11 +105,10 @@ def pptriv():
     print "API search_string" + search_string
     # I'm doing this as a call to keep the API separated as
     # completely from the GUI as possible.
-#    return searchApi(PathToDataFilesOnRobsMachine,search_string,psc_pattern)
     params = urllib.urlencode({'user': user, 'password': password,\
                                'search_string': search_string,
                                'psc_pattern': psc_pattern})
-    f = urllib.urlopen("https://shdsapi.org/api", params)
+    f = urllib.urlopen(URLToPPSearchApi, params)
     content = f.read()
     # This is inefficient, but I can't seem to get Bottle to
     # let me procue a correct JSON response with out using a dictionary.
