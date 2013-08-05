@@ -97,16 +97,20 @@
             <div style="clear:both;"></div>
         </div>
 <p></p>
+
  <div id="detailArea"></div>
 
 <div class="hideShowToggle">
 <button id="hideShowGrid">Hide/Show Grid</button>
 </div>
 
- <div id="myGrid" style="width:100%;height:500px;"></div>
+  <div id="myGrid" style="height:500px;"></div> 
 <p></p>
 
 </div>
+</script>
+
+
     <script src="../js/jquery-1.10.2.min.js"></script>
       <link rel="stylesheet" href="../SlickGrid-master/slick.grid.css" type="text/css"/>
       <link rel="stylesheet" href="../SlickGrid-master/css/smoothness/jquery-ui-1.8.16.custom.css" type="text/css"/>
@@ -133,6 +137,10 @@
 <script type="text/javascript" src="../js/plugins/jqplot.dateAxisRenderer.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../js/jquery.jqplot.css" />    
 <style type="text/css">
+    .contact-card-cell {
+      border-color: transparent !important;
+    }
+
      .note {
         font-size: 0.8em;
     }
@@ -174,12 +182,55 @@
       width: 65%;
      }
     </style>
-
 <script>
 
 // This is an ugly global variable hack that seems to be 
 // needed to events properly bound to dynamically created elements!
 var SCRATCH_NUMBER = 0;
+var itemDetailAssociation = [];
+
+// This should really be read via an AJAX call to all it to be independent of 
+// Prices Paid...That is a step to getting open-source involvement.
+var standardFieldLabel = [];
+standardFieldLabel["unitPrice"] = "Unit Price";
+standardFieldLabel["unitsOrdered"] = "Units Ordered";
+standardFieldLabel["orderDate"] = "Date";
+standardFieldLabel["vendor"] = "Vendor";
+standardFieldLabel["productDescription"] = "Product Description";
+standardFieldLabel["longDescription"] = "Long Description";
+standardFieldLabel["contractingAgency"] = "Contracting Agency";
+standardFieldLabel["awardIdIdv"] = "Award ID/IDV";
+standardFieldLabel["commodityType"] = "Commodity Type";
+standardFieldLabel["psc"] = "PSC";
+
+
+// What I really want to do here is to cycle through a palette of 16 colors.
+// There is no reason not to use whatever jqplot uses, although I don't 
+// want to become dependent on it here.
+var standardColors = [];
+standardColors[0] =  'aqua';
+standardColors[1] =   'black';
+standardColors[2] =   'blue';
+standardColors[3] =   'fuchsia';
+standardColors[4] =   'gray';
+standardColors[5] =   'green';
+standardColors[6] =   'lime'; 
+standardColors[7] =  'maroon';
+standardColors[8] =   'navy';
+standardColors[9] =   'olive'; 
+standardColors[10] =  'orange';
+standardColors[11] =   'purple';
+standardColors[12] =   'red';
+standardColors[13] =   'silver';
+standardColors[14] =   'teal';
+standardColors[15] =   'white';
+standardColors[16] =   'yellow';
+
+var data = [];
+var transactionData = [];
+var internalFieldLabel = [];
+internalFieldLabel["starred"] = "Favorite";
+internalFieldLabel["color"] = "Color";
 
 $("#hideShowGrid").click(function() { 
     $("#myGrid").toggle();
@@ -200,10 +251,37 @@ var currentlySelectedCommodityElement  = $('#CPU');
 
 var timeSearchBegan;
 
-function renderDetailArea(dataRow,i) {
+// Not sure the best way to do this, may want to check with Marty.
+function renderCustomField(name,value) {
     var html = "";
-    html +=      ' <div  class="itemDetails">';
-    html +=    dataRow.longDescription || "No Long Description.";
+    html +=      ' <div  class="customField">';
+    html +=      ' <span  class="fieldName">';
+    html += name;
+    html +=      ' </span>';
+    html +=      ' <span  class="fieldValue">';
+    html += value;
+    html +=      ' </span>';
+    html +=      '</div>';
+    return html;
+}
+
+function renderDetailArea(dataRow,i) {
+    var fieldseparator = ": ";
+    var html = "";
+    html +=      ' <div  class="itemDetailArea">';
+    html += renderCustomField('Long Description'+fieldseparator, dataRow.longDescription || "No Long Description.");
+
+// Note this could be done more efficiently, and 
+// we will someday want a list of custom fields for other purposes, but 
+// this is good enough for now...
+    for (var k in dataRow) {
+        if (!((k in standardFieldLabel) || (k in internalFieldLabel))) {
+	    var v = dataRow[k];
+// This is just to see what will happen, I will have to add proper titles later.
+	    html += renderCustomField(standardFieldLabel[k],v);
+	}
+    }
+
     html +=      '</div>';
     return html;
 }
@@ -211,8 +289,9 @@ function renderDetailArea(dataRow,i) {
 
 function detailItemHandler(e) {
     var num = "itemDetails".length;
-    var id = $(this).attr('id').substring(num);
-    var expandableSection = $("#expandArea"+id);
+    var scratch = $(this).attr('id').substring(num);
+    var id = itemDetailAssociation[scratch];
+    var expandableSection = $("#expandArea"+scratch);
     if (expandableSection.html().length != 0) {
 	expandableSection.empty();
     } else {
@@ -263,8 +342,6 @@ $('#commodities li').click(function () {
     // Now we will call the search API with a different PSC code
     performSearch();
 });
-
-var transactionData = [];
 
 function sortByColumn(col,asc) {
     var currentSortCol = col;
@@ -356,6 +433,7 @@ function processAjaxSearch(dataFromSearch) {
     var medianUnitPrice = (transactionData.length > 0) ? medianSortedValues(transactionData)
 	: 0.0;
 
+
     var transactionColumns = [
         {id: "unitPrice", name: "Unit Price", field: "unitPrice", width: 100},
         {id: "unitsOrdered", name: "Units Ordered", field: "unitsOrdered", width: 60},
@@ -385,29 +463,7 @@ function processAjaxSearch(dataFromSearch) {
         enableColumnReorder: false,
     };
 
-    // What I really want to do here is to cycle through a palette of 16 colors.
-    // There is no reason not to use whatever jqplot uses, although I don't 
-    // want to become dependent on it here.
-    var standardColors = [];
-    standardColors[0] =  'aqua';
-    standardColors[1] =   'black';
-    standardColors[2] =   'blue';
-    standardColors[3] =   'fuchsia';
-    standardColors[4] =   'gray';
-    standardColors[5] =   'green';
-    standardColors[6] =   'lime'; 
-    standardColors[7] =  'maroon';
-    standardColors[8] =   'navy';
-    standardColors[9] =   'olive'; 
-    standardColors[10] =  'orange';
-    standardColors[11] =   'purple';
-    standardColors[12] =   'red';
-    standardColors[13] =   'silver';
-    standardColors[14] =   'teal';
-    standardColors[15] =   'white';
-    standardColors[16] =   'yellow';
 
-    var data = [];
     transactionData.forEach(function (e,i,a) {
         var obj = e;
         e["starred"] = "";
@@ -436,18 +492,18 @@ function processAjaxSearch(dataFromSearch) {
 	var html = "";
 	html +=      ' <div class="result">';
 	html +=      '<img src="http://placehold.it/120x120" class="result-image" />';
-	html +=      '<p class="result-details"><strong> '+dataRow.productDescription.substring(0,40)+' </strong> '+dataRow.longDescription.substring(0,160)+' </p>';
+	html +=      '<p class="result-details"><strong> '+dataRow.productDescription.substring(0,40)+' </strong> '+dataRow.longDescription.substring(0,130)+' </p>';
 	html +=      '<div class="result-meta">';
 	html +=          '<p class="result-unitscost"><strong> '+dataRow.unitPrice+'</strong> '+dataRow.unitsOrdered+' units</p>';
-	html +=          '<p class="result-whenwho">'+dataRow.orderDate+'<strong>'+dataRow.contractingAgency+'</strong></p>';
+	html +=          '<p class="result-whenwho">'+dataRow.orderDate+'<strong>'+dataRow.contractingAgency.substring(0,20)+'</strong></p>';
 	html +=      '</div>';
 	html +=      '<div style="clear:both;"></div>';
 	html +=      '<div class="result-smallprint">';
 	html +=          '<span class="indicator red" style="background-color:'+dataRow.color+';" ></span>';
-	html +=          '<p><strong>Vendor:</strong> '+dataRow.vendor.substring(0,50)+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Award ID/IDV:</strong> '+dataRow.awardIdIdv+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>PSC:</strong> '+dataRow.psc+ '</span>';
+	html +=          '<p><strong>Vendor:</strong> '+dataRow.vendor.substring(0,35)+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Award ID/IDV:</strong> '+dataRow.awardIdIdv+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>PSC:</strong> '+dataRow.psc+ '</span>';
 	var itemDetails = "itemDetails"+scratchNumber;
 	var expandArea = "expandArea"+scratchNumber;
-	html +=          '<section class="result-more">Display Item Details  <img id="'+itemDetails+'" src="theme/img/display-details.png" /><span id="'+expandArea+'"></span></section>';
+	html +=          '<span class="result-more">Display Item Details  <img id="'+itemDetails+'" src="theme/img/display-details.png" /><span id="'+expandArea+'"></span></span>';
 	html +=          '<div style="clear:both;"></div>';
 	html +=      '</div>';
 	html +=      '</div>';
@@ -462,9 +518,8 @@ function processAjaxSearch(dataFromSearch) {
 	var smallSlice = transactionData.slice(0,Math.min(10,transactionData.length));
 	smallSlice.forEach(function (e,i,a) {
             detailAreaDiv.append(renderStyledDetail(e,SCRATCH_NUMBER));
-//	    alert("elements returned = "+$("#itemDetails"+SCRATCH_NUMBER).length);
-//	    alert("SCRATCH_NUMBER = "+SCRATCH_NUMBER);
 	    $(document).on( "click", "#itemDetails"+SCRATCH_NUMBER, detailItemHandler );
+	    itemDetailAssociation[SCRATCH_NUMBER] = i;
 	    SCRATCH_NUMBER++;
 	});
     }
@@ -637,8 +692,11 @@ function processAjaxSearch(dataFromSearch) {
 			});
 }
 
-performSearch();
+
+
+  performSearch();
 
 </script>
+
 </body>
 </html>
