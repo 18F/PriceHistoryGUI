@@ -306,7 +306,12 @@ var standardCommodities = {
     // is why commoditype could end up being a problem for us!
     CPU: 702,
     Software: 7030,
-    Supplies: 7045,
+    // DANGER!  HACK!
+    // Note: the FedBid data has IT supplies lists under 7045.
+    // The reality is we need a separate icon for that.  I will 
+    // have to deal with that later..for now, I want to reach
+    // the OS2 data...
+    Supplies: '7510',
     Punchcards: 7040,
     // Not sure this is correct for Configuration....
     Configuration: 7010,
@@ -384,6 +389,7 @@ function processAjaxSearch(dataFromSearch) {
     $('#results-header').show();
     timeSearchEnded = new Date();
     transactionData = [];
+    data = [];
     var i = 0;
     for (var key in dataFromSearch) {
         transactionData[i++] = dataFromSearch[key];
@@ -660,6 +666,7 @@ function processAjaxSearch(dataFromSearch) {
 
     // Legend is a simple table in the html.
     // Dynamically populate it with the labels from each data value.
+    $('#legendtable').empty();
     $.each(plotData[0], function(index, val) {
 	$('#legendtable').append('<tr><td>'+val[3].label+'</td><td>'+val[1]+'</td></tr>');
     }

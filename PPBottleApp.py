@@ -117,5 +117,9 @@ def pptriv():
     d = ast.literal_eval(content)
     return d
 
+@app.route('/SliderTest',method='GET')
+def pptriv():
+    return template('SliderTest')
+
 
 
