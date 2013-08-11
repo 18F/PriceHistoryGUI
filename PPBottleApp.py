@@ -4,7 +4,7 @@ from bottle import Bottle, run, template,request,TEMPLATE_PATH,static_file,Heade
 import urllib
 import ast
  
-from ppconfig import MasterPassword,MasterUsername,URLToPPSearchApi
+from ppconfig import MasterPassword,MasterUsername,URLToPPSearchApi,URLToPPSearchApiSolr
 
 # Hopefully this will work!
 PathToBottleWebApp = "./"
@@ -109,6 +109,29 @@ def pptriv():
                                'search_string': search_string,
                                'psc_pattern': psc_pattern})
     f = urllib.urlopen(URLToPPSearchApi, params)
+    content = f.read()
+    # This is inefficient, but I can't seem to get Bottle to
+    # let me procue a correct JSON response with out using a dictionary.
+    # I tried using BaseResponse.  This could be my weakness
+    # with Pyton or confusion in Bottle.
+    d = ast.literal_eval(content)
+    return d
+
+@app.route('/apisolr',method='POST')
+def apisolr():
+    user = request.forms.get('user')
+    password = request.forms.get('password')
+    if (not does_authenticate(user,password)):
+        return template('BadAuthentication')        
+    search_string = request.forms.get('search_string')
+    psc_pattern = request.forms.get('psc_pattern')
+    print "API search_string" + search_string
+    # I'm doing this as a call to keep the API separated as
+    # completely from the GUI as possible.
+    params = urllib.urlencode({'user': user, 'password': password,\
+                               'search_string': search_string,
+                               'psc_pattern': psc_pattern})
+    f = urllib.urlopen(URLToPPSearchApiSolr, params)
     content = f.read()
     # This is inefficient, but I can't seem to get Bottle to
     # let me procue a correct JSON response with out using a dictionary.

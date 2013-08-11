@@ -328,7 +328,7 @@ function performSearch() {
     var standard = standardCommodities[currentlySelectedCommodityElement.attr('id')];
     var search = $('#search_string').val();
     $('#search_string_render').text(search);
-    $.post("api",
+    $.post("apisolr",
 	   { search_string: search,
              user: '{{user}}',
              password: '{{password}}',
