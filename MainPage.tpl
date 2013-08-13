@@ -304,19 +304,19 @@ var grid;
 var standardCommodities = {
     // CPU seems to requie both 7020 and 7025!  This 
     // is why commoditype could end up being a problem for us!
-    CPU: 702,
-    Software: 7030,
+    CPU: '*702*',
+    Software: '*7030*',
     // DANGER!  HACK!
     // Note: the FedBid data has IT supplies lists under 7045.
     // The reality is we need a separate icon for that.  I will 
     // have to deal with that later..for now, I want to reach
     // the OS2 data...
-    Supplies: '7510',
-    Punchcards: 7040,
+    Supplies: '*7510*',
+    Punchcards: '*7040*',
     // Not sure this is correct for Configuration....
-    Configuration: 7010,
-    MiniMicro: 7042,
-    Component: 7050
+    Configuration: '*7010*',
+    MiniMicro: '*7042*',
+    Component: '*7050*'
 };
 
 var currentCommodityId;
