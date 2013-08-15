@@ -40,7 +40,7 @@
     <div id="content" class="inner">
         <!-- Start search -->
         <div id="search">
-                <input type="text" name="search_string" id="search_string" value="{{search_string}}" />
+                <input type="text" name="search_string" id="search_string" value="{{search_string}}" onkeypress="searchKeyHander(e);" />
 		<input type="hidden" name="user" value="contractofficer" />
 		<input type="hidden" name="password" value="savegovmoney" />
                 <img id="search_icon" src="theme/img/icn_search.png" onclick="performSearch();"/>
@@ -77,10 +77,19 @@
 <div class="hideShowToggle">
 <button id="hideShowDetails">Hide/Show Details</button>
 </div>
+
+<div class="gigantic pagination">
+    <a href="#" class="first" data-action="first">&laquo;</a>
+    <a href="#" class="previous" data-action="previous">&lsaquo;</a>
+    <input type="text" readonly="readonly" data-max-page="40" />
+    <a href="#" class="next" data-action="next">&rsaquo;</a>
+    <a href="#" class="last" data-action="last">&raquo;</a>
+</div>
             <form action="" id="results-sortby" name="sortby">
                 <label for="type">Sort by:</label>
 		<div id="dropdownWrapper">
                 <select id="sortColumn" >
+                    <option value="score">Score</option>
                     <option value="unitPrice">Unit Price</option>
                     <option value="unitsOrdered">Units</option>
                     <option value="orderDate">Date</option>
@@ -98,6 +107,7 @@
         </div>
 <p></p>
 
+
  <div id="detailArea"></div>
 
 <div class="hideShowToggle">
@@ -108,6 +118,8 @@
 <p></p>
 
 </div>
+
+
 </script>
 
 
@@ -117,6 +129,9 @@
 
     <script src="../SlickGrid-master/lib/jquery-1.7.min.js"></script>
     <script src="../SlickGrid-master/lib/jquery.event.drag-2.2.js"></script>
+
+
+
 
     <script src="../SlickGrid-master/slick.core.js"></script>
     <script src="../SlickGrid-master/slick.editors.js"></script>
@@ -136,6 +151,12 @@
     <script type="text/javascript" src="../js/plugins/jqplot.bubbleRenderer.min.js"></script>
 <script type="text/javascript" src="../js/plugins/jqplot.dateAxisRenderer.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../js/jquery.jqplot.css" />    
+
+    <!-- Trying to get a bloody paginator to work! -->
+    <script src="../js/jqPagination-master/js/jquery.jqpagination.js"></script>
+<!--    <script src="../js/jqPagination-master/js/scripts.js"></script>  -->
+    <link rel="stylesheet" type="text/css" href="../js/jqPagination-master/css/jqpagination.css" /> 
+
 <style type="text/css">
     .contact-card-cell {
       border-color: transparent !important;
@@ -192,6 +213,7 @@ var itemDetailAssociation = [];
 // This should really be read via an AJAX call to all it to be independent of 
 // Prices Paid...That is a step to getting open-source involvement.
 var standardFieldLabel = [];
+standardFieldLabel["score"] = "Score";
 standardFieldLabel["unitPrice"] = "Unit Price";
 standardFieldLabel["unitsOrdered"] = "Units Ordered";
 standardFieldLabel["orderDate"] = "Date";
@@ -249,6 +271,17 @@ $('#search_string_render').text('{{search_string}}');
 $('#commodities li').first().addClass("selected");
 var currentlySelectedCommodityElement  = $('#CPU');
 
+$('input[id=search_string]').on('keyup', function(e) {
+    if (e.which == 13) {
+        performSearch();
+    }
+});
+
+// This is my basic page math...
+var PAGESIZE = 5;
+var currentPage = 0; 
+
+
 var timeSearchBegan;
 
 // Not sure the best way to do this, may want to check with Marty.
@@ -300,6 +333,7 @@ function detailItemHandler(e) {
 }
 
 var grid;
+var currentColumn = "score";
 
 var standardCommodities = {
     // CPU seems to requie both 7020 and 7025!  This 
@@ -348,7 +382,15 @@ $('#commodities li').click(function () {
     performSearch();
 });
 
+function sortByColumnAndRedraw(col,asc) {
+  sortByColumn(col,asc);
+// I would rather reset the current page, but it is buggy...
+// This is the best that I can do on short notice.
+//  currentPage = 0;
+  redrawDetailArea(currentPage);
+}
 function sortByColumn(col,asc) {
+// We need to reset the currentPage when we sort
     var currentSortCol = col;
     var isAsc = asc;
     var stringSort = function(a,b) {
@@ -383,101 +425,6 @@ function sortByColumn(col,asc) {
 			 currentSortCol == "unitsOrdered" ? numberSort : stringSort);
 }
 
-
-function processAjaxSearch(dataFromSearch) {
-    $('#loading').hide();
-    $('#results-header').show();
-    timeSearchEnded = new Date();
-    transactionData = [];
-    data = [];
-    var i = 0;
-    for (var key in dataFromSearch) {
-        transactionData[i++] = dataFromSearch[key];
-    }
-
-    var numberDiv = document.getElementById('placeForNumberReturned');
-    numberDiv.innerHTML = i;
-    var secondsSpent = (timeSearchEnded-timeSearchBegan)/1000.0;
-    $('#timeSpentRender').text(secondsSpent.toFixed(2));
-
-    // Now I'm going to try something weird, which seems justified by the nature 
-    // of our data--I'm only going to plot the lowest-prices 80%.  The upper 
-    // 20% is often something not really in the data set you are looking at 
-    // and it messes up the plot.  This should really be under the control 
-    // of the user, but that will have to wait.
-    // In order to do this we will sort on unitPrice, which is probably 
-    // a good way to present the data anyway.
-    transactionData.sort(
-	function (a,b) {
-	    var ret;
-	    if (parseFloat(a["unitPrice"]) < parseFloat(b["unitPrice"])) {
-		ret = 1;
-	    } else if (parseFloat(a["unitPrice"]) > parseFloat(b["unitPrice"])) {
-		ret = -1;
-	    } else {
-		ret = 0;
-	    }
-	    return ret;
-	});
-
-    var sumOfUnitPrice = 0.0;
-    transactionData.forEach(function(d) { 
-	var x = parseFloat(d["unitPrice"]);
-	if (!isNaN(x))
-	    sumOfUnitPrice += x 
-    });
-
-    function medianSortedValues(values) {
-	var half = Math.floor(values.length/2);
-	if(values.length % 2)
-	    return parseFloat(values[half]["unitPrice"]);
-	else
-	    return (parseFloat(values[half-1]["unitPrice"]) + 
-		    parseFloat(values[half]["unitPrice"])) / 2.0;
-    }
-
-    var medianUnitPrice = (transactionData.length > 0) ? medianSortedValues(transactionData)
-	: 0.0;
-
-
-    var transactionColumns = [
-        {id: "unitPrice", name: "Unit Price", field: "unitPrice", width: 100},
-        {id: "unitsOrdered", name: "Units Ordered", field: "unitsOrdered", width: 60},
-        {id: "orderDate", name: "Date", field: "orderDate", width: 60},
-        {id: "vendor", name: "Vendor", field: "vendor", width: 200},
-        {id: "productDescription", name: "Product Description", field: "productDescription", width: 400},
-        {id: "longDescription", name: "Long Description", field: "longDescription", width: 400},
-        {id: "contractingAgency", name: "Contracting Agency", field: "contractingAgency",
-	 width: 200},
-        {id: "awardIdIdv", name: "Award ID/IDV", field: "awardIdIdv", width: 100},
-        {id: "commodityType", name: "Commodity Type", field: "commodityType", width: 100},
-        {id: "psc", name: "PSC", field: "psc", width: 80}
-    ];
-    var controlColumns = [ {id: "starred",name: "Starred", field: "starred",width: 40 } ];
-    
-    var columns = controlColumns.concat(transactionColumns);
-
-    // Now I attempt to make every column sortable
-    columns.forEach(function (c) {
-        c.sortable = true;
-    });    
-
-    var options = {
-        editable: true,
-        asyncEditorLoading: false,
-        enableCellNavigation: true,
-        enableColumnReorder: false,
-    };
-
-
-    transactionData.forEach(function (e,i,a) {
-        var obj = e;
-        e["starred"] = "";
-        e.color = standardColors[i % 17];
-        data[i] = obj;
-    });
-
-    
     function renderRow(label,content) {
 	var row = "";
 	row += "<tr>";
@@ -518,10 +465,11 @@ function processAjaxSearch(dataFromSearch) {
 
 
     // This needs to be made into a function and called when ever the sort changes.
-    function redrawDetailArea() {
+    function redrawDetailArea(page) {
 	var detailAreaDiv = $("#"+'detailArea');
 	detailAreaDiv.empty();
-	var smallSlice = transactionData.slice(0,Math.min(10,transactionData.length));
+	var smallSlice = transactionData.slice(page*PAGESIZE,
+Math.min((page+1)*PAGESIZE,transactionData.length));
 	smallSlice.forEach(function (e,i,a) {
             detailAreaDiv.append(renderStyledDetail(e,SCRATCH_NUMBER));
 	    $(document).on( "click", "#itemDetails"+SCRATCH_NUMBER, detailItemHandler );
@@ -530,7 +478,122 @@ function processAjaxSearch(dataFromSearch) {
 	});
     }
 
-    redrawDetailArea();
+
+function processAjaxSearch(dataFromSearch) {
+    $('#loading').hide();
+    $('#results-header').show();
+    timeSearchEnded = new Date();
+    transactionData = [];
+    data = [];
+    var i = 0;
+    for (var key in dataFromSearch) {
+        transactionData[i++] = dataFromSearch[key];
+    }
+
+
+
+    var numberDiv = document.getElementById('placeForNumberReturned');
+    numberDiv.innerHTML = i;
+
+// Note: This counts the Page from 1, not zero!
+$(document).ready(function() {
+	$('.pagination').jqPagination({
+		link_string	: '/?page={page_number}',
+		max_page	:  Math.ceil(i/PAGESIZE),
+		paged		: function(page) {
+                currentPage = page - 1;
+                redrawDetailArea(currentPage);
+// I'm not really keeping a lot, this was an eample from jqPagination
+//			$('.log').prepend('<li>Requested page ' + page + '</li>');
+		}
+	});
+
+});
+
+    var secondsSpent = (timeSearchEnded-timeSearchBegan)/1000.0;
+    $('#timeSpentRender').text(secondsSpent.toFixed(2));
+
+    // Now I'm going to try something weird, which seems justified by the nature 
+    // of our data--I'm only going to plot the lowest-prices 80%.  The upper 
+    // 20% is often something not really in the data set you are looking at 
+    // and it messes up the plot.  This should really be under the control 
+    // of the user, but that will have to wait.
+    // In order to do this we will sort on unitPrice, which is probably 
+    // a good way to present the data anyway.
+    transactionData.sort(
+	function (a,b) {
+	    var ret;
+	    if (parseFloat(a["score"]) < parseFloat(b["score"])) {
+		ret = 1;
+	    } else if (parseFloat(a["score"]) > parseFloat(b["score"])) {
+		ret = -1;
+	    } else {
+		ret = 0;
+	    }
+	    return ret;
+	});
+
+    var sumOfUnitPrice = 0.0;
+    transactionData.forEach(function(d) { 
+	var x = parseFloat(d["unitPrice"]);
+	if (!isNaN(x))
+	    sumOfUnitPrice += x 
+    });
+
+    function medianSortedValues(values) {
+	var half = Math.floor(values.length/2);
+	if(values.length % 2)
+	    return parseFloat(values[half]["unitPrice"]);
+	else
+	    return (parseFloat(values[half-1]["unitPrice"]) + 
+		    parseFloat(values[half]["unitPrice"])) / 2.0;
+    }
+
+    var medianUnitPrice = (transactionData.length > 0) ? medianSortedValues(transactionData)
+	: 0.0;
+
+
+    var transactionColumns = [
+        {id: "score", name: "Score", field: "score", width: 100},
+        {id: "unitPrice", name: "Unit Price", field: "unitPrice", width: 100},
+        {id: "unitsOrdered", name: "Units Ordered", field: "unitsOrdered", width: 60},
+        {id: "orderDate", name: "Date", field: "orderDate", width: 60},
+        {id: "vendor", name: "Vendor", field: "vendor", width: 200},
+        {id: "productDescription", name: "Product Description", field: "productDescription", width: 400},
+        {id: "longDescription", name: "Long Description", field: "longDescription", width: 400},
+        {id: "contractingAgency", name: "Contracting Agency", field: "contractingAgency",
+	 width: 200},
+        {id: "awardIdIdv", name: "Award ID/IDV", field: "awardIdIdv", width: 100},
+        {id: "commodityType", name: "Commodity Type", field: "commodityType", width: 100},
+        {id: "psc", name: "PSC", field: "psc", width: 80}
+    ];
+    var controlColumns = [ {id: "starred",name: "Starred", field: "starred",width: 40 } ];
+    
+    var columns = controlColumns.concat(transactionColumns);
+
+    // Now I attempt to make every column sortable
+    columns.forEach(function (c) {
+        c.sortable = true;
+    });    
+
+    var options = {
+        editable: true,
+        asyncEditorLoading: false,
+        enableCellNavigation: true,
+        enableColumnReorder: false,
+    };
+
+
+    transactionData.forEach(function (e,i,a) {
+        var obj = e;
+        e["starred"] = "";
+        e.color = standardColors[i % 17];
+        data[i] = obj;
+    });
+
+    
+
+    redrawDetailArea(0);
 
     function renderStarredTransactionsInDetailArea() {
 	var div = document.getElementById('detailArea');
@@ -550,7 +613,7 @@ function processAjaxSearch(dataFromSearch) {
 	return transactionData.length;
     }
     var clickcount = 0;
-    var currentColumn = "unitPrice";
+    var currentColumn = "score";
     var currentOrder = []; // 1 is ascending, -1 is descending
     $("#dropdownWrapper").click(function(){
 	if ((clickcount % 2) == 1) {
@@ -566,11 +629,11 @@ function processAjaxSearch(dataFromSearch) {
 	    if (!(col in currentOrder)) {
 		currentOrder[col] = 1;
 	    }
-	    sortByColumn(col,currentOrder[col] == 1);
+	    sortByColumnAndRedraw(col,currentOrder[col] == 1);
 	    grid.setData(transactionData);
 	    grid.invalidateAllRows();
 	    grid.render();
-	    redrawDetailArea();
+	    redrawDetailArea(currentPage);
 	}
 	clickcount++;
     });
@@ -585,12 +648,12 @@ function processAjaxSearch(dataFromSearch) {
 	    var currentSortCol;
 	    var isAsc = args.sortAsc;
 	    currentSortCol = args.sortCol.field;
-	    sortByColumn(currentSortCol,isAsc);
+	    sortByColumnAndRedraw(currentSortCol,isAsc);
 
 	    grid.setData(transactionData);
 	    grid.invalidateAllRows();
 	    grid.render();
-	    redrawDetailArea();
+	    redrawDetailArea(currentPage);
 	});
     });
 

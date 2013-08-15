@@ -44,6 +44,14 @@ def server_static(filename):
 def server_static(filename):
     return static_file(filename, root=PathToJSFiles + "plugins/")
 
+@app.route('/js/jqPagination-master/js/<filename>')
+def server_static(filename):
+    return static_file(filename, root=PathToJSFiles + "/jqPagination-master/js/")
+
+@app.route('/js/jqPagination-master/css/<filename>')
+def server_static(filename):
+    return static_file(filename, root=PathToJSFiles + "/jqPagination-master/css/")
+
 @app.route('/SlickGrid-master/<filename>')
 def server_static(filename):
     return static_file(filename, root=PathToSlickGridMaster)
