@@ -89,14 +89,16 @@ def login():
 
 @app.route('/PricesPaid',method='POST')
 def pptriv():
-    user = request.forms.get('user')
+    username = request.forms.get('username')
     password = request.forms.get('password')
-    if (not does_authenticate(user,password)):
-        return template('BadAuthentication')
+    print 'user = '+username
+    print 'password = '+password
+    if (not does_authenticate(username,password)):
+        return template('Login',message='Improper Credentials.')
     search_string = request.forms.get('search_string')
     search_string = search_string if search_string is not None else "Dell Latitude"
     psc_pattern = request.forms.get('psc_pattern')
-    return template('MainPage',search_string=search_string,user=user,\
+    return template('MainPage',search_string=search_string,user=username,\
                     password=password,psc_pattern=psc_pattern)
                     
 # This appears to be necessary in order to support the same-origin policy.
@@ -147,10 +149,5 @@ def apisolr():
     # with Pyton or confusion in Bottle.
     d = ast.literal_eval(content)
     return d
-
-@app.route('/SliderTest',method='GET')
-def pptriv():
-    return template('SliderTest')
-
 
 

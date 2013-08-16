@@ -2,7 +2,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>PricesPaid</title>
-    <meta name="robots" content="all">
+    <meta name="robots" content="NOINDEX, NOFOLLOW">
     <link href="theme/css/style.css" rel="stylesheet" type="text/css" media="screen, projection">
 </head>
 <body>
