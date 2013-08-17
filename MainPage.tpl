@@ -62,11 +62,6 @@
 
 <div id="chartContainer">
     <section id="chartdiv" ></section>
-    <section id="legenddiv" >
-    <table id="legendtable">
-       <tr><th>Vendor</th><th>Price</th></tr>
-    </table>
-</section>
 </div>
         <!-- Start results header -->
         <div>
@@ -85,7 +80,7 @@
                 <label for="type">Sort by:</label>
 		<div id="dropdownWrapper">
                 <select id="sortColumn" >
-                    <option value="score">Score</option>
+                    <option value="score">Relevance</option>
                     <option value="unitPrice">Unit Price</option>
                     <option value="unitsOrdered">Units</option>
                     <option value="orderDate">Date</option>
@@ -124,9 +119,6 @@
 
     <script src="../SlickGrid-master/lib/jquery-1.7.min.js"></script>
     <script src="../SlickGrid-master/lib/jquery.event.drag-2.2.js"></script>
-
-
-
 
     <script src="../SlickGrid-master/slick.core.js"></script>
     <script src="../SlickGrid-master/slick.editors.js"></script>
@@ -173,32 +165,16 @@
         padding:2px;
         background-color: rgba(95%, 95%, 95%, 0.8);
     }
-    #legendtable td, #legendtable th {
-        font-size: 10px;
-        border: 1px solid #cdcdcd;
-        padding: 1px 4px;
-    }
+
     #chartcontainer {
        position: relative;
        width: 100%;
        height: 300px;
      }
-     #legenddiv {
-        height: 100%;
-        position: absolute;
-        margin-left: 70%;
-        width: 30%;
-        overflow: auto;
-        height: 250px;
-     }
-     #legendtable {
-        font-size: 12px;
-        border: 1px solid #cdcdcd;
-        border-collapse: collapse;
-     }
+
     #chartdiv {
       position: absolute;
-      width: 65%;
+      width: 85%;
      }
     </style>
 <script>
@@ -211,7 +187,7 @@ var itemDetailAssociation = [];
 // This should really be read via an AJAX call to all it to be independent of 
 // Prices Paid...That is a step to getting open-source involvement.
 var standardFieldLabel = [];
-standardFieldLabel["score"] = "Score";
+standardFieldLabel["score"] = "Relevance";
 standardFieldLabel["unitPrice"] = "Unit Price";
 standardFieldLabel["unitsOrdered"] = "Units Ordered";
 standardFieldLabel["orderDate"] = "Date";
@@ -438,8 +414,8 @@ function sortByColumn(col,asc) {
 	html +=      '<img src="http://placehold.it/120x120" class="result-image" />';
 	html +=      '<p class="result-details"><strong> '+dataRow.productDescription.substring(0,40)+' </strong> '+dataRow.longDescription.substring(0,130)+' </p>';
 	html +=      '<div class="result-meta">';
-	html +=          '<p class="result-unitscost"><strong> '+dataRow.unitPrice+'</strong> '+dataRow.unitsOrdered+' units</p>';
-	html +=          '<p class="result-whenwho">'+dataRow.orderDate+'<strong>'+dataRow.contractingAgency.substring(0,20)+'</strong></p>';
+	html +=          '<p class="result-unitscost"><strong> $'+dataRow.unitPrice+'</strong> '+dataRow.unitsOrdered+' units</p>';
+	html +=          '<p class="result-whenwho">'+dataRow.orderDate+'<strong>'+dataRow.contractingAgency.substring(0,30)+'</strong></p>';
 	html +=      '</div>';
 	html +=      '<div style="clear:both;"></div>';
 	html +=      '<div class="result-smallprint">';
@@ -545,7 +521,7 @@ $(document).ready(function() {
 
 
     var transactionColumns = [
-        {id: "score", name: "Score", field: "score", width: 100},
+        {id: "score", name: "Relevance", field: "score", width: 100},
         {id: "unitPrice", name: "Unit Price", field: "unitPrice", width: 100},
         {id: "unitsOrdered", name: "Units Ordered", field: "unitsOrdered", width: 60},
         {id: "orderDate", name: "Date", field: "orderDate", width: 60},
@@ -580,8 +556,6 @@ $(document).ready(function() {
         e["starred"] = "";
 // This randomizes color but keeps the same colors associated with the same 
 // field...
-//       alert("award = "+ e["awardIdIdv"]+" "+
-//             Math.abs(Hashcode.value(e["awardIdIdv"])) % 17);
         e.color = standardColors[Math.abs(Hashcode.value(e["awardIdIdv"])) % 17];
         data[i] = obj;
     });
@@ -735,12 +709,13 @@ $(document).ready(function() {
 
     // Legend is a simple table in the html.
     // Dynamically populate it with the labels from each data value.
-    $('#legendtable').empty();
+/*    $('#legendtable').empty();
     $.each(plotData[0], function(index, val) {
 	$('#legendtable').append('<tr><td>'+val[3].label+'</td><td>'+val[1]+'</td></tr>');
     }
 	  );
-    
+*/  
+
     // Now bind function to the highlight event to show the tooltip
     // and highlight the row in the legend.
     $('#chartdiv').bind('jqplotDataHighlight',
@@ -756,15 +731,12 @@ $(document).ready(function() {
 						 '<br />' + 'y: ' + data[1] + '<br />' + 'r: ' + data[2]);
 			    
 			    $('#tooltip1b').show();
-			    $('#legendtable tr').css('background-color', '#ffffff');
-			    $('#legendtable tr').eq(pointIndex+1).css('background-color', color);
 			});
     // Bind a function to the unhighlight event to clean up after highlighting.
     $('#chartdiv').bind('jqplotDataUnhighlight',
 			function (ev, seriesIndex, pointIndex, data) {
 			    $('#tooltip1b').empty();
 			    $('#tooltip1b').hide();
-			    $('#legendtable tr').css('background-color', '#ffffff');
 			});
 }
 
