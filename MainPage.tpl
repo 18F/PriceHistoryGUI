@@ -11,40 +11,36 @@
     <div id="header">
         <!-- Top part of header -->
         <div class="inner">
-            <p id="pricespaid_logo"><img src="theme/img/logo_pricespaid.png" alt="PricesPaid" /></p>
+            <span id="pricespaid_logo"><img src="theme/img/pp_logo_beta.png" alt="PricesPaid" /></span>
+		<span id="comDropdownWrapper">
+                <select id="commodityChoice" >
+                    <option value="All">All</option>
+                    <option value="CPU">CPU</option>
+                    <option value="Software">Software</option>
+                    <option value="Supplies">Supplies</option>
+                    <option value="Punchcards">Punchcards</option>
+                    <option value="Configuration">Configuration</option>
+                    <option value="Mini-Micro">Mini-Micro</option>
+                    <option value="Component">Component</option>
+                </select>
+		</span>
+
+        <!-- Start search -->
+        <span id="smallSearch">
+                <input type="text" name="small_search_string" id="small_search_string" value="{{search_string}}" />
+		<input type="hidden" name="user" value="{{user}}" />
+		<input type="hidden" name="password" value="{{password}}" />
+                <input type="button" id="searchButton" value="Search" onclick="performSearch();"/>
+        </span>
+
             <span id="gsa_logo">Powered by <img src="theme/img/gsa_logo.png" alt="GSA" /></span>
-            <div style="clear:both;"></div>
+
         </div>
 
-        <!-- Nav of commodities -->
-        <div id="nav">
-            <div class="inner">
-                <ul id="commodities">
-                    <li class="commodity" id="CPU"><a href="#"><img src="theme/img/icon-cpu.png" /><strong>CPU</strong></a></li>
-                    <li class="commodity" id="Software"><a href="#"><img src="theme/img/icon-software.png" /><strong>Software</strong></a></li>
-                    <li class="commodity" id="Supplies"><a href="#"><img src="theme/img/icon-supplies.png" /><strong>Supplies</strong></a></li>
-                    <li class="commodity" id="Punchcards"><a href="#"><img src="theme/img/icon-punchcards.png" /><strong>Punchcards</strong></a></li>
-                    <li class="commodity" id="Configuration"><a href="#"><img src="theme/img/icon-configuration.png" /><strong>Configuration</strong></a></li>
-                    <li class="commodity" id="MiniMicro"><a href="#"><img src="theme/img/icon-minimicro.png" /><strong>Mini-Micro</strong></a></li>
-                    <li class="commodity" id="Component"><a href="#"><img src="theme/img/icon-component.png" /><strong>Component</strong></a></li>
-                    <div style="clear:both;"></div>
-                </ul>  
-
-                <a href="" id="previous_commodities" class="commodities_arrows"><strong><img src="theme/img/icn-arrow-left.png" /><strong>Previous Commodities</strong></a>
-                <a href="" id="next_commodities" class="commodities_arrows"><strong><img src="theme/img/icn-arrow-right.png" /><strong>Next Commodities</strong></a>
-            </div>
-        </div>
     </div>
 
     <!-- Content ... below the header -->
     <div id="content" class="inner">
-        <!-- Start search -->
-        <div id="search">
-                <input type="text" name="search_string" id="search_string" value="{{search_string}}" onkeypress="searchKeyHander(e);" />
-		<input type="hidden" name="user" value="contractofficer" />
-		<input type="hidden" name="password" value="savegovmoney" />
-                <img id="search_icon" src="theme/img/icn_search.png" onclick="performSearch();"/>
-        </div>
 
 <div id="loading">
 <h1>    Searching, Please Wait... </h1>
@@ -122,7 +118,6 @@
 
 </script>
 
-
     <script src="../js/jquery-1.10.2.min.js"></script>
       <link rel="stylesheet" href="../SlickGrid-master/slick.grid.css" type="text/css"/>
       <link rel="stylesheet" href="../SlickGrid-master/css/smoothness/jquery-ui-1.8.16.custom.css" type="text/css"/>
@@ -157,6 +152,9 @@
 <!--    <script src="../js/jqPagination-master/js/scripts.js"></script>  -->
     <link rel="stylesheet" type="text/css" href="../js/jqPagination-master/css/jqpagination.css" /> 
 
+
+    <!-- I use Stuart Banerman's hashcode to map award names to colors reliably: https://github.com/stuartbannerman/hashcode -->
+    <script src="../js/hashcode-master/lib/hashcode.min.js"></script>
 <style type="text/css">
     .contact-card-cell {
       border-color: transparent !important;
@@ -248,6 +246,8 @@ standardColors[14] =   'teal';
 standardColors[15] =   'white';
 standardColors[16] =   'yellow';
 
+// The current desire is that 
+
 var data = [];
 var transactionData = [];
 var internalFieldLabel = [];
@@ -269,9 +269,8 @@ $("#hideShowGraph").click(function() {
 $('#search_string_render').text('{{search_string}}');
 
 $('#commodities li').first().addClass("selected");
-var currentlySelectedCommodityElement  = $('#CPU');
-
-$('input[id=search_string]').on('keyup', function(e) {
+var currentlySelectedCommodityElement  = '{{commodity_id}}';
+$('input[id=small_search_string]').on('keyup', function(e) {
     if (e.which == 13) {
         performSearch();
     }
@@ -338,6 +337,7 @@ var currentColumn = "score";
 var standardCommodities = {
     // CPU seems to requie both 7020 and 7025!  This 
     // is why commoditype could end up being a problem for us!
+    All: '*',
     CPU: '*702*',
     Software: '*7030*',
     // DANGER!  HACK!
@@ -353,14 +353,15 @@ var standardCommodities = {
     Component: '*7050*'
 };
 
-var currentCommodityId;
+var currentCommodityId = '{{commodity_id}}';
 
 function performSearch() {
     $('#loading').show();
     $('#results-header').hide();
     timeSearchBegan = new Date();
-    var standard = standardCommodities[currentlySelectedCommodityElement.attr('id')];
-    var search = $('#search_string').val();
+    var standard = standardCommodities[currentCommodityId];
+
+    var search = $('#small_search_string').val();
     $('#search_string_render').text(search);
     $.post("apisolr",
 	   { search_string: search,
@@ -371,16 +372,6 @@ function performSearch() {
 	   processAjaxSearch
 	  ).fail(function() { alert("The search failed in some way; please try something else."); });
 };
-
-
-$('#commodities li').click(function () {
-    $('#'+currentlySelectedCommodityElement.attr('id')).removeClass("selected");
-    currentlySelectedCommodityElement = $('#'+this.id);
-    currentCommodityId = this.id;
-    $('#'+this.id).addClass("selected");
-    // Now we will call the search API with a different PSC code
-    performSearch();
-});
 
 function sortByColumnAndRedraw(col,asc) {
   sortByColumn(col,asc);
@@ -587,7 +578,11 @@ $(document).ready(function() {
     transactionData.forEach(function (e,i,a) {
         var obj = e;
         e["starred"] = "";
-        e.color = standardColors[i % 17];
+// This randomizes color but keeps the same colors associated with the same 
+// field...
+//       alert("award = "+ e["awardIdIdv"]+" "+
+//             Math.abs(Hashcode.value(e["awardIdIdv"])) % 17);
+        e.color = standardColors[Math.abs(Hashcode.value(e["awardIdIdv"])) % 17];
         data[i] = obj;
     });
 
@@ -636,6 +631,17 @@ $(document).ready(function() {
 	    redrawDetailArea(currentPage);
 	}
 	clickcount++;
+    });
+
+
+    var comclickcount = 0;
+    $("#comDropdownWrapper").click(function(){
+	if ((comclickcount % 2) == 1) {
+	    var com = $("#commodityChoice").val();
+	    currentCommodityId = com;
+            performSearch();
+	}
+	comclickcount++;
     });
 
     $(function () {

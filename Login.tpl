@@ -19,7 +19,7 @@ This is a secure and limited Beta prototype.  Only invitees are allowed to use t
  </span>
 </section>
 <section id="credentials">
-<form action="/PricesPaid" method="post">
+<form action="/StartPage" method="post">
 <div class="blockyLabelBox">
   <span>Username:</span>
   <input type="text" name="username"/>

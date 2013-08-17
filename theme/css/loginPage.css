@@ -1,3 +1,5 @@
+
+
 body {
 	background-color: 61a342;
 	font-size:20px;
@@ -59,9 +61,11 @@ input {
 	font-weight:bold;
 	padding:6px 70px;
 	text-decoration:none;
-}.loginButton:hover {
+}
+.loginButton:hover {
 	background-color:#378de5;
-}.loginButton:active {
+}
+.loginButton:active {
 	position:relative;
 	top:1px;
 }

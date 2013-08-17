@@ -52,6 +52,10 @@ def server_static(filename):
 def server_static(filename):
     return static_file(filename, root=PathToJSFiles + "/jqPagination-master/css/")
 
+@app.route('/js/hashcode-master/lib/<filename>')
+def server_static(filename):
+    return static_file(filename, root=PathToJSFiles + "/hashcode-master/lib/")
+
 @app.route('/SlickGrid-master/<filename>')
 def server_static(filename):
     return static_file(filename, root=PathToSlickGridMaster)
@@ -85,21 +89,32 @@ from bottle import template
 
 @app.route('/')
 def login():
-    return template('Login')
+    return template('Login',message='')
 
-@app.route('/PricesPaid',method='POST')
+@app.route('/StartPage',method='POST')
 def pptriv():
     username = request.forms.get('username')
     password = request.forms.get('password')
-    print 'user = '+username
-    print 'password = '+password
     if (not does_authenticate(username,password)):
         return template('Login',message='Improper Credentials.')
     search_string = request.forms.get('search_string')
     search_string = search_string if search_string is not None else "Dell Latitude"
     psc_pattern = request.forms.get('psc_pattern')
-    return template('MainPage',search_string=search_string,user=username,\
+    return template('StartPage',search_string=search_string,user=username,\
                     password=password,psc_pattern=psc_pattern)
+
+@app.route('/PricesPaid',method='POST')
+def pptriv():
+    username = request.forms.get('username')
+    password = request.forms.get('password')
+    if (not does_authenticate(username,password)):
+        return template('Login',message='Improper Credentials.')
+    search_string = request.forms.get('search_string')
+    search_string = search_string if search_string is not None else "Dell Latitude"
+    commodity_id = request.forms.get('commodity_id')
+    print 'COMMODITY_ID = '+commodity_id
+    return template('MainPage',search_string=search_string,user=username,\
+                    password=password,commodity_id=commodity_id)
                     
 # This appears to be necessary in order to support the same-origin policy.
 # To separate this better, we serve-side pass-through to a different domain
