@@ -69,12 +69,7 @@
 <button id="hideShowDetails">Hide/Show Details</button>
 </div>
 
-<div class="gigantic pagination">
-    <a href="#" class="first" data-action="first">&laquo;</a>
-    <a href="#" class="previous" data-action="previous">&lsaquo;</a>
-    <input type="text" readonly="readonly" data-max-page="40" />
-    <a href="#" class="next" data-action="next">&rsaquo;</a>
-    <a href="#" class="last" data-action="last">&raquo;</a>
+<div id="paginationHolder">
 </div>
             <form action="" id="results-sortby" name="sortby">
                 <label for="type">Sort by:</label>
@@ -430,8 +425,6 @@ function sortByColumn(col,asc) {
 	return html;
     }
 
-
-    // This needs to be made into a function and called when ever the sort changes.
     function redrawDetailArea(page) {
 	var detailAreaDiv = $("#"+'detailArea');
 	detailAreaDiv.empty();
@@ -440,7 +433,9 @@ Math.min((page+1)*PAGESIZE,transactionData.length));
 	smallSlice.forEach(function (e,i,a) {
             detailAreaDiv.append(renderStyledDetail(e,SCRATCH_NUMBER));
 	    $(document).on( "click", "#itemDetails"+SCRATCH_NUMBER, detailItemHandler );
-	    itemDetailAssociation[SCRATCH_NUMBER] = i;
+
+// Ugly....
+	    itemDetailAssociation[SCRATCH_NUMBER] = i+page*PAGESIZE;
 	    SCRATCH_NUMBER++;
 	});
     }
@@ -452,30 +447,47 @@ function processAjaxSearch(dataFromSearch) {
     timeSearchEnded = new Date();
     transactionData = [];
     data = [];
-    var i = 0;
+    var totalNumber = 0;
     for (var key in dataFromSearch) {
-        transactionData[i++] = dataFromSearch[key];
+        transactionData[totalNumber++] = dataFromSearch[key];
     }
 
 
 
     var numberDiv = document.getElementById('placeForNumberReturned');
-    numberDiv.innerHTML = i;
+    numberDiv.innerHTML = totalNumber;
+
+// destroy pagination  if it exists and recreate...
+// This is needed to keep jqPaginate from getting confused, 
+// I don't know why.  I should send them email about it.
+function recreatePagination() {
+    var html = "";
+    html += '<div class="gigantic pagination">';
+    html += '<a href="#" class="first" data-action="first">&laquo;</a>';
+    html += '<a href="#" class="previous" data-action="previous">&lsaquo;</a>';
+    html += '<input type="text" readonly="readonly" data-max-page="40" />';
+    html += '<a href="#" class="next" data-action="next">&rsaquo;</a>';
+    html += '<a href="#" class="last" data-action="last">&raquo;</a>';
+    html += '</div>';
+    $('#paginationHolder').html(html);
+}
+
+recreatePagination();
 
 // Note: This counts the Page from 1, not zero!
-$(document).ready(function() {
+// $(document).ready(function() {
 	$('.pagination').jqPagination({
-		link_string	: '/?page={page_number}',
-		max_page	:  Math.ceil(i/PAGESIZE),
+//		link_string	: '/?page={page_number}',
+		link_string	: '',
+		max_page	:  Math.ceil(totalNumber/PAGESIZE),
+                currentPage     : 1,
 		paged		: function(page) {
                 currentPage = page - 1;
                 redrawDetailArea(currentPage);
-// I'm not really keeping a lot, this was an eample from jqPagination
-//			$('.log').prepend('<li>Requested page ' + page + '</li>');
 		}
 	});
 
-});
+// });
 
     var secondsSpent = (timeSearchEnded-timeSearchBegan)/1000.0;
     $('#timeSpentRender').text(secondsSpent.toFixed(2));
