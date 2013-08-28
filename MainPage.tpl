@@ -283,7 +283,8 @@ function renderDetailArea(dataRow,i) {
         if (!((k in standardFieldLabel) || (k in internalFieldLabel))) {
 	    var v = dataRow[k];
 // This is just to see what will happen, I will have to add proper titles later.
-	    html += renderCustomField(standardFieldLabel[k],v);
+            var label = (k in standardFieldLabel) ? standardFieldLabel(k) : k;
+	    html += renderCustomField(label,v);
 	}
     }
 
