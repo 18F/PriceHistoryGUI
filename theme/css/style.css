@@ -164,8 +164,8 @@ body {
 }
 
 #startpagesearch {
-    margin-top: 100px;
-    padding:60px;
+    margin-top: 0px;
+    padding:30px;
 }
 
 #search_form {
@@ -211,7 +211,7 @@ body {
 }
 
 #search_icon {
-        top: 140px;
+        top: 10px;
         position: absolute;
         float: right;
         margin: 40px;

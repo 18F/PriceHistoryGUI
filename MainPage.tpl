@@ -214,8 +214,10 @@ standardColors[11] =   'purple';
 standardColors[12] =   'red';
 standardColors[13] =   'silver';
 standardColors[14] =   'teal';
-standardColors[15] =   'white';
-standardColors[16] =   'yellow';
+// standardColors[15] =   'white';
+standardColors[15] =   'yellow';
+
+var NUM_STANDARD_COLORS = 16;
 
 // The current desire is that 
 
@@ -440,6 +442,15 @@ Math.min((page+1)*PAGESIZE,transactionData.length));
 	});
     }
 
+    var comclickcount = 0;
+    $("#comDropdownWrapper").click(function(){
+	if ((comclickcount % 2) == 1) {
+	    var com = $("#commodityChoice").val();
+	    currentCommodityId = com;
+            performSearch();
+	}
+	comclickcount++;
+    });
 
 function processAjaxSearch(dataFromSearch) {
     $('#loading').hide();
@@ -568,11 +579,9 @@ recreatePagination();
         e["starred"] = "";
 // This randomizes color but keeps the same colors associated with the same 
 // field...
-        e.color = standardColors[Math.abs(Hashcode.value(e["awardIdIdv"])) % 17];
+        e.color = standardColors[Math.abs(Hashcode.value(e["awardIdIdv"])) % NUM_STANDARD_COLORS];
         data[i] = obj;
     });
-
-    
 
     redrawDetailArea(0);
 
@@ -620,15 +629,6 @@ recreatePagination();
     });
 
 
-    var comclickcount = 0;
-    $("#comDropdownWrapper").click(function(){
-	if ((comclickcount % 2) == 1) {
-	    var com = $("#commodityChoice").val();
-	    currentCommodityId = com;
-            performSearch();
-	}
-	comclickcount++;
-    });
 
     $(function () {
 	$('#myGrid').innerHTML = "";
