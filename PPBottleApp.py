@@ -4,7 +4,7 @@ from bottle import Bottle, run, template,request,TEMPLATE_PATH,static_file,Heade
 import urllib
 import ast
  
-from ppconfig import MasterPassword,MasterUsername,URLToPPSearchApi,URLToPPSearchApiSolr
+from ppGuiConfig import MasterPassword,MasterUsername,URLToPPSearchApi,URLToPPSearchApiSolr
 
 # Hopefully this will work!
 PathToBottleWebApp = "./"
@@ -20,65 +20,22 @@ app = Bottle()
 
 # Bottle seems to be fairly restrictive with static files,
 # there might be a better way to do this.
-@app.route('/js/<filename>')
-def server_static(filename):
-    return static_file(filename, root=PathToJSFiles)
+@app.route('/js/<path:path>')
+def server_static(path):
+    return static_file(path, root=PathToJSFiles)
 
-@app.route('/theme/<filename>')
-def server_static(filename):
-    return static_file(filename, root=PathToBottleWebApp+"theme/")
-
-@app.route('/theme/css/<filename>')
-def server_static(filename):
-    return static_file(filename, root=PathToBottleWebApp+"theme/css/")
-
-@app.route('/theme/img/<filename>')
-def server_static(filename):
-    return static_file(filename, root=PathToBottleWebApp+"theme/img/")
+@app.route('/theme/<path:path>')
+def server_static(path):
+    return static_file(path, root=PathToBottleWebApp+"theme/")
 
 @app.route('/css/<filename>')
 def server_static(filename):
     return static_file(filename, root=PathToCSSFiles)
 
-@app.route('/js/plugins/<filename>')
-def server_static(filename):
-    return static_file(filename, root=PathToJSFiles + "plugins/")
+@app.route('/SlickGrid-master/<path:path>')
+def server_static(path):
+    return static_file(path, root=PathToSlickGridMaster)
 
-@app.route('/js/jqPagination-master/js/<filename>')
-def server_static(filename):
-    return static_file(filename, root=PathToJSFiles + "/jqPagination-master/js/")
-
-@app.route('/js/jqPagination-master/css/<filename>')
-def server_static(filename):
-    return static_file(filename, root=PathToJSFiles + "/jqPagination-master/css/")
-
-@app.route('/js/hashcode-master/lib/<filename>')
-def server_static(filename):
-    return static_file(filename, root=PathToJSFiles + "/hashcode-master/lib/")
-
-@app.route('/SlickGrid-master/<filename>')
-def server_static(filename):
-    return static_file(filename, root=PathToSlickGridMaster)
-
-@app.route('/SlickGrid-master/css/<filename>')
-def server_static(filename):
-    return static_file(filename, root=PathToSlickGridMaster+"css/")
-
-@app.route('/SlickGrid-master/images/<filename>')
-def server_static(filename):
-    return static_file(filename, root=PathToSlickGridMaster+"images/")
-
-@app.route('/SlickGrid-master/css/smoothness/<filename>')
-def server_static(filename):
-    return static_file(filename, root=PathToSlickGridMaster+"css/smoothness/")
-
-@app.route('/SlickGrid-master/css/smoothness/images/<filename>')
-def server_static(filename):
-    return static_file(filename, root=PathToSlickGridMaster+"css/smoothness/images")
-
-@app.route('/SlickGrid-master/lib/<filename>')
-def server_static(filename):
-    return static_file(filename, root=PathToSlickGridMaster+"lib/")
 
 # this needs to move to config!
 def does_authenticate(user,password):
