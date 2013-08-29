@@ -194,6 +194,9 @@ standardFieldLabel["awardIdIdv"] = "Award ID/IDV";
 standardFieldLabel["commodityType"] = "Commodity Type";
 standardFieldLabel["psc"] = "PSC";
 
+var nonStandardFieldLabel = [];
+nonStandardFieldLabel["dataSource"] = "Data Source";
+
 
 // What I really want to do here is to cycle through a palette of 16 colors.
 // There is no reason not to use whatever jqplot uses, although I don't 
@@ -261,7 +264,8 @@ function renderCustomField(name,fieldSeparator,value) {
     var html = "";
     html +=      ' <div  class="customField">';
     html +=      ' <span  class="fieldName">';
-    html += name;
+    html +=  (name in nonStandardFieldLabel) ? nonStandardFieldLabel[name] : name;
+//    html += name;
 
 // This could be done with a .css after class, but I'm not sure
 // it is browser compliant...
@@ -288,7 +292,7 @@ function renderDetailArea(dataRow,i) {
         if (!((k in standardFieldLabel) || (k in internalFieldLabel))) {
 	    var v = dataRow[k];
 // This is just to see what will happen, I will have to add proper titles later.
-            var label = (k in standardFieldLabel) ? standardFieldLabel(k) : k;
+            var label = (k in standardFieldLabel) ? standardFieldLabel[k] : k;
 	    html += renderCustomField(label,fieldseparator,v);
 	}
     }
@@ -549,20 +553,21 @@ recreatePagination();
     var medianUnitPrice = (transactionData.length > 0) ? medianSortedValues(transactionData)
 	: 0.0;
 
-
+// This should come from the server!!!
     var transactionColumns = [
-        {id: "score", name: "Relevance", field: "score", width: 100},
-        {id: "unitPrice", name: "Unit Price", field: "unitPrice", width: 100},
-        {id: "unitsOrdered", name: "Units Ordered", field: "unitsOrdered", width: 60},
-        {id: "orderDate", name: "Date", field: "orderDate", width: 60},
-        {id: "vendor", name: "Vendor", field: "vendor", width: 200},
-        {id: "productDescription", name: "Product Description", field: "productDescription", width: 400},
-        {id: "longDescription", name: "Long Description", field: "longDescription", width: 400},
-        {id: "contractingAgency", name: "Contracting Agency", field: "contractingAgency",
+        {id: "score", name: standardFieldLabel["score"], field: "score", width: 100},
+        {id: "unitPrice", name: standardFieldLabel["unitPrice"], field: "unitPrice", width: 100},
+        {id: "unitsOrdered", name: standardFieldLabel["unitsOrdered"], field: "unitsOrdered", width: 60},
+        {id: "orderDate", name: standardFieldLabel["orderDate"], field: "orderDate", width: 60},
+        {id: "vendor", name: standardFieldLabel["vendor"], field: "vendor", width: 200},
+        {id: "productDescription", name: standardFieldLabel["productDescription"], field: "productDescription", width: 400},
+        {id: "longDescription", name: standardFieldLabel["longDescription"], field: "longDescription", width: 400},
+        {id: "contractingAgency", name: standardFieldLabel["contractingAgency"], field: "contractingAgency",
 	 width: 200},
-        {id: "awardIdIdv", name: "Award ID/IDV", field: "awardIdIdv", width: 100},
-        {id: "commodityType", name: "Commodity Type", field: "commodityType", width: 100},
-        {id: "psc", name: "PSC", field: "psc", width: 80}
+        {id: "awardIdIdv", name: standardFieldLabel["awardIdIdv"], field: "awardIdIdv", width: 100},
+        {id: "commodityType", name: standardFieldLabel["commodityType"], field: "commodityType", width: 100},
+        {id: "psc", name: standardFieldLabel["psc"], field: "psc", width: 80},
+        {id: "dataSource", name: standardFieldLabel["dataSource"], field: "dataSource", width: 150}
     ];
     var controlColumns = [ {id: "starred",name: "Starred", field: "starred",width: 40 } ];
     
