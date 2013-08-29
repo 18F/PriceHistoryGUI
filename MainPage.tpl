@@ -181,21 +181,21 @@ var itemDetailAssociation = [];
 
 // This should really be read via an AJAX call to all it to be independent of 
 // Prices Paid...That is a step to getting open-source involvement.
-var standardFieldLabel = [];
-standardFieldLabel["score"] = "Relevance";
-standardFieldLabel["unitPrice"] = "Unit Price";
-standardFieldLabel["unitsOrdered"] = "Units Ordered";
-standardFieldLabel["orderDate"] = "Date";
-standardFieldLabel["vendor"] = "Vendor";
-standardFieldLabel["productDescription"] = "Product Description";
-standardFieldLabel["longDescription"] = "Long Description";
-standardFieldLabel["contractingAgency"] = "Contracting Agency";
-standardFieldLabel["awardIdIdv"] = "Award ID/IDV";
-standardFieldLabel["commodityType"] = "Commodity Type";
-standardFieldLabel["psc"] = "PSC";
+var standardFieldDescriptor = [];
+standardFieldDescriptor["score"] = "Relevance";
+standardFieldDescriptor["unitPrice"] = "Unit Price";
+standardFieldDescriptor["unitsOrdered"] = "Units Ordered";
+standardFieldDescriptor["orderDate"] = "Date";
+standardFieldDescriptor["vendor"] = "Vendor";
+standardFieldDescriptor["productDescription"] = "Product Description";
+standardFieldDescriptor["longDescription"] = "Long Description";
+standardFieldDescriptor["contractingAgency"] = "Contracting Agency";
+standardFieldDescriptor["awardIdIdv"] = "Award ID/IDV";
+standardFieldDescriptor["commodityType"] = "Commodity Type";
+standardFieldDescriptor["psc"] = "PSC";
 
-var nonStandardFieldLabel = [];
-nonStandardFieldLabel["dataSource"] = "Data Source";
+var nonStandardFieldDescriptor = [];
+nonStandardFieldDescriptor["dataSource"] = "Data Source";
 
 
 // What I really want to do here is to cycle through a palette of 16 colors.
@@ -264,7 +264,7 @@ function renderCustomField(name,fieldSeparator,value) {
     var html = "";
     html +=      ' <div  class="customField">';
     html +=      ' <span  class="fieldName">';
-    html +=  (name in nonStandardFieldLabel) ? nonStandardFieldLabel[name] : name;
+    html +=  (name in nonStandardFieldDescriptor) ? nonStandardFieldDescriptor[name] : name;
 //    html += name;
 
 // This could be done with a .css after class, but I'm not sure
@@ -289,10 +289,10 @@ function renderDetailArea(dataRow,i) {
 // we will someday want a list of custom fields for other purposes, but 
 // this is good enough for now...
     for (var k in dataRow) {
-        if (!((k in standardFieldLabel) || (k in internalFieldLabel))) {
+        if (!((k in standardFieldDescriptor) || (k in internalFieldLabel))) {
 	    var v = dataRow[k];
 // This is just to see what will happen, I will have to add proper titles later.
-            var label = (k in standardFieldLabel) ? standardFieldLabel[k] : k;
+            var label = (k in standardFieldDescriptor) ? standardFieldDescriptor[k] : k;
 	    html += renderCustomField(label,fieldseparator,v);
 	}
     }
@@ -337,6 +337,8 @@ var standardCommodities = {
 };
 
 var currentCommodityId = '{{commodity_id}}';
+
+var com = $("#commodityChoice").val(currentCommodityId);
 
 function performSearch() {
     $('#loading').show();
@@ -555,19 +557,19 @@ recreatePagination();
 
 // This should come from the server!!!
     var transactionColumns = [
-        {id: "score", name: standardFieldLabel["score"], field: "score", width: 100},
-        {id: "unitPrice", name: standardFieldLabel["unitPrice"], field: "unitPrice", width: 100},
-        {id: "unitsOrdered", name: standardFieldLabel["unitsOrdered"], field: "unitsOrdered", width: 60},
-        {id: "orderDate", name: standardFieldLabel["orderDate"], field: "orderDate", width: 60},
-        {id: "vendor", name: standardFieldLabel["vendor"], field: "vendor", width: 200},
-        {id: "productDescription", name: standardFieldLabel["productDescription"], field: "productDescription", width: 400},
-        {id: "longDescription", name: standardFieldLabel["longDescription"], field: "longDescription", width: 400},
-        {id: "contractingAgency", name: standardFieldLabel["contractingAgency"], field: "contractingAgency",
+        {id: "score", name: standardFieldDescriptor["score"], field: "score", width: 100},
+        {id: "unitPrice", name: standardFieldDescriptor["unitPrice"], field: "unitPrice", width: 100},
+        {id: "unitsOrdered", name: standardFieldDescriptor["unitsOrdered"], field: "unitsOrdered", width: 60},
+        {id: "orderDate", name: standardFieldDescriptor["orderDate"], field: "orderDate", width: 60},
+        {id: "vendor", name: standardFieldDescriptor["vendor"], field: "vendor", width: 200},
+        {id: "productDescription", name: standardFieldDescriptor["productDescription"], field: "productDescription", width: 400},
+        {id: "longDescription", name: standardFieldDescriptor["longDescription"], field: "longDescription", width: 400},
+        {id: "contractingAgency", name: standardFieldDescriptor["contractingAgency"], field: "contractingAgency",
 	 width: 200},
-        {id: "awardIdIdv", name: standardFieldLabel["awardIdIdv"], field: "awardIdIdv", width: 100},
-        {id: "commodityType", name: standardFieldLabel["commodityType"], field: "commodityType", width: 100},
-        {id: "psc", name: standardFieldLabel["psc"], field: "psc", width: 80},
-        {id: "dataSource", name: standardFieldLabel["dataSource"], field: "dataSource", width: 150}
+        {id: "awardIdIdv", name: standardFieldDescriptor["awardIdIdv"], field: "awardIdIdv", width: 100},
+        {id: "commodityType", name: standardFieldDescriptor["commodityType"], field: "commodityType", width: 100},
+        {id: "psc", name: standardFieldDescriptor["psc"], field: "psc", width: 80},
+        {id: "dataSource", name: nonStandardFieldDescriptor["dataSource"], field: "dataSource", width: 150}
     ];
     var controlColumns = [ {id: "starred",name: "Starred", field: "starred",width: 40 } ];
     
