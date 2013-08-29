@@ -257,11 +257,16 @@ var currentPage = 0;
 var timeSearchBegan;
 
 // Not sure the best way to do this, may want to check with Marty.
-function renderCustomField(name,value) {
+function renderCustomField(name,fieldSeparator,value) {
     var html = "";
     html +=      ' <div  class="customField">';
     html +=      ' <span  class="fieldName">';
     html += name;
+
+// This could be done with a .css after class, but I'm not sure
+// it is browser compliant...
+    html += fieldSeparator;
+
     html +=      ' </span>';
     html +=      ' <span  class="fieldValue">';
     html += value;
@@ -271,10 +276,10 @@ function renderCustomField(name,value) {
 }
 
 function renderDetailArea(dataRow,i) {
-    var fieldseparator = ": ";
+    var fieldseparator = " : ";
     var html = "";
     html +=      ' <div  class="itemDetailArea">';
-    html += renderCustomField('Long Description'+fieldseparator, dataRow.longDescription || "No Long Description.");
+    html += renderCustomField('Long Description',fieldseparator, dataRow.longDescription || "No Long Description.");
 
 // Note this could be done more efficiently, and 
 // we will someday want a list of custom fields for other purposes, but 
@@ -284,7 +289,7 @@ function renderDetailArea(dataRow,i) {
 	    var v = dataRow[k];
 // This is just to see what will happen, I will have to add proper titles later.
             var label = (k in standardFieldLabel) ? standardFieldLabel(k) : k;
-	    html += renderCustomField(label,v);
+	    html += renderCustomField(label,fieldseparator,v);
 	}
     }
 
@@ -421,7 +426,8 @@ function sortByColumn(col,asc) {
 	html +=          '<p><strong>Vendor:</strong> '+dataRow.vendor.substring(0,35)+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Award ID/IDV:</strong> '+dataRow.awardIdIdv+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>PSC:</strong> '+dataRow.psc+ '</span>';
 	var itemDetails = "itemDetails"+scratchNumber;
 	var expandArea = "expandArea"+scratchNumber;
-	html +=          '<span class="result-more">Display Item Details  <img id="'+itemDetails+'" src="theme/img/display-details.png" /><span id="'+expandArea+'"></span></span>';
+	html +=          '<span class="result-more">Display Item Details  <img id="'+itemDetails+'" src="theme/img/display-details.png" /></span></span>';
+        html += '<span id="'+expandArea+'">';
 	html +=          '<div style="clear:both;"></div>';
 	html +=      '</div>';
 	html +=      '</div>';

@@ -355,7 +355,9 @@ I don't believe I should have to specify all this, but my css skills are weak. *
         font-size: 15px;
         color: black;
 	background-color: white;
-        text-align: left
+        text-align: left;
+        padding: 10px 10px 10px 10px;
+	margin: 10px 10px 10px 10px;
 }
 
 .fieldName {
