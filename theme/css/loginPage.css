@@ -1,7 +1,5 @@
-
-
 body {
-	background-color: 61a342;
+	background-color: #61a342;
 	font-size:20px;
 	line-height:130%;
 	font-family:'Helvetica Neue', Helvetica, arial, sans-serif;
@@ -15,14 +13,13 @@ body {
 }
 
 #instructions {
-    width: 400;
-    position: absolute;
+    width: 400px;
     float: left;
     padding: 40px;
 }
 
 #credentials {
-    background-color: 448825;
+    background-color: #448825;
     float: right;
     width: 350px;
     padding: 4px;
@@ -40,13 +37,13 @@ body {
 
 
 .blockyLabelBox {
-	background-color: 448825;
+	background-color: #448825;
 	padding: 3px;
 }
 input {
         border-style:solid;
 	border-width:5px;
-        border-color: 276e08;
+        border-color: #276e08;
 
 }
 
