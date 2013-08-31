@@ -1,9 +1,42 @@
+<!DOCTYPE html> 
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>PricesPaid</title>
     <meta name="robots" content="NOINDEX, NOFOLLOW">
     <link href="theme/css/style.css" rel="stylesheet" type="text/css" media="screen, projection">
+    <link rel="stylesheet" href="../SlickGrid-master/slick.grid.css" type="text/css">
+    <link rel="stylesheet" href="../SlickGrid-master/css/smoothness/jquery-ui-1.8.16.custom.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../js/jquery.jqplot.css" >
+    <link rel="stylesheet" type="text/css" href="../js/jqPagination-master/css/jqpagination.css"> 
+<!-- Move this to the .css file -->
+<style type="text/css">
+    .contact-card-cell {
+      border-color: transparent !important;
+    }
+
+     .note {
+        font-size: 0.8em;
+    }
+    .majorlabel {
+        font-size: large;
+        margin-right: 5%;
+     }
+
+     #tooltip1b {
+        font-size: 12px;
+        color: rgb(15%, 15%, 15%);
+        padding:2px;
+        background-color: rgba(95%, 95%, 95%, 0.8);
+    }
+
+    #chartcontainer {
+       position: relative;
+       width: 100%;
+       height: 300px;
+     }
+
+    </style>
 </head>
 <body>
 
@@ -11,8 +44,10 @@
     <div id="header">
         <!-- Top part of header -->
         <div class="inner">
-            <span id="pricespaid_logo"><img src="theme/img/pp_logo_beta.png" alt="PricesPaid" /></span>
+        <!-- FACTOR OUT -->
+            <span id="pricespaid_logo"><img src="theme/img/pp_logo_beta.png" alt="PricesPaid"></span>
 		<span id="comDropdownWrapper">
+        <!-- FACTOR OUT -->
                 <select id="commodityChoice" >
                     <option value="All">All</option>
                     <option value="CPU">CPU</option>
@@ -27,13 +62,14 @@
 
         <!-- Start search -->
         <span id="smallSearch">
-                <input type="text" name="small_search_string" id="small_search_string" value="{{search_string}}" />
-		<input type="hidden" name="user" value="{{user}}" />
-		<input type="hidden" name="password" value="{{password}}" />
-                <input type="button" id="searchButton" value="Search" onclick="performSearch();"/>
+                <input type="text" name="small_search_string" id="small_search_string" value="{{search_string}}">
+		<input type="hidden" name="user" value="{{user}}">
+		<input type="hidden" name="password" value="{{password}}">
+                <input type="button" id="searchButton" value="Search" onclick="performSearch();">
         </span>
 
-            <span id="gsa_logo">Powered by <img src="theme/img/gsa_logo.png" alt="GSA" /></span>
+        <!-- FACTOR OUT -->
+            <span id="gsa_logo">Powered by <img src="theme/img/gsa_logo.png" alt="GSA"></span>
 
         </div>
 
@@ -61,7 +97,7 @@
 </div>
 
 <div id="chartContainer">
-    <section id="chartdiv" ></section>
+    <div id="chartdiv" ></div>
 </div>
         <!-- Start results header -->
         <div>
@@ -71,8 +107,8 @@
 
 <div id="paginationHolder">
 </div>
-            <form action="" id="results-sortby" name="sortby">
-                <label for="type">Sort by:</label>
+            <div id="results-sortby">
+                <label>Sort by:</label>
 		<div id="dropdownWrapper">
                 <select id="sortColumn" >
                     <option value="score">Relevance</option>
@@ -88,7 +124,7 @@
                     <option value="psc">PSC</option>
                 </select>
 		</div>
-            </form>
+            </div>
             <div style="clear:both;"></div>
         </div>
 <p></p>
@@ -105,12 +141,7 @@
 
 </div>
 
-
-</script>
-
     <script src="../js/jquery-1.10.2.min.js"></script>
-      <link rel="stylesheet" href="../SlickGrid-master/slick.grid.css" type="text/css"/>
-      <link rel="stylesheet" href="../SlickGrid-master/css/smoothness/jquery-ui-1.8.16.custom.css" type="text/css"/>
 
     <script src="../SlickGrid-master/lib/jquery-1.7.min.js"></script>
     <script src="../SlickGrid-master/lib/jquery.event.drag-2.2.js"></script>
@@ -121,10 +152,10 @@
     <!-- jqplot stuff -->
     
     <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="excanvas.js"></script><![endif]-->
-    <script language="javascript" type="text/javascript" src="../js/jquery.min.js"></script>
-    <script language="javascript" type="text/javascript" src="../js/jquery.jqplot.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.jqplot.min.js"></script>
     
-    <link rel="stylesheet" type="text/css" href="../js/jquery.jqplot.css" />
+
     
     <script type="text/javascript" src="../js/plugins/jqplot.canvasTextRenderer.min.js"></script>
     <script type="text/javascript" src="../js/plugins/jqplot.canvasAxisLabelRenderer.min.js"></script>
@@ -132,46 +163,12 @@
     <script type="text/javascript" src="../js/plugins/jqplot.cursor.min.js"></script>
     <script type="text/javascript" src="../js/plugins/jqplot.bubbleRenderer.min.js"></script>
 <script type="text/javascript" src="../js/plugins/jqplot.dateAxisRenderer.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="../js/jquery.jqplot.css" />    
 
     <!-- Trying to get a bloody paginator to work! -->
     <script src="../js/jqPagination-master/js/jquery.jqpagination.js"></script>
-<!--    <script src="../js/jqPagination-master/js/scripts.js"></script>  -->
-    <link rel="stylesheet" type="text/css" href="../js/jqPagination-master/css/jqpagination.css" /> 
-
 
     <!-- I use Stuart Banerman's hashcode to map award names to colors reliably: https://github.com/stuartbannerman/hashcode -->
     <script src="../js/hashcode-master/lib/hashcode.min.js"></script>
-<style type="text/css">
-    .contact-card-cell {
-      border-color: transparent !important;
-    }
-
-     .note {
-        font-size: 0.8em;
-    }
-    .majorlabel {
-        font-size: large;
-        margin-right: 5%;
-     }
-     #tooltip1b {
-        font-size: 12px;
-        color: rgb(15%, 15%, 15%);
-        padding:2px;
-        background-color: rgba(95%, 95%, 95%, 0.8);
-    }
-
-    #chartcontainer {
-       position: relative;
-       width: 100%;
-       height: 300px;
-     }
-
-    #chartdiv {
-      position: absolute;
-      width: 85%;
-     }
-    </style>
 <script>
 
 // This is an ugly global variable hack that seems to be 
