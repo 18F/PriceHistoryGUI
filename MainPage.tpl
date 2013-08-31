@@ -9,37 +9,8 @@
     <link rel="stylesheet" href="../SlickGrid-master/css/smoothness/jquery-ui-1.8.16.custom.css" type="text/css">
     <link rel="stylesheet" type="text/css" href="../js/jquery.jqplot.css" >
     <link rel="stylesheet" type="text/css" href="../js/jqPagination-master/css/jqpagination.css"> 
-<!-- Move this to the .css file -->
-<style type="text/css">
-    .contact-card-cell {
-      border-color: transparent !important;
-    }
-
-     .note {
-        font-size: 0.8em;
-    }
-    .majorlabel {
-        font-size: large;
-        margin-right: 5%;
-     }
-
-     #tooltip1b {
-        font-size: 12px;
-        color: rgb(15%, 15%, 15%);
-        padding:2px;
-        background-color: rgba(95%, 95%, 95%, 0.8);
-    }
-
-    #chartcontainer {
-       position: relative;
-       width: 100%;
-       height: 300px;
-     }
-
-    </style>
 </head>
 <body>
-
     <!-- Start header -->
     <div id="header">
         <!-- Top part of header -->
@@ -483,7 +454,7 @@ function processAjaxSearch(dataFromSearch) {
 // I don't know why.  I should send them email about it.
 function recreatePagination() {
     var html = "";
-    html += '<div class="gigantic pagination">';
+    html += '<div class="large pagination">';
     html += '<a href="#" class="first" data-action="first">&laquo;</a>';
     html += '<a href="#" class="previous" data-action="previous">&lsaquo;</a>';
     html += '<input type="text" readonly="readonly" data-max-page="40" />';
