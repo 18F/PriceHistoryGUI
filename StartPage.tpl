@@ -4,21 +4,19 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>PricesPaid</title>
     <meta name="robots" content="NOINDEX, NOFOLLOW">
-    <link href="theme/css/style.css" rel="stylesheet" type="text/css" media="screen, projection">
+    <link href="theme/css/startPage.css" rel="stylesheet" type="text/css" media="screen, projection">
 </head>
 <body>
     <!-- Start header -->
     <div id="header">
         <!-- Top part of header -->
         <div class="inner">
-            <p id="pricespaid_logo"><img src="theme/img/logo_pricespaid.png" alt="PricesPaid" /></p>
-            <span id="gsa_logo">Powered by <img src="theme/img/gsa_logo.png" alt="GSA" /></span>
-            <div style="clear:both;"></div>
-        </div>
+            <p id="pricespaid_logo"><img src="theme/img/logo_pricespaid.png" alt="PricesPaid" ></p>
+            <span id="gsa_logo">Powered by <img src="theme/img/gsa_logo.png" alt="GSA" ></span>
+
 
         <!-- Nav of commodities -->
         <div id="nav">
-            <div class="inner" style="width:800px;">
                 <ul id="commodities">
                     <li class="commodity" id="All"><a href="#"><img src="theme/img/icn_all.png" alt="All commodity types."><strong>All</strong></a></li>
                     <li class="commodity" id="CPU"><a href="#"><img src="theme/img/icon-cpu.png" alt="Computers, laptops, CPUs."><strong>CPU</strong></a></li>
@@ -32,7 +30,7 @@
             </div>
         </div>
     </div>
-
+<div style="clear:both"></div>
     <!-- Content ... below the header -->
     <div id="content" class="inner">
         <!-- Start search -->
