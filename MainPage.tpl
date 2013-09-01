@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../SlickGrid-master/css/smoothness/jquery-ui-1.8.16.custom.css" type="text/css">
     <link rel="stylesheet" type="text/css" href="../js/jquery.jqplot.css" >
     <link rel="stylesheet" type="text/css" href="../js/jqPagination-master/css/jqpagination.css"> 
+    {{!goog_anal_script}}
 </head>
 <body>
     <!-- Start header -->

@@ -5,6 +5,7 @@
        <title>Prices Paid v. 0.2 BETA - Login</title>
        <meta name="robots" content="NOINDEX, NOFOLLOW">
        <link href="theme/css/loginPage.css" rel="stylesheet" type="text/css" media="screen, projection">
+    {{!goog_anal_script}}
     </head>
     <body>
 

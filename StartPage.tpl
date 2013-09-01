@@ -5,6 +5,7 @@
     <title>PricesPaid</title>
     <meta name="robots" content="NOINDEX, NOFOLLOW">
     <link href="theme/css/startPage.css" rel="stylesheet" type="text/css" media="screen, projection">
+    {{!goog_anal_script}}
 </head>
 <body>
     <!-- Start header -->
