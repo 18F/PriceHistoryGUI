@@ -1,7 +1,7 @@
 PricesPaidGUI
 =============
 
-DESCRIPTION
+# DESCRIPTION
 
 PricesPaidGUI, in conjunction with its sister project also available at githup, PricesPaidAPI,
 is a system to allow government buyers to research actual prices paid in order to lower the 
@@ -40,15 +40,15 @@ HOW YOU CAN HELP
 We need help with tis, even though it is premature to ask for it, because the code is so rough. 
 Here is a preliminary TODO list:
 
-*) Factor out the PricesPaid specific GUI elements and fields in order to make the project both
+* ) Factor out the PricesPaid specific GUI elements and fields in order to make the project both  
 cleaner and potentially applicable to other forms of data.
-*) Clean up my not very good javascript, primarily by factoring it spearate files that can be loaded.
-*) Help make the GUI much better than it is today.  We are activley working on this, so there is
+* ) Clean up my not very good javascript, primarily by factoring it spearate files that can be loaded.
+* ) Help make the GUI much better than it is today.  We are activley working on this, so there is
 of course the danger of some duplication of effort---but so be it.
-*) help us implement "portfolios" of selected transactions.
-*) We need an export mechanism of portfolios (or the page) into Word, Excel, and PDF.
+* ) help us implement "portfolios" of selected transactions.
+* ) We need an export mechanism of portfolios (or the page) into Word, Excel, and PDF.
 
-Our goal is to save the government $1,000,000,000 in 2014.  Although ambitious, if we need 
+Our goal is to save the government a lot of money in 2014.  Although ambitious, if we need 
 only make government buyers a few perecentage points more efficient to accomplish this.
 Your help may make all the difference in the world---and may easily exceed our own efforts.
 
