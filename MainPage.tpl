@@ -142,6 +142,30 @@
     <script src="../js/hashcode-master/lib/hashcode.min.js"></script>
 <script>
 
+// WARNING!!! This is needed to make forEach work on IE8.
+// This is from the Mozilla site.  I have no idea if this 
+// is a better idea than replaces forEach'es everywhere or not.
+if (!Array.prototype.forEach) {
+    Array.prototype.forEach = function (fn, scope) {
+        'use strict';
+        var i, len;
+        for (i = 0, len = this.length; i < len; ++i) {
+            if (i in this) {
+                fn.call(scope, this[i], i, this);
+            }
+        }
+    };
+}
+
+// WARNING!!! My understanding is we can't use jqPlot if 
+// we have IE8.  They may want to switch to a simple mode,
+// but I will just add a message in the chartdiv!
+var isIE8orLower = false;
+if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
+ var ieversion=new Number(RegExp.$1); // capture x.x portion and store as a number
+ if (ieversion<9)
+    isIE8orLower = true;
+}
 // This is an ugly global variable hack that seems to be 
 // needed to events properly bound to dynamically created elements!
 var SCRATCH_NUMBER = 0;
@@ -388,7 +412,7 @@ function sortByColumn(col,asc) {
     function renderStyledDetail(dataRow,scratchNumber) {
 	var html = "";
 	html +=      ' <div class="result">';
-	html +=      '<img src="http://placehold.it/120x120" class="result-image" />';
+	html +=      '<img src="theme/img/placeholder120x120.png" class="result-image" >';
 	html +=      '<p class="result-details"><strong> '+dataRow.productDescription.substring(0,40)+' </strong> '+dataRow.longDescription.substring(0,130)+' </p>';
 	html +=      '<div class="result-meta">';
 	html +=          '<p class="result-unitscost"><strong> $'+dataRow.unitPrice+'</strong> '+dataRow.unitsOrdered+' units</p>';
@@ -397,17 +421,21 @@ function sortByColumn(col,asc) {
 	html +=      '<div style="clear:both;"></div>';
 	html +=      '<div class="result-smallprint">';
 	html +=          '<span class="indicator red" style="background-color:'+dataRow.color+';" ></span>';
-	html +=          '<p><strong>Vendor:</strong> '+dataRow.vendor.substring(0,35)+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Award ID/IDV:</strong> '+dataRow.awardIdIdv+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>PSC:</strong> '+dataRow.psc+ '</span>';
+	html +=          '<p><strong>Vendor:</strong> '+dataRow.vendor.substring(0,35)+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Award ID/IDV:</strong> '+dataRow.awardIdIdv+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>PSC:</strong> '+dataRow.psc+ '</p>';
 	var itemDetails = "itemDetails"+scratchNumber;
 	var expandArea = "expandArea"+scratchNumber;
-	html +=          '<span class="result-more">Display Item Details  <img id="'+itemDetails+'" src="theme/img/display-details.png" /></span></span>';
-        html += '<span id="'+expandArea+'">';
+	html +=          '<span class="result-more">Display Item Details  <img id="'+itemDetails+'" src="theme/img/display-details.png" /></span>';
+        html += '<span id="'+expandArea+'"></span>';
 	html +=          '<div style="clear:both;"></div>';
-	html +=      '</div>';
 	html +=      '</div>';
 	return html;
     }
 
+// WARNING!!!
+// This seems to do nothing on IE8.  Fixing this problem for IE8 is probably the most important thing 
+// we can do.  It was always pretty unattractive anyway---I must find a way to simplify.
+// It may or may not be "on(click", stuff, it just deosn't render anytrhing!.
+// The first thing to try is probably switching out of JQuery and doing a "getelementById" and innerHTML solution.
     function redrawDetailArea(page) {
 	var detailAreaDiv = $("#"+'detailArea');
 	detailAreaDiv.empty();
@@ -552,7 +580,7 @@ recreatePagination();
         editable: true,
         asyncEditorLoading: false,
         enableCellNavigation: true,
-        enableColumnReorder: false,
+        enableColumnReorder: false
     };
 
 
@@ -666,6 +694,9 @@ recreatePagination();
 
     $('#chartdiv').empty();
 
+    if (isIE8orLower) {
+      $('#chartdiv').append("<div style='width: 700px; color: red; margin: 20px'>The graph not supported on Internet Explorer less than Version 9.  You appear to be using version "+ieversion+", or your browser is using that as its rendering mode for some reason. If you need the graph, upgrade, or use a different browser, or change the document mode.<\div>");
+    } else {
     var plot1b = $.jqplot('chartdiv', plotData, {
 	title: 'Unit Prices',
 	seriesDefaults:{
@@ -700,6 +731,7 @@ recreatePagination();
 	}
     }
 			 );
+    }
 
     // Legend is a simple table in the html.
     // Dynamically populate it with the labels from each data value.
