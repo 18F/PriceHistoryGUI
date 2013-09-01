@@ -7,4 +7,9 @@ PathToDataFiles = "../cookedData"
 URLToPPSearchApi = "https://shdsapi.org/api"
 URLToPPSearchApiSolr = "https://shdsapi.org/apisolr"
 URLToSolr = 'http://localhost:8983/solr'
-WsgiAbsolutePath = '/home/robert/PricesPaid/PricesPaidAPI'
+WsgiAbsolutePath = '/home/robert/PricesPaid/PricesPaidGUI'
+
+# If you want google analytics, put the javascript here.
+GoogleAnalyticsInclusionScript = """   <script>
+
+   </script>"""
