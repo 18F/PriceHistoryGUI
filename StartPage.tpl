@@ -62,8 +62,12 @@ $('#commodities li').click(function () {
 });
 
 function formSubmit()
-{
-   $("#searchform").submit();
+{ 
+   if ($("#search_string").val().length != 0) {
+        $("#searchform").submit();
+   } else {
+        alert("Please enter a search term!");
+   }
 }
 
 $('#search_icon').click(formSubmit);

@@ -10,8 +10,10 @@
     <link rel="stylesheet" type="text/css" href="../js/jquery.jqplot.css" >
     <link rel="stylesheet" type="text/css" href="../js/jqPagination-master/css/jqpagination.css"> 
     {{!goog_anal_script}}
+
 </head>
 <body>
+
     <!-- Start header -->
     <div id="header">
         <!-- Top part of header -->
@@ -141,6 +143,34 @@
 
     <!-- I use Stuart Banerman's hashcode to map award names to colors reliably: https://github.com/stuartbannerman/hashcode -->
     <script src="../js/hashcode-master/lib/hashcode.min.js"></script>
+
+	<link href="../js/feedback_me-master/css/jquery.feedback_me.css" rel="stylesheet" type="text/css" />
+<!--	<script type="text/javascript" src="js/jquery.min.js"></script>
+-->
+	<script type="text/javascript" src="../js/jquery-ui.min.js"></script>
+
+	<script type="text/javascript" src="../js/feedback_me-master/js/jquery.feedback_me.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			//set up some minimal options for the feedback_me plugin
+			fm_options = {
+				name_required : false,
+		                name_label : "(Optional) tell us who you are",
+                                message_label : "How can we do better?",
+				message_placeholder:"Go ahead, type your feedback here ...",
+				message_required : true,
+				show_asterisk_for_required : true,
+				feedback_url : "record_feedback"
+			};
+			
+			//init feedback_me plugin
+			fm.init(fm_options);
+			
+		});
+	</script>
+
+
 <script>
 
 // WARNING!!! This is needed to make forEach work on IE8.
@@ -157,6 +187,11 @@ if (!Array.prototype.forEach) {
         }
     };
 }
+
+$("#feedback").click(function() { 
+    $("#feedbackForm").toggle();
+});
+
 
 // WARNING!!! My understanding is we can't use jqPlot if 
 // we have IE8.  They may want to switch to a simple mode,
@@ -235,6 +270,9 @@ $("#hideShowGraph").click(function() {
     $("#chartContainer").toggle();
 });
 
+
+// Note: that search_string here is html-encoded by Bottle,
+// So presumably this does not represent a XSS vulnerability...
 $('#search_string_render').text('{{search_string}}');
 
 $('#commodities li').first().addClass("selected");
@@ -340,8 +378,11 @@ function performSearch() {
     var standard = standardCommodities[currentCommodityId];
 
     var search = $('#small_search_string').val();
-    $('#search_string_render').text(search);
-    $.post("apisolr",
+    if (search.length == 0) {
+      alert("Please enter a search term.");
+    } else {
+      $('#search_string_render').text(search);
+      $.post("apisolr",
 	   { search_string: search,
              user: '{{user}}',
              password: '{{password}}',
@@ -349,6 +390,7 @@ function performSearch() {
 	   },
 	   processAjaxSearch
 	  ).fail(function() { alert("The search failed in some way; please try something else."); });
+    }
 };
 
 function sortByColumnAndRedraw(col,asc) {
@@ -513,44 +555,54 @@ recreatePagination();
     var secondsSpent = (timeSearchEnded-timeSearchBegan)/1000.0;
     $('#timeSpentRender').text(secondsSpent.toFixed(2));
 
-    // Now I'm going to try something weird, which seems justified by the nature 
-    // of our data--I'm only going to plot the lowest-prices 80%.  The upper 
-    // 20% is often something not really in the data set you are looking at 
-    // and it messes up the plot.  This should really be under the control 
+    // Now I'm going to try something weird, which seems justified by the nature
+    // of our data--I'm only going to plot the lowest-prices 80%.  The upper
+    // 20% is often something not really in the data set you are looking at
+    // and it messes up the plot.  This should really be under the control
     // of the user, but that will have to wait.
-    // In order to do this we will sort on unitPrice, which is probably 
+    // In order to do this we will sort on unitPrice, which is probably
     // a good way to present the data anyway.
     transactionData.sort(
-	function (a,b) {
-	    var ret;
-	    if (parseFloat(a["score"]) < parseFloat(b["score"])) {
-		ret = 1;
-	    } else if (parseFloat(a["score"]) > parseFloat(b["score"])) {
-		ret = -1;
-	    } else {
-		ret = 0;
-	    }
-	    return ret;
-	});
+        function (a,b) {
+            var ret;
+            if (parseFloat(a["unitPrice"]) < parseFloat(b["unitPrice"])) {
+                ret = 1;
+            } else if (parseFloat(a["unitPrice"]) > parseFloat(b["unitPrice"])) {
+                ret = -1;
+            } else {
+                ret = 0;
+            }
+            return ret;
+        });
+    function medianSortedValues(values) { 
+        if (values.length != 0) {
+	 var half = Math.floor(values.length/2);
+	 if(values.length % 2) {
+              return parseFloat(values[half]["unitPrice"]);
+	 } else {
+	      return (parseFloat(values[half-1]["unitPrice"]) +
+              parseFloat(values[half]["unitPrice"])) / 2.0;
+	 }
+	} else {
+	    return 0.0;
+	}
+    }
+    var medianValue = medianSortedValues(transactionData);
+    var medianUnitPrice = (transactionData.length > 0) ? medianValue
+        : 0.0;
 
     var sumOfUnitPrice = 0.0;
-    transactionData.forEach(function(d) { 
-	var x = parseFloat(d["unitPrice"]);
-	if (!isNaN(x))
-	    sumOfUnitPrice += x 
+    transactionData.forEach(function(d) {
+        var x = parseFloat(d["unitPrice"]);
+        if (!isNaN(x))
+            sumOfUnitPrice += x
+        else {
+            d["unitPrice"] = "0.0";
+        }
     });
 
-    function medianSortedValues(values) {
-	var half = Math.floor(values.length/2);
-	if(values.length % 2)
-	    return parseFloat(values[half]["unitPrice"]);
-	else
-	    return (parseFloat(values[half-1]["unitPrice"]) + 
-		    parseFloat(values[half]["unitPrice"])) / 2.0;
-    }
-
-    var medianUnitPrice = (transactionData.length > 0) ? medianSortedValues(transactionData)
-	: 0.0;
+   var currentColumn = "score";
+   sortByColumn(currentColumn,true);
 
 // This should come from the server!!!
     var transactionColumns = [
@@ -614,7 +666,6 @@ recreatePagination();
 	return transactionData.length;
     }
     var clickcount = 0;
-    var currentColumn = "score";
     var currentOrder = []; // 1 is ascending, -1 is descending
     $("#dropdownWrapper").click(function(){
 	if ((clickcount % 2) == 1) {
@@ -679,7 +730,7 @@ recreatePagination();
 	// we don't want to plot it if it is more than 4 times the median price, 
 	// as it is probably erroneous
 
-	if ((data.length < 15) || (e.unitPrice < (medianUnitPrice * 4.0))) {
+	if ((data.length < 15) || (medianUnitPrice <= 100.0) || (e.unitPrice < (medianUnitPrice * 4.0))) {
 	    var newArray = [];
 
 	    newArray[0] = e.orderDate;

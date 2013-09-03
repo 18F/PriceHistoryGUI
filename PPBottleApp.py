@@ -3,6 +3,8 @@ from bottle import Bottle, run, template,request,TEMPLATE_PATH,static_file,Heade
 # from SearchApi import searchApi
 import urllib
 import ast
+
+import LogFeedback
  
 from ppGuiConfig import MasterPassword,MasterUsername,URLToPPSearchApi,URLToPPSearchApiSolr,GoogleAnalyticsInclusionScript
 
@@ -46,6 +48,8 @@ from bottle import template
 @app.route('/')
 def login():
     return template('Login',message='',goog_anal_script=GoogleAnalyticsInclusionScript)
+
+
 
 @app.route('/StartPage',method='POST')
 def pptriv():
@@ -96,4 +100,11 @@ def apisolr():
     d = ast.literal_eval(content)
     return d
 
+@app.route('/record_feedback',method='POST')
+def feedback():
+    message = request.forms.get('message')
+    name = request.forms.get('name')
+    LogFeedback.logFeedback(name,message);
+
+    return "true";
 
