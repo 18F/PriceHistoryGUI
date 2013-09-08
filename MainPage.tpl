@@ -37,8 +37,6 @@
         <!-- Start search -->
         <span id="smallSearch">
                 <input type="text" name="small_search_string" id="small_search_string" value="{{search_string}}">
-		<input type="hidden" name="user" value="{{user}}">
-		<input type="hidden" name="password" value="{{password}}">
                 <input type="button" id="searchButton" value="Search" onclick="performSearch();">
         </span>
 
@@ -386,6 +384,8 @@ function performSearch() {
 	   { search_string: search,
              user: '{{user}}',
              password: '{{password}}',
+             antiCSRF: '{{acsrf}}',
+             session_id: '{{session_id}}',
              psc_pattern: standard
 	   },
 	   processAjaxSearch

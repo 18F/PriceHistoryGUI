@@ -38,8 +38,8 @@
         <div id="startpagesearch">
             <form id="searchform" method="post" action="PricesPaid">
                 <input type="text" name="search_string" id="search_string" />
-		<input type="hidden" name="username" value="{{user}}" />
-		<input type="hidden" name="password" value="{{password}}" />
+		<input type="hidden" name="antiCSRF" value="{{acsrf}}" />
+		<input type="hidden" name="session_id" value="{{session_id}}" />
 		<input type="hidden" name="commodity_id" id="commodity_id" />
                 <img id="search_icon" src="theme/img/icn_search.png" alt="Execute the search."/>
             </form>

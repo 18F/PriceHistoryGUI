@@ -6,7 +6,12 @@ import ast
 
 import LogFeedback
  
-from ppGuiConfig import MasterPassword,MasterUsername,URLToPPSearchApi,URLToPPSearchApiSolr,GoogleAnalyticsInclusionScript
+from ppGuiConfig import MasterPassword,MasterUsername,URLToPPSearchApi,\
+     URLToPPSearchApiSolr,GoogleAnalyticsInclusionScript,\
+     PricesPaidAPIUsername,PricesPaidAPIPassword
+
+
+import auth
 
 # Hopefully this will work!
 PathToBottleWebApp = "./"
@@ -38,11 +43,6 @@ def server_static(filename):
 def server_static(path):
     return static_file(path, root=PathToSlickGridMaster)
 
-
-# this needs to move to config!
-def does_authenticate(user,password):
-    return (user == MasterUsername and password == MasterPassword)
-
 from bottle import template
 
 @app.route('/')
@@ -55,42 +55,61 @@ def login():
 def pptriv():
     username = request.forms.get('username')
     password = request.forms.get('password')
-    if (not does_authenticate(username,password)):
+    if (not auth.does_authenticate(username,password)):
         return template('Login',message='Improper Credentials.',goog_anal_script=GoogleAnalyticsInclusionScript)
     search_string = request.forms.get('search_string')
     search_string = search_string if search_string is not None else "Dell Latitude"
     psc_pattern = request.forms.get('psc_pattern')
-    return template('StartPage',search_string=search_string,user=username,\
-                    password=password,psc_pattern=psc_pattern,goog_anal_script=GoogleAnalyticsInclusionScript)
+    ses_id = auth.create_session_id()
+    return template('StartPage',search_string=search_string,\
+                    acsrf=auth.get_acsrf(ses_id),\
+                    session_id=ses_id,\
+                    psc_pattern=psc_pattern,goog_anal_script=GoogleAnalyticsInclusionScript)
 
 @app.route('/PricesPaid',method='POST')
 def pptriv():
     username = request.forms.get('username')
     password = request.forms.get('password')
-    if (not does_authenticate(username,password)):
+    acsrf = request.forms.get('antiCSRF')
+    ses_id = request.forms.get('session_id')
+
+    if (not auth.is_valid_acsrf(ses_id)):
         return template('Login',message='Improper Credentials.')
+    
+    auth.update_acsrf(ses_id)
+
+#    if (not auth.does_authenticate(username,password)):
+#        return template('Login',message='Improper Credentials.')
     search_string = request.forms.get('search_string')
     search_string = search_string if search_string is not None else "Dell Latitude"
     commodity_id = request.forms.get('commodity_id')
     print 'COMMODITY_ID = '+commodity_id
     return template('MainPage',search_string=search_string,user=username,\
+                    acsrf=auth.get_acsrf(ses_id),\
+                    session_id=ses_id,\
                     password=password,commodity_id=commodity_id,goog_anal_script=GoogleAnalyticsInclusionScript)
                     
 
 @app.route('/apisolr',method='POST')
 def apisolr():
-    user = request.forms.get('user')
-    password = request.forms.get('password')
-    if (not does_authenticate(user,password)):
-        return template('BadAuthentication')        
+#    user = request.forms.get('user')
+#    password = request.forms.get('password')
+    acsrf = request.forms.get('antiCSRF')
+    ses_id = request.forms.get('session_id')
+    if (not auth.is_valid_acsrf(ses_id)):
+        return template('Login',message='Improper Credentials.',goog_anal_script=GoogleAnalyticsInclusionScript)
+
+    auth.update_acsrf(ses_id)
+
     search_string = request.forms.get('search_string')
     psc_pattern = request.forms.get('psc_pattern')
     print "API search_string" + search_string
     # I'm doing this as a call to keep the API separated as
     # completely from the GUI as possible.
-    params = urllib.urlencode({'user': user, 'password': password,\
-                               'search_string': search_string,
-                               'psc_pattern': psc_pattern})
+    params = urllib.urlencode({ 'username' : PricesPaidAPIUsername,\
+                                'password' : PricesPaidAPIPassword,\
+                                'search_string': search_string,\
+                                'psc_pattern': psc_pattern})
     f = urllib.urlopen(URLToPPSearchApiSolr, params)
     content = f.read()
     # This is inefficient, but I can't seem to get Bottle to
