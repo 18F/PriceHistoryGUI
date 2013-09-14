@@ -22,6 +22,7 @@
             <span id="pricespaid_logo"><img src="theme/img/pp_logo_beta.png" alt="PricesPaid"></span>
 		<span id="comDropdownWrapper">
         <!-- FACTOR OUT -->
+                Commodity:
                 <select id="commodityChoice" >
                     <option value="All">All</option>
                     <option value="CPU">CPU</option>
@@ -53,6 +54,15 @@
 <div id="loading">
 <h1>    Searching, Please Wait... </h1>
 </div>
+
+<div class="hideShowToggle">
+<button id="hideShowGraph" >Hide/Show Graph</button>  
+</div>
+
+<div id="chartContainer">
+    <div id="chartdiv" ></div>
+</div>
+
    <div id="results-header">
   <span class="majorlabel">Your Search for: </span>
   <span class="majorlabel" id="search_string_render"></span> 
@@ -64,50 +74,57 @@
   <span class="majorlabel"> seconds. </span>
 </div>
 
-<div class="hideShowToggle">
-<button id="hideShowGraph" >Hide/Show Graph</button>  
-</div>
-
-<div id="chartContainer">
-    <div id="chartdiv" ></div>
-</div>
         <!-- Start results header -->
         <div>
 <div class="hideShowToggle">
 <button id="hideShowDetails">Hide/Show Details</button>
 </div>
 
-<div id="paginationHolder">
+<div id="detail-header">
+
+  <span id="paginationHolder">
+  </span>
+
+  <span id="results-sortby">
+   <label>Sort by:</label>
+   <span id="columnDropdownWrapper">
+      <select id="sortColumn" >
+          <option value="score">Query Relevance</option>
+          <option value="unitPrice">Unit Price</option>
+          <option value="unitsOrdered">Units</option>
+          <option value="orderDate">Date</option>
+          <option value="vendor">Vendor</option>
+          <option value="productDescription">Product Description</option>
+          <option value="longDescription">Long Description</option>
+          <option value="contractingAgency">Contracting Agency</option>
+          <option value="awardIdIdv">Award ID/IDV</option>
+          <option value="commodityType">Commodity Type</option>
+          <option value="psc">PSC</option>
+     </select>
+   </span>
+  </span>
+
+  <span id="results-sortdir">
+   <label>Sort order:</label>
+   <span id="orderDropdownWrapper">
+      <select id="sortOrder" >
+          <option value="dsc">Descending</option>
+          <option value="asc">Ascending</option>
+     </select>
+   </span>
+  </span>
 </div>
-            <div id="results-sortby">
-                <label>Sort by:</label>
-		<div id="dropdownWrapper">
-                <select id="sortColumn" >
-                    <option value="score">Relevance</option>
-                    <option value="unitPrice">Unit Price</option>
-                    <option value="unitsOrdered">Units</option>
-                    <option value="orderDate">Date</option>
-                    <option value="vendor">Vendor</option>
-                    <option value="productDescription">Product Description</option>
-                    <option value="longDescription">Long Description</option>
-                    <option value="contractingAgency">Contracting Agency</option>
-                    <option value="awardIdIdv">Award ID/IDV</option>
-                    <option value="commodityType">Commodity Type</option>
-                    <option value="psc">PSC</option>
-                </select>
-		</div>
-            </div>
-            <div style="clear:both;"></div>
-        </div>
-<p></p>
+   
+<div style="clear:both;"></div>
 
-
- <div id="detailArea"></div>
+<div id="detailArea"></div>
 
 <div class="hideShowToggle">
 <button id="hideShowGrid">Hide/Show Grid</button>
 </div>
-
+<p>
+Clicking on a column header will sort both the grid and the detail area by that column.  Clicking on the header again will reverse the order of the sort.
+</p>
   <div id="myGrid" style="height:500px;"></div> 
 <p></p>
 
@@ -123,7 +140,9 @@
     <script src="../SlickGrid-master/slick.grid.js"></script>
     <!-- jqplot stuff -->
     
-    <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="excanvas.js"></script><![endif]-->
+    <!--[if lt IE 9]>
+    <![endif]-->
+    <script language="javascript" type="text/javascript" src="../js/excanvas/excanvas.js"></script>
     <script type="text/javascript" src="../js/jquery.min.js"></script>
     <script type="text/javascript" src="../js/jquery.jqplot.min.js"></script>
     
@@ -208,7 +227,7 @@ var itemDetailAssociation = [];
 // This should really be read via an AJAX call to all it to be independent of 
 // Prices Paid...That is a step to getting open-source involvement.
 var standardFieldDescriptor = [];
-standardFieldDescriptor["score"] = "Relevance";
+standardFieldDescriptor["score"] = "Query Relevance";
 standardFieldDescriptor["unitPrice"] = "Unit Price";
 standardFieldDescriptor["unitsOrdered"] = "Units Ordered";
 standardFieldDescriptor["orderDate"] = "Date";
@@ -313,6 +332,8 @@ function renderDetailArea(dataRow,i) {
     var html = "";
     html +=      ' <div  class="itemDetailArea">';
     html += renderCustomField('Long Description',fieldseparator, dataRow.longDescription || "No Long Description.");
+    html += renderCustomField('Vendor',fieldseparator, dataRow.vendor || "No Vendor.");
+    html += renderCustomField('Contracting Agency/Office',fieldseparator, dataRow.contractingAgency || "No Agency.");
 
 // Note this could be done more efficiently, and 
 // we will someday want a list of custom fields for other purposes, but 
@@ -380,10 +401,8 @@ function performSearch() {
       alert("Please enter a search term.");
     } else {
       $('#search_string_render').text(search);
-      $.post("apisolr",
+      $.post("search",
 	   { search_string: search,
-             user: '{{user}}',
-             password: '{{password}}',
              antiCSRF: '{{acsrf}}',
              session_id: '{{session_id}}',
              psc_pattern: standard
@@ -413,7 +432,7 @@ function sortByColumn(col,asc) {
 	} else {
             ret = 0;
 	}
-	if (!isAsc) 
+	if (isAsc) 
 	    return -1*ret;
 	else 
 	    return ret;
@@ -427,7 +446,7 @@ function sortByColumn(col,asc) {
 	} else {
             ret = 0;
 	}
-	if (!isAsc) 
+	if (isAsc) 
 	    return -1*ret;
 	else 
 	    return ret;
@@ -451,23 +470,27 @@ function sortByColumn(col,asc) {
     // These strings really need to transferred to the server
     // In order for us to have proper abstraction and language translation    
 
+function numberWithCommas(x) {
+    var parts = x.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join(".");
+}
 
     function renderStyledDetail(dataRow,scratchNumber) {
 	var html = "";
 	html +=      ' <div class="result">';
-	html +=      '<img src="theme/img/placeholder120x120.png" class="result-image" >';
-	html +=      '<p class="result-details"><strong> '+dataRow.productDescription.substring(0,40)+' </strong> '+dataRow.longDescription.substring(0,130)+' </p>';
+	html +=      '<p class="result-details"><strong> '+dataRow.productDescription.substring(0,60)+' </strong> '+dataRow.longDescription.substring(0,160)+' </p>';
 	html +=      '<div class="result-meta">';
-	html +=          '<p class="result-unitscost"><strong> $'+dataRow.unitPrice+'</strong> '+dataRow.unitsOrdered+' units</p>';
-	html +=          '<p class="result-whenwho">'+dataRow.orderDate+'<strong>'+dataRow.contractingAgency.substring(0,30)+'</strong></p>';
+	html +=          '<p class="result-unitscost"><strong> $'+numberWithCommas(dataRow.unitPrice)+'</strong> '+numberWithCommas(dataRow.unitsOrdered)+' units</p>';
+	html +=          '<p class="result-whenwho">'+dataRow.orderDate+' <strong> '+dataRow.contractingAgency.substring(0,30)+'</strong></p>';
 	html +=      '</div>';
 	html +=      '<div style="clear:both;"></div>';
 	html +=      '<div class="result-smallprint">';
 	html +=          '<span class="indicator red" style="background-color:'+dataRow.color+';" ></span>';
-	html +=          '<p><strong>Vendor:</strong> '+dataRow.vendor.substring(0,35)+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Award ID/IDV:</strong> '+dataRow.awardIdIdv+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>PSC:</strong> '+dataRow.psc+ '</p>';
+	html +=          '<p><strong>Award ID/IDV:</strong> '+dataRow.awardIdIdv+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Vendor:</strong> '+dataRow.vendor.substring(0,50)+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>PSC:</strong> '+dataRow.psc+ '</p>';
 	var itemDetails = "itemDetails"+scratchNumber;
 	var expandArea = "expandArea"+scratchNumber;
-	html +=          '<span class="result-more">Display Item Details  <img id="'+itemDetails+'" src="theme/img/display-details.png" /></span>';
+	html +=          '<span class="result-more">Click for Item Details  <img id="'+itemDetails+'" src="theme/img/display-details.png" /></span>';
         html += '<span id="'+expandArea+'"></span>';
 	html +=          '<div style="clear:both;"></div>';
 	html +=      '</div>';
@@ -602,11 +625,11 @@ recreatePagination();
     });
 
    var currentColumn = "score";
-   sortByColumn(currentColumn,true);
+   var currentOrderIsAscending = false; 
+   sortByColumn(currentColumn,currentOrderIsAscending);
 
 // This should come from the server!!!
     var transactionColumns = [
-        {id: "score", name: standardFieldDescriptor["score"], field: "score", width: 100},
         {id: "unitPrice", name: standardFieldDescriptor["unitPrice"], field: "unitPrice", width: 100},
         {id: "unitsOrdered", name: standardFieldDescriptor["unitsOrdered"], field: "unitsOrdered", width: 60},
         {id: "orderDate", name: standardFieldDescriptor["orderDate"], field: "orderDate", width: 60},
@@ -618,10 +641,11 @@ recreatePagination();
         {id: "awardIdIdv", name: standardFieldDescriptor["awardIdIdv"], field: "awardIdIdv", width: 100},
         {id: "commodityType", name: standardFieldDescriptor["commodityType"], field: "commodityType", width: 100},
         {id: "psc", name: standardFieldDescriptor["psc"], field: "psc", width: 80},
-        {id: "dataSource", name: nonStandardFieldDescriptor["dataSource"], field: "dataSource", width: 150}
+        {id: "dataSource", name: nonStandardFieldDescriptor["dataSource"], field: "dataSource", width: 150},
+        {id: "score", name: standardFieldDescriptor["score"], field: "score", width: 100}
     ];
-    var controlColumns = [ {id: "starred",name: "Starred", field: "starred",width: 40 } ];
-    
+//    var controlColumns = [ {id: "starred",name: "Starred", field: "starred",width: 40 } ];
+    var controlColumns = [];  
     var columns = controlColumns.concat(transactionColumns);
 
     // Now I attempt to make every column sortable
@@ -665,32 +689,35 @@ recreatePagination();
     function getLength() {
 	return transactionData.length;
     }
-    var clickcount = 0;
-    var currentOrder = []; // 1 is ascending, -1 is descending
-    $("#dropdownWrapper").click(function(){
-	if ((clickcount % 2) == 1) {
+    var colclickcount = 0;
+
+
+    $("#columnDropdownWrapper").click(function(){
+	if ((colclickcount % 2) == 1) {
 	    var col = $("#sortColumn").val();
-	    if (col == currentColumn) {
-		if (col in currentOrder) {
-                    currentOrder[col] = -1*currentOrder[col];
-		} else {
-                    currentOrder[col] = 1;
-		}
-	    }
 	    currentColumn = col;
-	    if (!(col in currentOrder)) {
-		currentOrder[col] = 1;
-	    }
-	    sortByColumnAndRedraw(col,currentOrder[col] == 1);
-	    grid.setData(transactionData);
-	    grid.invalidateAllRows();
-	    grid.render();
-	    redrawDetailArea(currentPage);
+	    refreshSort(currentColumn,currentOrderIsAscending);
 	}
-	clickcount++;
+	colclickcount++;
     });
 
+    var ordclickcount = 0;
+    $("#orderDropdownWrapper").click(function(){
+	if ((ordclickcount % 2) == 1) {
+	    var ord = $("#sortOrder").val();
+            currentOrderIsAscending =  (ord == "asc");
+	    refreshSort(currentColumn,currentOrderIsAscending);
+	}
+	ordclickcount++;
+    });
 
+    function refreshSort(col,ord) {
+        sortByColumnAndRedraw(col,ord);
+        grid.setData(transactionData);
+        grid.invalidateAllRows();
+        grid.render();
+        redrawDetailArea(currentPage);
+    }
 
     $(function () {
 	$('#myGrid').innerHTML = "";
@@ -746,7 +773,9 @@ recreatePagination();
 
     $('#chartdiv').empty();
 
-    if (isIE8orLower) {
+// It seems we no longer need this!
+//    if (isIE8orLower) {
+    if (false) {
       $('#chartdiv').append("<div style='width: 700px; color: red; margin: 20px'>The graph not supported on Internet Explorer less than Version 9.  You appear to be using version "+ieversion+", or your browser is using that as its rendering mode for some reason. If you need the graph, upgrade, or use a different browser, or change the document mode.<\div>");
     } else {
     var plot1b = $.jqplot('chartdiv', plotData, {
@@ -764,7 +793,7 @@ recreatePagination();
 	axes:{
             xaxis:{
 		renderer:$.jqplot.DateAxisRenderer,
-		label: 'Date'
+		label: '<span color: black;>Color denotes Vehicle.</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span>Bubble size denotes number of units.</span>'
             },
             yaxis:{
 		label: 'Dollars',
@@ -785,14 +814,6 @@ recreatePagination();
 			 );
     }
 
-    // Legend is a simple table in the html.
-    // Dynamically populate it with the labels from each data value.
-/*    $('#legendtable').empty();
-    $.each(plotData[0], function(index, val) {
-	$('#legendtable').append('<tr><td>'+val[3].label+'</td><td>'+val[1]+'</td></tr>');
-    }
-	  );
-*/  
 
     // Now bind function to the highlight event to show the tooltip
     // and highlight the row in the legend.

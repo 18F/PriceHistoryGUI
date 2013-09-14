@@ -7,7 +7,7 @@ body {
 }
 
 #message {
-        color: red;
+        font-weight: bold;
 }
 
 #loginLayout {

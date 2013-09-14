@@ -74,6 +74,7 @@ body {
 }
 #header #pricespaid_logo {
 	float:left;
+        margin-right: 20px;
 }
 #header #gsa_logo {
 	color:#777777;
@@ -82,7 +83,6 @@ body {
 }
 
 .hideShowToggle {
-  padding: 20px;
 }
 
 /* Search ------- */
@@ -154,7 +154,6 @@ body {
 
 /* Header ----- */
 #commodityChoice {
-       margin-left: 30px;
 }
 
 /* Graph ----- */
@@ -165,28 +164,59 @@ body {
 
 /* Results ----- */
 #results-header {
-	border-top:1px solid #ddd;
+/*	border-top:1px solid #ddd;
 	border-bottom:1px solid #ddd;
-	padding:20px 0;
-	margin-bottom:30px;
+*/
+	padding:10px 0;
+	margin-bottom:10px;
 }
 #results-header h2 {
 	font-size:24px;
 	font-weight:bold;
 	float:left;
 }
-#results-sortby {
-	float:right;
+
+#detail-header {
+	font-size: 40px;
+        padding: 7px;
 }
+
+/* These can probably be replaced by classes */
+
+#results-sortby {
+	font-size: 20px;
+        margin-left: 40px;
+}
+
 #results-sortby label {
-	font-size:13px;
+	font-size: 20px;
 	color:#666;
+}
+
+#results-sortdir {
+        margin-left: 40px;
+        font-size: 20px;
+	color:#666;
+}
+
+#results-sortdir label {
+	font-size: 20px;
+	color:#666;
+}
+
+
+#sortOrder {
+    font-size: 20px;
+}
+
+#sortColumn {
+    font-size: 20px;
 }
 
 /* Result ------- */
 .result {
 	background-color:#fff;
-	margin-bottom:25px;
+	margin-bottom:15px;
 }
 .result .result-image {
 	float:left;
@@ -195,7 +225,7 @@ body {
 	float:left;
 	border-left:2px solid #eee;
 	font-size:18px;
-	width:570px;
+	width:730px;
 	padding:25px 0 0 25px;
 	min-height:95px;
 	color:#333;
@@ -237,7 +267,7 @@ body {
 	font-style:normal;
 }
 .result .result-smallprint {
-	font-size:11px;
+	font-size:13px;
 	color:#777;
 	background-color:#ececec;
 }
@@ -267,6 +297,7 @@ body {
 	color:#333;
 }
 .result .result-smallprint .result-more {
+        font-size: 13px;
 	color:#0b94eb;
 	font-weight:bold;
 	float:right;
@@ -331,7 +362,6 @@ Note sure I really need them  */
 }
 
 .majorlabel {
-        font-size: large;
         margin-right: 5%;
 }
 
@@ -348,20 +378,23 @@ Note sure I really need them  */
        height: 300px;
 }
 
+#paginationHolder {
+
+}
+
 /* Here I add a new pagination style, a little smaller than gigantic. */
 .large.pagination {
-	margin: 45px 0;
 }
 
 .large.pagination a {
-	height: 45px;
+	height: 25px;
 	width: 45px;
-	font-size: 40px;
-	line-height: 40px;
+	font-size: 20px;
+	line-height: 25px;
 }
 
 .large.pagination input {
-	width: 250px;
-	height: 45px;
-	font-size: 25px;
+	width: 150px;
+	height: 25px;
+	font-size: 17px;
 }

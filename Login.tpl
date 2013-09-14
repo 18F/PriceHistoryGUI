@@ -14,14 +14,14 @@
  <div id="loginLogo">
 </div>
 <div id="instructions">
-<span id="message">{{message}}</span>
+<p id="message">{{message}}</p>
 
 <span id="loginText">
 This is a secure and limited Beta prototype.  Only invitees are allowed to use this prototype at present.  To get access, email Robert L. Read &lt;robert.read@gsa.gov&gt;.
  </span>
 </div>
 <div id="credentials">
-<form action="/StartPage" method="post">
+<form action="/gui/StartPage" method="post">
 <div class="blockyLabelBox">
   <span>Username:</span>
   <input type="text" name="username"/>

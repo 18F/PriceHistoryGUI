@@ -6,7 +6,7 @@ import datetime
 
 import pickle
 import hashlib
-from ppGuiConfig import RelativePathToHashesFile,P3APISALT
+from ppGuiConfig import RelativePathToHashesFile,P3APISALT,TokenTimeout
 
 # Load from disk
 def loadHashes():
@@ -53,18 +53,19 @@ def get_rand_string(length):
     return ''.join(random.choice(CHARS) for i in range(length))
 
 def is_valid_acsrf(session_id):
-    print "Length: "+str(len(GLOBAL_SESSION_DICT))
-    print "session_id: "+session_id
-    print "Sword : "+repr(GLOBAL_SESSION_DICT[session_id])
-    timestamp = GLOBAL_SESSION_DICT[session_id][1]
-    timenow = datetime.datetime.now()
-    timedelta = timenow - timestamp
-    print timedelta
-    if (timedelta < datetime.timedelta(seconds=60)):
-        return True
+    if (session_id in GLOBAL_SESSION_DICT):
+        timestamp = GLOBAL_SESSION_DICT[session_id][1]
+        timenow = datetime.datetime.now()
+        timedelta = timenow - timestamp
+        print timedelta
+        if (timedelta < datetime.timedelta(seconds=TokenTimeout)):
+            return True
+        else:
+            print "Ran out of time!"
+            return False
     else:
-        print "Ran out of time!"
-        return False
+        return False;
+        
 
 def get_acsrf(session_id):
     timestamp = GLOBAL_SESSION_DICT[session_id][1]
