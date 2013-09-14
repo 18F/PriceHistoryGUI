@@ -17,41 +17,27 @@ PathToBottleWebApp = "./"
 PathToExternalFiles = "../"
 
 
-PathToJSFiles=PathToExternalFiles+"js/"
+
 PathToCSSFiles=PathToExternalFiles+"css/"
-PathToJSPlugins=PathToJSFiles + "plugins/"
-PathToSlickGridMaster=PathToExternalFiles+"/SlickGrid-master/"
 
 app = Bottle()
-prefix = ''
 
-# Bottle seems to be fairly restrictive with static files,
-# there might be a better way to do this.
-@app.route(prefix+'/js/<path:path>')
-def server_static(path):
-    return static_file(path, root=PathToJSFiles)
 
-@app.route(prefix+'/theme/<path:path>')
+@app.route('/theme/<path:path>')
 def server_static(path):
     return static_file(path, root=PathToBottleWebApp+"theme/")
 
-@app.route(prefix+'/css/<filename>')
+@app.route('/css/<filename>')
 def server_static(filename):
     return static_file(filename, root=PathToCSSFiles)
 
-@app.route(prefix+'/SlickGrid-master/<path:path>')
-def server_static(path):
-    return static_file(path, root=PathToSlickGridMaster)
-
 from bottle import template
 
-@app.route(prefix+'/')
+@app.route('/')
 def login():
     return template('Login',message='',goog_anal_script=GoogleAnalyticsInclusionScript)
 
-
-
-@app.route(prefix+'/StartPage',method='POST')
+@app.route('/StartPage',method='POST')
 def pptriv():
     username = request.forms.get('username')
     password = request.forms.get('password')
@@ -66,10 +52,8 @@ def pptriv():
                     session_id=ses_id,\
                     psc_pattern=psc_pattern,goog_anal_script=GoogleAnalyticsInclusionScript)
 
-@app.route(prefix+'/PricesPaid',method='POST')
+@app.route('/PricesPaid',method='POST')
 def pptriv():
-    username = request.forms.get('username')
-    password = request.forms.get('password')
     acsrf = request.forms.get('antiCSRF')
     ses_id = request.forms.get('session_id')
 
@@ -82,13 +66,13 @@ def pptriv():
     search_string = search_string if search_string is not None else "Dell Latitude"
     commodity_id = request.forms.get('commodity_id')
     print 'COMMODITY_ID = '+commodity_id
-    return template('MainPage',search_string=search_string,user=username,\
+    return template('MainPage',search_string=search_string,\
                     acsrf=auth.get_acsrf(ses_id),\
                     session_id=ses_id,\
-                    password=password,commodity_id=commodity_id,goog_anal_script=GoogleAnalyticsInclusionScript)
+                    commodity_id=commodity_id,goog_anal_script=GoogleAnalyticsInclusionScript)
                     
 
-@app.route(prefix+'/search',method='POST')
+@app.route('/search',method='POST')
 def apisolr():
     acsrf = request.forms.get('antiCSRF')
     ses_id = request.forms.get('session_id')
@@ -102,7 +86,6 @@ def apisolr():
     print "API search_string" + search_string
     # I'm doing this as a call to keep the API separated as
     # completely from the GUI as possible.
-    print "URL"+URLToPPSearchApiSolr
     params = urllib.urlencode({ 'username' : PricesPaidAPIUsername,\
                                 'password' : PricesPaidAPIPassword,\
                                 'search_string': search_string,\
@@ -116,7 +99,7 @@ def apisolr():
     d = ast.literal_eval(content)
     return d
 
-@app.route(prefix+'/record_feedback',method='POST')
+@app.route('/record_feedback',method='POST')
 def feedback():
     message = request.forms.get('message')
     name = request.forms.get('name')

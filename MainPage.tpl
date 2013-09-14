@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>PricesPaid</title>
     <meta name="robots" content="NOINDEX, NOFOLLOW">
-    <link href="theme/css/mainPage.css" rel="stylesheet" type="text/css" media="screen, projection">
+    <link href="./theme/css/mainPage.css" rel="stylesheet" type="text/css" media="screen, projection">
     <link rel="stylesheet" href="../SlickGrid-master/slick.grid.css" type="text/css">
     <link rel="stylesheet" href="../SlickGrid-master/css/smoothness/jquery-ui-1.8.16.custom.css" type="text/css">
     <link rel="stylesheet" type="text/css" href="../js/jquery.jqplot.css" >
