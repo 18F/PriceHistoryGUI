@@ -2,7 +2,7 @@
 <html>
     <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-       <title>Prices Paid v. 0.2 BETA - Login</title>
+       <title>Prices Paid v. 0.4 BETA - Login</title>
        <meta name="robots" content="NOINDEX, NOFOLLOW">
        <link href="/gui/theme/css/loginPage.css" rel="stylesheet" type="text/css" media="screen, projection">
     {{!goog_anal_script}}
@@ -17,7 +17,19 @@
 <p id="message">{{message}}</p>
 
 <span id="loginText">
-This is a secure and limited Beta prototype.  Only invitees are allowed to use this prototype at present.  To get access, email Robert L. Read &lt;robert.read@gsa.gov&gt;.
+
+<h2>
+LOG OFF IMMEDIATELY if you are not a Federal employee.
+</h2>
+
+<p>
+This is Beta software.  Please help us improve it by using the Feedback widget on the left side of the main search page.
+</p>
+
+<p>
+If you have longer feedback, a technical question, or need technical support, please email Robert L. Read, Presidential Innovation Fellow, at &lt;robert.read@gsa.gov&gt;.
+</p>
+
  </span>
 </div>
 <div id="credentials">

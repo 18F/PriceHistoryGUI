@@ -3,31 +3,61 @@
 import os
 import random,string
 import datetime
+import LogActivity
 
 import pickle
 import hashlib
 from ppGuiConfig import RelativePathToHashesFile,P3APISALT,TokenTimeout
 
+hashes = {}
+
+GLOBAL_BAD_LOGIN = {}
+LIMIT_NUMBER_BAD_LOGINS = 5
+# We'll make them wait one hour if they have 5 bad logins.
+LIMIT_TIME_TO_RETRY = 60*60
+
 # Load from disk
 def loadHashes():
     hshs_file = RelativePathToHashesFile
     if os.path.exists(hshs_file):
-        pwds = pickle.load(open(hshs_file, "rb"))
+        hashes = pickle.load(open(hshs_file, "rb"))
     else:
-        pwds = {}
-    return pwds
+        hashes = {}
+    return hashes
+
+def record_bad_login(username):
+    if username not in GLOBAL_BAD_LOGIN:
+        GLOBAL_BAD_LOGIN[username] = [0,datetime.datetime.now()]
+    else:
+        GLOBAL_BAD_LOGIN[username][0] = GLOBAL_BAD_LOGIN[username][0]+1
+        GLOBAL_BAD_LOGIN[username][1] = datetime.datetime.now()
 
 def does_authenticate(username,password):
-    pwds = loadHashes()
-    print len(pwds)
-    # Check password
-    # Likely need to catch an exception here
-    if pwds[username] == hashlib.sha256(password+P3APISALT).hexdigest():
-        print "Good"
+    hashes = loadHashes()
+    if username in GLOBAL_BAD_LOGIN:
+        timenow = datetime.datetime.now()
+        timestamp = GLOBAL_BAD_LOGIN[username][1]
+        timedelta = timenow - timestamp
+        if (timedelta >=  datetime.timedelta(seconds=LIMIT_TIME_TO_RETRY)):
+            # An hour has gone by, so we givem them a pass....
+            GLOBAL_BAD_LOGIN.pop(username, None)
+
+    if username in GLOBAL_BAD_LOGIN:
+        count = GLOBAL_BAD_LOGIN[username][0]
+        if (count >= LIMIT_NUMBER_BAD_LOGINS):
+            # Probably should have a separate log message for this..
+            LogActivity.logTooManyLoginAttempts(username)
+            return False;
+            
+    if username not in hashes:
+        LogActivity.logBadCredentials(username)
+        record_bad_login(username)
+        return False;
+    if hashes[username] == hashlib.sha256(password+P3APISALT).hexdigest():
         return True;
     else:
-        print "No match"
-        # here we should log the failure.
+        LogActivity.logBadCredentials(username)
+        record_bad_login(username)
         return False;
 
 GLOBAL_SESSION_DICT = {}
@@ -37,8 +67,6 @@ def create_session_id():
     acsrf = get_rand_string(13);
     timestamp = datetime.datetime.now();
     GLOBAL_SESSION_DICT[session_id] = [acsrf,timestamp]
-    print "Length: "+str(len(GLOBAL_SESSION_DICT))
-    print "value "+repr(GLOBAL_SESSION_DICT[session_id])
     return session_id;
 
 def update_acsrf(session_id):
@@ -57,17 +85,25 @@ def is_valid_acsrf(session_id):
         timestamp = GLOBAL_SESSION_DICT[session_id][1]
         timenow = datetime.datetime.now()
         timedelta = timenow - timestamp
-        print timedelta
         if (timedelta < datetime.timedelta(seconds=TokenTimeout)):
             return True
         else:
-            print "Ran out of time!"
+            LogActivity.logTimeout(session_id)
             return False
     else:
+        LogActivity.logMissingSession(session_id)
         return False;
         
 
 def get_acsrf(session_id):
-    timestamp = GLOBAL_SESSION_DICT[session_id][1]
     return GLOBAL_SESSION_DICT[session_id][0]
+
+def del_session(session_id):
+    obj = (GLOBAL_SESSION_DICT.pop(session_id, None))
+    if session_id in GLOBAL_SESSION_DICT:
+        LogActivity.logMissingSession(str(session_id)+"failed to remove")
+    else:
+        LogActivity.logMissingSession(str(session_id)+"removed")
+
+
     

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>PricesPaid</title>
+    <title>PricesPaid v. 0.4 BETA Start</title>
     <meta name="robots" content="NOINDEX, NOFOLLOW">
     <link href="theme/css/startPage.css" rel="stylesheet" type="text/css" media="screen, projection">
     {{!goog_anal_script}}

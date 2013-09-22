@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>PricesPaid</title>
+    <title>PricesPaid v. 0.4 BETA </title>
     <meta name="robots" content="NOINDEX, NOFOLLOW">
     <link href="./theme/css/mainPage.css" rel="stylesheet" type="text/css" media="screen, projection">
     <link rel="stylesheet" href="../SlickGrid-master/slick.grid.css" type="text/css">
@@ -20,7 +20,7 @@
         <div class="inner">
         <!-- FACTOR OUT -->
             <span id="pricespaid_logo"><img src="theme/img/pp_logo_beta.png" alt="PricesPaid"></span>
-		<span id="comDropdownWrapper">
+		<span id="comDropdownWrapper" title="Choose a commodity type to search, based on (imperfect) PSC codes.">
         <!-- FACTOR OUT -->
                 Commodity:
                 <select id="commodityChoice" >
@@ -37,13 +37,19 @@
 
         <!-- Start search -->
         <span id="smallSearch">
-                <input type="text" name="small_search_string" id="small_search_string" value="{{search_string}}">
+                <input type="text" name="small_search_string" id="small_search_string" value="{{search_string}}" title=
+"
+Enter any number of search terms to get a list of results ranked by relevance to those terms. To limit a search to those only containing a certain terms, separate terms by the upper case AND, like &quot;laptop AND rugged&quot;.  To exclude results containing a term, put upper case NOT or - in front of it, like &quot;laptop AND NOT rugged&quot;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+To get more detailed help on searching, click the &quot;Help!&quot; link in the upper right of this page.
+"
+>
                 <input type="button" id="searchButton" value="Search" onclick="performSearch();">
         </span>
-
-        <!-- FACTOR OUT -->
-            <span id="gsa_logo">Powered by <img src="theme/img/gsa_logo.png" alt="GSA"></span>
-
+<a href="./SearchHelp" style="color: white">Help!</a>
+<span id="logoutLink" href="./Logout" style="color: white; cursor: pointer; text-decoration:underline">Logout</span>
         </div>
 
     </div>
@@ -82,7 +88,7 @@
 
 <div id="detail-header">
 
-  <span id="paginationHolder">
+  <span id="paginationHolder1">
   </span>
 
   <span id="results-sortby">
@@ -119,6 +125,16 @@
 
 <div id="detailArea"></div>
 
+<!-- This should not be turned on until I can tie everything together better
+with javascript
+  <span id="paginationHolder2">
+</span>
+-->
+
+
+<div style="clear:both"></div>
+
+
 <div class="hideShowToggle">
 <button id="hideShowGrid">Hide/Show Grid</button>
 </div>
@@ -153,7 +169,7 @@ Clicking on a column header will sort both the grid and the detail area by that 
     <script type="text/javascript" src="../js/plugins/jqplot.highlighter.min.js"></script>
     <script type="text/javascript" src="../js/plugins/jqplot.cursor.min.js"></script>
     <script type="text/javascript" src="../js/plugins/jqplot.bubbleRenderer.min.js"></script>
-<script type="text/javascript" src="../js/plugins/jqplot.dateAxisRenderer.min.js"></script>
+   <script type="text/javascript" src="../js/plugins/jqplot.dateAxisRenderer.min.js"></script>
 
     <!-- Trying to get a bloody paginator to work! -->
     <script src="../js/jqPagination-master/js/jquery.jqpagination.js"></script>
@@ -172,13 +188,19 @@ Clicking on a column header will sort both the grid and the detail area by that 
 		$(document).ready(function(){
 			//set up some minimal options for the feedback_me plugin
 			fm_options = {
+		                session_id: '{{session_id}}',
+		                antiCSRF: '{{acsrf}}',
 				name_required : false,
 		                name_label : "(Optional) tell us who you are",
                                 message_label : "How can we do better?",
 				message_placeholder:"Go ahead, type your feedback here ...",
-				message_required : true,
+				message_required : false,
 				show_asterisk_for_required : true,
-				feedback_url : "record_feedback"
+		                close_on_click_outside: false,
+				feedback_url : "record_feedback",
+                                show_radio_button_list : true,
+                                radio_button_list_required : false,
+                                radio_button_list_title: "How likely are you to recommend Prices Paid to a colleague (1 means not likely, 5 means very likely)?"
 			};
 			
 			//init feedback_me plugin
@@ -187,8 +209,85 @@ Clicking on a column header will sort both the grid and the detail area by that 
 		});
 	</script>
 
-
+ <script>
+$(function() {
+   $( document ).tooltip({
+       position: {
+       my: "center bottom-20",
+       at: "center top",
+       using: function( position, feedback ) {
+       $( this ).css( position );
+       $( "<div>" )
+           .addClass( "arrow" )
+           .addClass( feedback.vertical )
+           .addClass( feedback.horizontal )
+         .appendTo( this );
+     }
+    }
+});
+});
+</script>
+<style>
+.ui-tooltip, .arrow:after {
+   background: black;
+   border: 2px solid white;
+   width: 50%;
+}
+.ui-tooltip {
+   padding: 10px 20px;
+   color: white;
+   border-radius: 20px;
+   font: bold 14px "Helvetica Neue", Sans-Serif;
+#   text-transform: uppercase;
+   box-shadow: 0 0 7px black;
+}
+.arrow {
+   width: 70px;
+   height: 16px;
+   overflow: hidden;
+   position: absolute;
+   left: 50%;
+   margin-left: -35px;
+   bottom: -16px;
+}
+.arrow.top {
+   top: -16px;
+   bottom: auto;
+}
+.arrow.left {
+   left: 20%;
+}
+.arrow:after {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: -20px;
+  width: 25px;
+  height: 25px;
+  box-shadow: 6px 5px 9px -9px black;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  tranform: rotate(45deg);
+}
+.arrow.top:after {
+  bottom: -20px;
+  top: auto;
+}
+</style>
 <script>
+
+function Logout() {
+      $.post("Logout",
+	   { antiCSRF: '{{acsrf}}',
+             session_id: '{{session_id}}'
+	});
+      alert("You are now securely logged out.");
+}
+
+$("#logoutLink").click(Logout);
+
 
 // WARNING!!! This is needed to make forEach work on IE8.
 // This is from the Mozilla site.  I have no idea if this 
@@ -205,9 +304,9 @@ if (!Array.prototype.forEach) {
     };
 }
 
-$("#feedback").click(function() { 
-    $("#feedbackForm").toggle();
-});
+// $("#feedback").click(function() { 
+//    $("#feedbackForm").toggle();
+// });
 
 
 // WARNING!!! My understanding is we can't use jqPlot if 
@@ -528,6 +627,22 @@ Math.min((page+1)*PAGESIZE,transactionData.length));
     });
 
 function processAjaxSearch(dataFromSearch) {
+// If we timed out or failed to authenticate, we need to alert the user.
+    if (!(dataFromSearch != null && typeof dataFromSearch === 'object')) {
+		 alert("No results returned.");
+    }
+    if ((typeof dataFromSearch) == 'undefined') {
+		 alert("No results returned.");
+		 return;
+    }
+    if (Object.keys(dataFromSearch).length == 0) {
+		 alert("No results returned.");
+		 return;
+    }
+
+    if (dataFromSearch[0]["status"] && (dataFromSearch[0]["status"] == "BadAuthentication")) {
+        alert("Unable to Authenticate. Probably your session timed-out. Please log in again.");	 
+    }
     $('#loading').hide();
     $('#results-header').show();
     timeSearchEnded = new Date();
@@ -537,8 +652,6 @@ function processAjaxSearch(dataFromSearch) {
     for (var key in dataFromSearch) {
         transactionData[totalNumber++] = dataFromSearch[key];
     }
-
-
 
     var numberDiv = document.getElementById('placeForNumberReturned');
     numberDiv.innerHTML = totalNumber;
@@ -555,7 +668,12 @@ function recreatePagination() {
     html += '<a href="#" class="next" data-action="next">&rsaquo;</a>';
     html += '<a href="#" class="last" data-action="last">&raquo;</a>';
     html += '</div>';
-    $('#paginationHolder').html(html);
+    $('#paginationHolder1').html(html);
+
+// I can't use the second paginator until I tie everything together with
+// javascript --- this will take too much time.
+//    var wrappedHtml = '<p>'+html+'</p>';
+//    $('#paginationHolder2').html(wrappedHtml);
 }
 
 recreatePagination();
