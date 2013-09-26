@@ -630,22 +630,28 @@ function processAjaxSearch(dataFromSearch) {
 // If we timed out or failed to authenticate, we need to alert the user.
     if (!(dataFromSearch != null && typeof dataFromSearch === 'object')) {
 		 alert("No results returned.");
+		 return;
     }
     if ((typeof dataFromSearch) == 'undefined') {
 		 alert("No results returned.");
 		 return;
     }
-    if (Object.keys(dataFromSearch).length == 0) {
+    if (dataFromSearch[0] === undefined) {
 		 alert("No results returned.");
 		 return;
     }
+		 
+//    if (Object.keys(dataFromSearch).length == 0) {
+//		 alert("No results returned.");
+//		 return;
+//    }
 
     if (dataFromSearch[0]["status"] && (dataFromSearch[0]["status"] == "BadAuthentication")) {
         alert("Unable to Authenticate. Probably your session timed-out. Please log in again.");	 
     }
     $('#loading').hide();
     $('#results-header').show();
-    timeSearchEnded = new Date();
+    var timeSearchEnded = new Date();
     transactionData = [];
     data = [];
     var totalNumber = 0;

@@ -1,59 +1,87 @@
 <!DOCTYPE html> 
-<html>
-<head>
+<html><head>
+<!--
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>PricesPaid v. 0.4 BETA Start</title>
     <meta name="robots" content="NOINDEX, NOFOLLOW">
-    <link href="theme/css/startPage.css" rel="stylesheet" type="text/css" media="screen, projection">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="theme/css/startPage2.css" rel="stylesheet" type="text/css" media="screen, projection">
+
+-->
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <title>PricesPaid v. 0.4 BETA Start</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="theme/css/baseline.css" rel="stylesheet">
+    <link href="theme/css/startPage2.css" rel="stylesheet">
     {{!goog_anal_script}}
 </head>
-<body>
-    <!-- Start header -->
-    <div id="header">
-        <!-- Top part of header -->
-        <div class="inner">
-            <p id="pricespaid_logo"><img src="theme/img/logo_pricespaid.png" alt="PricesPaid" ></p>
-            <span id="gsa_logo">Powered by <img src="theme/img/gsa_logo.png" alt="GSA" ></span>
+
+<body id="start">
+
+<div id="header" role="menubar">
+<div class="container">
+	<h1><a href="" tabindex="1"><em>Prices</em>Paid</a></h1>
+    <ul>
+    	<li class="skip"> <a href="#content" title="Skip to content" tabindex="2">Skip to page content</a></li>
+       <li class="profile"><a href="" title="User Profile" tabindex="3">{{username}}</a></li>
+       <li class="logout" title="Logout"><span href="" tabindex="4">Logout</span></li>
+    </ul>
+</div>
+</div>
+
+<div id="content" role="main">
+<div class="container">
+	<div id="commodities">
+		<h2>Step 1: Select a commodity type</h2>
+        <h3>For more efficient and relevant results, select the 
+commodity type that best represents the item your searching for from the list
+ below, </h3>
+        <ol class="clearfix" id="commoditylist">
+            <li class="cpu" id="CPU"><span><h4>CPU</h4><p><strong>Ex:</strong> Computers, Laptops, Servers (PSC codes matching 702__).</p></span></li>
+            <li class="supplies" id="Supplies"><span><h4>Supplies</h4><p><strong>Ex:</strong> 935,000 Office Supplies from GSA OS2  (PSC matching codes 7510_)</span></p></span></li>
+	    <li class="component"  id="Component"><span><h4>Component</h4><p><strong>Ex:</strong> IT components (PSC matching codes 75050)</p></span></li>
+            <li class="configuration" id="Configuration"><span><h4>Configuration</h4><p><strong>Ex:</strong> Miscellaneous (PSC matching codes 7010_)</p></span></li>
+            <li class="minimicro"  id="MiniMicro"><span><h4>Mini-micro</h4><p><strong>Ex:</strong> Mini- and Micro- computer components (PSC matching codes 7042_)</p></span></li>
+            <li class="punchcards" id="Punchcards"><span><h4>Punchcards</h4><p><strong>Ex:</strong> Yes, real punchcards, sometimes still used. (PSC matching codes 7040_)</p></span></li>
+            <li class="software" id="Software"><span><h4>Software</h4><p><strong>Ex:</strong> Computer software (PSC matching codes 7030_)</p></span></li>
+            <li class="all" id="All"><span><h4>All</h4><p><strong>Ex:</strong> Search all of our current data</p></span></li>
+        </ol>
 
 
-        <!-- Nav of commodities -->
-        <div id="nav">
-                <ul id="commodities">
-                    <li class="commodity" id="All"><a href="#"><img src="theme/img/icn_all.png" alt="All commodity types."><strong>All</strong></a></li>
-                    <li class="commodity" id="CPU"><a href="#"><img src="theme/img/icon-cpu.png" alt="Computers, laptops, CPUs."><strong>CPU</strong></a></li>
-                    <li class="commodity" id="Software"><a href="#"><img src="theme/img/icon-software.png" alt="Computer software."><strong>Software</strong></a></li>
-                    <li class="commodity" id="Supplies"><a href="#"><img src="theme/img/icon-supplies.png" alt="Office supplies of all kinds."><strong>Supplies</strong></a></li>
-                    <li class="commodity" id="Punchcards"><a href="#"><img src="theme/img/icon-punchcards.png" alt="Punchcards and equipment."><strong>Punchcards</strong></a></li>
-                    <li class="commodity" id="Configuration"><a href="#"><img src="theme/img/icon-configuration.png" alt="Configuration machinery."><strong>Configuration</strong></a></li>
-                    <li class="commodity" id="MiniMicro"><a href="#"><img src="theme/img/icon-minimicro.png" alt="Mini-Micro classed computers."><strong>Mini-Micro</strong></a></li>
-                    <li class="commodity" id="Component"><a href="#"><img src="theme/img/icon-component.png" alt="Compute components."><strong>Component</strong></a></li>
-                </ul>  
-            </div>
-        </div>
-    </div>
-<div style="clear:both"></div>
-    <!-- Content ... below the header -->
-    <div id="content" class="inner">
-        <!-- Start search -->
-        <div id="startpagesearch">
-            <form id="searchform" method="post" action="PricesPaid">
-                <input type="text" name="search_string" id="search_string" />
+        	<h2>Step 2: Site Search</h2>
+
+            <form id="searchform" method="post" action="PricesPaid">        
+
 		<input type="hidden" name="antiCSRF" value="{{acsrf}}" />
 		<input type="hidden" name="session_id" value="{{session_id}}" />
 		<input type="hidden" name="commodity_id" id="commodity_id" />
-                <img id="search_icon" src="theme/img/icn_search.png" alt="Execute the search."/>
-            </form>
-        </div>
-    </div>
 
+
+        	<div><input name="search_string" id="search_string" placeholder="Search ..." maxlength="500" class="input_text" title="Search the database" type="text">
+
+<input name="submit" value="Search" class="input_submit" title="Click here to search the database" type="submit"></div>
+            </form>
+
+	</div>
+         
+    <div id="footer">
+    	<p>PricesPad is an official website of the U.S. Government, powered by GSA.</p>
+    	<p><strong>Send Feedbak/Report Issues to:</strong> <a href="mailto:robert.read@gsa.gov">robert.read@gsa.gov</a></p>
+    </div>   
+
+</div>
+</div>
+</body>
     <script src="../js/jquery-1.10.2.min.js"></script>
 <script>
-$('#commodities li').first().addClass("selected");
-var currentlySelectedCommodityElement  = $('#All');
+var currentlySelectedCommodityElement;
 
 // Possibly this can also be removed, but it is slightly different...
-$('#commodities li').click(function () {
-    $('#'+currentlySelectedCommodityElement.attr('id')).removeClass("selected");
+$('#commoditylist li').click(function () {
+    if (typeof currentlySelectedCommodityElement != 'undefined') {
+        $('#'+currentlySelectedCommodityElement.attr('id')).removeClass("selected");
+    }
     currentlySelectedCommodityElement = $('#'+this.id);
     currentCommodityId = this.id;
     $('#'+this.id).addClass("selected");
@@ -63,7 +91,7 @@ $('#commodities li').click(function () {
 
 function formSubmit()
 { 
-   if ($("#search_string").val().length != 0) {
+    if ($("#search_string").val().length != 0) {
         $("#searchform").submit();
    } else {
         alert("Please enter a search term!");
@@ -72,6 +100,18 @@ function formSubmit()
 
 $('#search_icon').click(formSubmit);
 
+function Logout() {
+      $.post("Logout",
+	   { antiCSRF: '{{acsrf}}',
+             session_id: '{{session_id}}'
+	});
+      alert("You are now securely logged out.");
+}
+
+$("#header ul li.logout").click(Logout);
+
+
 </script>
-</body>
+
 </html>
+

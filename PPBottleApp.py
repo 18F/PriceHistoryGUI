@@ -84,6 +84,7 @@ def pptriv():
     LogActivity.logPageTurn(ses_id,"StartPage")
     return template('StartPage',search_string=search_string,\
                     acsrf=auth.get_acsrf(ses_id),\
+                    username=username, \
                     session_id=ses_id,\
                     psc_pattern=psc_pattern,goog_anal_script=GoogleAnalyticsInclusionScript)
 
