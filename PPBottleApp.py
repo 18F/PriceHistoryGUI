@@ -153,7 +153,6 @@ def apisolr():
 
 @app.route('/record_feedback',method='POST')
 def feedback():
-
     acsrf = request.forms.get('antiCSRF')
     ses_id = request.forms.get('session_id')
 

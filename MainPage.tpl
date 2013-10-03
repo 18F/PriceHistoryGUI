@@ -641,11 +641,6 @@ function processAjaxSearch(dataFromSearch) {
 		 return;
     }
 		 
-//    if (Object.keys(dataFromSearch).length == 0) {
-//		 alert("No results returned.");
-//		 return;
-//    }
-
     if (dataFromSearch[0]["status"] && (dataFromSearch[0]["status"] == "BadAuthentication")) {
         alert("Unable to Authenticate. Probably your session timed-out. Please log in again.");	 
     }
