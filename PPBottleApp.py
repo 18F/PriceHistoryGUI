@@ -3,6 +3,7 @@ from bottle import Bottle, run, template,request,TEMPLATE_PATH,static_file,Heade
 import time
 import urllib
 import ast
+import sys
 
 import LogFeedback
 import LogActivity
@@ -131,7 +132,7 @@ def apisolr():
     psc_pattern = request.forms.get('psc_pattern')
 
     LogActivity.logSearchBegun(ses_id,psc_pattern,search_string)
-    print "API search_string" + search_string
+
 
     payload = { 'username' : PricesPaidAPIUsername,\
                                 'password' : PricesPaidAPIPassword,\
@@ -141,6 +142,8 @@ def apisolr():
     r = requests.post(URLToPPSearchApiSolr, data=payload, \
                           auth=(PricesPaidAPIBasicAuthUsername, PricesPaidAPIBasicAuthPassword), verify=False)
 
+    LogActivity.logDebugInfo("Got Past Post to :"+URLToPPSearchApiSolr)
+
     content = r.text
 
     # This is inefficient, but I can't seem to get Bottle to
@@ -148,19 +151,22 @@ def apisolr():
     # I tried using BaseResponse.  This could be my weakness
     # with Python or confusion in Bottle.
     d = ast.literal_eval(content)
+
     LogActivity.logSearchDone(ses_id,psc_pattern,search_string)
     return d
 
 @app.route('/record_feedback',method='POST')
 def feedback():
-
+    LogActivity.logDebugInfo("spudalicious")
     acsrf = request.forms.get('antiCSRF')
     ses_id = request.forms.get('session_id')
 
+    LogActivity.logDebugInfo("acsrf ses_d :"+acsrf+ses_id)
     if (not auth.is_valid_acsrf(ses_id)):
         dict = {0: {"status": "BadAuthentication"}}
         return dict;
 
+    LogActivity.logDebugInfo("authenticated !")
     LogActivity.logFeedback(ses_id)
     message = request.forms.get('message')
     name = request.forms.get('name')

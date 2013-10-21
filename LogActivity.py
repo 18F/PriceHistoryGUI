@@ -35,3 +35,6 @@ def logSearchBegun(session_id,psc_pattern,search_string):
 
 def logSearchDone(session_id,psc_pattern,search_string):
     logger.info("SearchDone  : "+session_id+" : "+str(psc_pattern)+" : "+str(search_string))
+
+def logDebugInfo(info):
+    logger.info("Debug Info : "+info)
