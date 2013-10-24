@@ -33,6 +33,10 @@ def server_static(path):
 def server_static(filename):
     return static_file(filename, root=PathToCSSFiles)
 
+@app.route('/js/<filename>')
+def server_static(filename):
+    return static_file(filename, root=PathToBottleWebApp+"js/")
+
 from bottle import template
 
 @app.route('/')

@@ -179,6 +179,10 @@ Clicking on a column header will sort both the grid and the detail area by that 
 
 	<script  src="../js/feedback_me/js/jquery.feedback_me.js"></script>
 
+	<script  src="./js/StandardFunctions.js"></script>
+	<script  src="./js/Utility.js"></script>
+	<script  src="./js/GUISpecifics.js"></script>
+
  <script>
 $(function() {
    $( document ).tooltip({
@@ -285,24 +289,6 @@ function Logout() {
 $("#logoutLink").click(Logout);
 
 
-// WARNING!!! This is needed to make forEach work on IE8.
-// This is from the Mozilla site.  I have no idea if this 
-// is a better idea than replaces forEach'es everywhere or not.
-if (!Array.prototype.forEach) {
-    Array.prototype.forEach = function (fn, scope) {
-        'use strict';
-        var i, len;
-        for (i = 0, len = this.length; i < len; ++i) {
-            if (i in this) {
-                fn.call(scope, this[i], i, this);
-            }
-        }
-    };
-}
-
-// $("#feedback").click(function() { 
-//    $("#feedbackForm").toggle();
-// });
 
 
 // WARNING!!! My understanding is we can't use jqPlot if 
@@ -318,49 +304,6 @@ if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
 // needed to events properly bound to dynamically created elements!
 var SCRATCH_NUMBER = 0;
 var itemDetailAssociation = [];
-
-// This should really be read via an AJAX call to all it to be independent of 
-// Prices Paid...That is a step to getting open-source involvement.
-var standardFieldDescriptor = [];
-standardFieldDescriptor["score"] = "Query Relevance";
-standardFieldDescriptor["unitPrice"] = "Unit Price";
-standardFieldDescriptor["unitsOrdered"] = "Units Ordered";
-standardFieldDescriptor["orderDate"] = "Date";
-standardFieldDescriptor["vendor"] = "Vendor";
-standardFieldDescriptor["productDescription"] = "Product Description";
-standardFieldDescriptor["longDescription"] = "Long Description";
-standardFieldDescriptor["contractingAgency"] = "Contracting Agency";
-standardFieldDescriptor["awardIdIdv"] = "Award ID/IDV";
-standardFieldDescriptor["commodityType"] = "Commodity Type";
-standardFieldDescriptor["psc"] = "PSC";
-
-var nonStandardFieldDescriptor = [];
-nonStandardFieldDescriptor["dataSource"] = "Data Source";
-
-
-// What I really want to do here is to cycle through a palette of 16 colors.
-// There is no reason not to use whatever jqplot uses, although I don't 
-// want to become dependent on it here.
-var standardColors = [];
-standardColors[0] =  'aqua';
-standardColors[1] =   'black';
-standardColors[2] =   'blue';
-standardColors[3] =   'fuchsia';
-standardColors[4] =   'gray';
-standardColors[5] =   'green';
-standardColors[6] =   'lime'; 
-standardColors[7] =  'maroon';
-standardColors[8] =   'navy';
-standardColors[9] =   'olive'; 
-standardColors[10] =  'orange';
-standardColors[11] =   'purple';
-standardColors[12] =   'red';
-standardColors[13] =   'silver';
-standardColors[14] =   'teal';
-// standardColors[15] =   'white';
-standardColors[15] =   'yellow';
-
-var NUM_STANDARD_COLORS = 16;
 
 // The current desire is that 
 
@@ -402,84 +345,8 @@ var currentPage = 0;
 
 var timeSearchBegan;
 
-// Not sure the best way to do this, may want to check with Marty.
-function renderCustomField(name,fieldSeparator,value) {
-    var html = "";
-    html +=      ' <div  class="customField">';
-    html +=      ' <span  class="fieldName">';
-    html +=  (name in nonStandardFieldDescriptor) ? nonStandardFieldDescriptor[name] : name;
-//    html += name;
-
-// This could be done with a .css after class, but I'm not sure
-// it is browser compliant...
-    html += fieldSeparator;
-
-    html +=      ' </span>';
-    html +=      ' <span  class="fieldValue">';
-    html += value;
-    html +=      ' </span>';
-    html +=      '</div>';
-    return html;
-}
-
-function renderDetailArea(dataRow,i) {
-    var fieldseparator = " : ";
-    var html = "";
-    html +=      ' <div  class="itemDetailArea">';
-    html += renderCustomField('Long Description',fieldseparator, dataRow.longDescription || "No Long Description.");
-    html += renderCustomField('Vendor',fieldseparator, dataRow.vendor || "No Vendor.");
-    html += renderCustomField('Contracting Agency/Office',fieldseparator, dataRow.contractingAgency || "No Agency.");
-
-// Note this could be done more efficiently, and 
-// we will someday want a list of custom fields for other purposes, but 
-// this is good enough for now...
-    for (var k in dataRow) {
-        if (!((k in standardFieldDescriptor) || (k in internalFieldLabel))) {
-	    var v = dataRow[k];
-// This is just to see what will happen, I will have to add proper titles later.
-            var label = (k in standardFieldDescriptor) ? standardFieldDescriptor[k] : k;
-	    html += renderCustomField(label,fieldseparator,v);
-	}
-    }
-
-    html +=      '</div>';
-    return html;
-}
-
-
-function detailItemHandler(e) {
-    var num = "itemDetails".length;
-    var scratch = $(this).attr('id').substring(num);
-    var id = itemDetailAssociation[scratch];
-    var expandableSection = $("#expandArea"+scratch);
-    if (expandableSection.html().length != 0) {
-	expandableSection.empty();
-    } else {
-	expandableSection.append(renderDetailArea(transactionData[id],id));
-    }
-}
-
 var grid;
 var currentColumn = "score";
-
-var standardCommodities = {
-    // CPU seems to requie both 7020 and 7025!  This 
-    // is why commoditype could end up being a problem for us!
-    All: '*',
-    CPU: '*702*',
-    Software: '*7030*',
-    // DANGER!  HACK!
-    // Note: the FedBid data has IT supplies lists under 7045.
-    // The reality is we need a separate icon for that.  I will 
-    // have to deal with that later..for now, I want to reach
-    // the OS2 data...
-    Supplies: '*7510*',
-    Punchcards: '*7040*',
-    // Not sure this is correct for Configuration....
-    Configuration: '*7010*',
-    MiniMicro: '*7042*',
-    Component: '*7050*'
-};
 
 var currentCommodityId = '{{commodity_id}}';
 
@@ -561,35 +428,6 @@ function sortByColumn(col,asc) {
 	row += "</td>";
 	row += "</tr>";
 	return row;
-    }
-    // These strings really need to transferred to the server
-    // In order for us to have proper abstraction and language translation    
-
-function numberWithCommas(x) {
-    var parts = x.toString().split(".");
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return parts.join(".");
-}
-
-    function renderStyledDetail(dataRow,scratchNumber) {
-	var html = "";
-	html +=      ' <div class="result">';
-	html +=      '<p class="result-details"><strong> '+dataRow.productDescription.substring(0,60)+' </strong> '+dataRow.longDescription.substring(0,160)+' </p>';
-	html +=      '<div class="result-meta">';
-	html +=          '<p class="result-unitscost"><strong> $'+numberWithCommas(dataRow.unitPrice)+'</strong> '+numberWithCommas(dataRow.unitsOrdered)+' units</p>';
-	html +=          '<p class="result-whenwho">'+dataRow.orderDate+' <strong> '+dataRow.contractingAgency.substring(0,30)+'</strong></p>';
-	html +=      '</div>';
-	html +=      '<div style="clear:both;"></div>';
-	html +=      '<div class="result-smallprint">';
-	html +=          '<span class="indicator red" style="background-color:'+dataRow.color+';" ></span>';
-	html +=          '<p><strong>Award ID/IDV:</strong> '+dataRow.awardIdIdv+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Vendor:</strong> '+dataRow.vendor.substring(0,50)+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>PSC:</strong> '+dataRow.psc+ '</p>';
-	var itemDetails = "itemDetails"+scratchNumber;
-	var expandArea = "expandArea"+scratchNumber;
-	html +=          '<span class="result-more">Click for Item Details  <img id="'+itemDetails+'" src="theme/img/display-details.png" /></span>';
-        html += '<span id="'+expandArea+'"></span>';
-	html +=          '<div style="clear:both;"></div>';
-	html +=      '</div>';
-	return html;
     }
 
 // WARNING!!!
@@ -742,31 +580,6 @@ recreatePagination();
    var currentColumn = "score";
    var currentOrderIsAscending = false; 
    sortByColumn(currentColumn,currentOrderIsAscending);
-
-// This should come from the server!!!
-    var transactionColumns = [
-        {id: "unitPrice", name: standardFieldDescriptor["unitPrice"], field: "unitPrice", width: 100},
-        {id: "unitsOrdered", name: standardFieldDescriptor["unitsOrdered"], field: "unitsOrdered", width: 60},
-        {id: "orderDate", name: standardFieldDescriptor["orderDate"], field: "orderDate", width: 60},
-        {id: "vendor", name: standardFieldDescriptor["vendor"], field: "vendor", width: 200},
-        {id: "productDescription", name: standardFieldDescriptor["productDescription"], field: "productDescription", width: 400},
-        {id: "longDescription", name: standardFieldDescriptor["longDescription"], field: "longDescription", width: 400},
-        {id: "contractingAgency", name: standardFieldDescriptor["contractingAgency"], field: "contractingAgency",
-	 width: 200},
-        {id: "awardIdIdv", name: standardFieldDescriptor["awardIdIdv"], field: "awardIdIdv", width: 100},
-        {id: "commodityType", name: standardFieldDescriptor["commodityType"], field: "commodityType", width: 100},
-        {id: "psc", name: standardFieldDescriptor["psc"], field: "psc", width: 80},
-        {id: "dataSource", name: nonStandardFieldDescriptor["dataSource"], field: "dataSource", width: 150},
-        {id: "score", name: standardFieldDescriptor["score"], field: "score", width: 100}
-    ];
-//    var controlColumns = [ {id: "starred",name: "Starred", field: "starred",width: 40 } ];
-    var controlColumns = [];  
-    var columns = controlColumns.concat(transactionColumns);
-
-    // Now I attempt to make every column sortable
-    columns.forEach(function (c) {
-        c.sortable = true;
-    });    
 
     var options = {
         editable: true,
