@@ -146,9 +146,9 @@ Clicking on a column header will sort both the grid and the detail area by that 
 
 </div>
 
-    <script src="../js/jquery-1.10.2.min.js"></script>
+     <script  src="../js/jquery.min.js"></script>
 
-    <script src="../SlickGrid-master/lib/jquery-1.7.min.js"></script>
+
     <script src="../SlickGrid-master/lib/jquery.event.drag-2.2.js"></script>
 
     <script src="../SlickGrid-master/slick.core.js"></script>
@@ -159,10 +159,7 @@ Clicking on a column header will sort both the grid and the detail area by that 
     <!--[if lt IE 9]>
     <![endif]-->
     <script  src="../js/excanvas/excanvas.js"></script>
-    <script  src="../js/jquery.min.js"></script>
     <script  src="../js/jquery.jqplot.min.js"></script>
-    
-
     
     <script  src="../js/plugins/jqplot.canvasTextRenderer.min.js"></script>
     <script  src="../js/plugins/jqplot.canvasAxisLabelRenderer.min.js"></script>
@@ -178,8 +175,6 @@ Clicking on a column header will sort both the grid and the detail area by that 
     <script src="../js/hashcode-master/lib/hashcode.min.js"></script>
 
 	<link href="../js/feedback_me/css/jquery.feedback_me.css" rel="stylesheet" type="text/css" />
-<!--	<script  src="js/jquery.min.js"></script>
--->
 	<script  src="../js/jquery-ui.min.js"></script>
 
 	<script  src="../js/feedback_me/js/jquery.feedback_me.js"></script>
@@ -252,28 +247,30 @@ $(function() {
 }
 </style>
 <script>
-		$(document).ready(function(){
-			//set up some minimal options for the feedback_me plugin
-			fm_options = {
-		                session_id: '{{session_id}}',
-		                antiCSRF: '{{acsrf}}',
-				name_required : false,
-		                name_label : "(Optional) tell us who you are",
-                                message_label : "How can we do better?",
-				message_placeholder:"Go ahead, type your feedback here ...",
-				message_required : false,
-				show_asterisk_for_required : true,
-		                close_on_click_outside: false,
-				feedback_url : "http://localhost/gui/record_feedback",
-                                show_radio_button_list : true,
-                                radio_button_list_required : false,
-                                radio_button_list_title: "How likely are you to recommend Prices Paid to a colleague (1 means not likely, 5 means very likely)?"
-			};
-			
-			//init feedback_me plugin
-			fm.init(fm_options);
-			
-		});
+
+$(document).ready(function(){
+	//set up some minimal options for the feedback_me plugin
+	fm_options = {
+                custom_params: {
+                   session_id: '{{session_id}}',
+                   antiCSRF: '{{acsrf}}'
+                },
+		name_required : false,
+                name_label : "(Optional) tell us who you are",
+                message_label : "How can we do better?",
+		message_placeholder:"Go ahead, type your feedback here ...",
+		message_required : false,
+		show_asterisk_for_required : true,
+                close_on_click_outside: false,
+		feedback_url : "/gui/record_feedback",
+                show_radio_button_list : true,
+                radio_button_list_required : false,
+                radio_button_list_title: "How likely are you to recommend Prices Paid to a colleague (1 means not likely, 5 means very likely)?"
+        };
+		
+	//init feedback_me plugin
+	fm.init(fm_options);
+});
 
 
 
@@ -640,11 +637,6 @@ function processAjaxSearch(dataFromSearch) {
 		 return;
     }
 		 
-//    if (Object.keys(dataFromSearch).length == 0) {
-//		 alert("No results returned.");
-//		 return;
-//    }
-
     if (dataFromSearch[0]["status"] && (dataFromSearch[0]["status"] == "BadAuthentication")) {
         alert("Unable to Authenticate. Probably your session timed-out. Please log in again.");	 
     }
