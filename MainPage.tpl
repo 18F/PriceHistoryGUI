@@ -6,7 +6,11 @@
     <meta name="robots" content="NOINDEX, NOFOLLOW">
     <link href="./theme/css/mainPage.css" rel="stylesheet" type="text/css" media="screen, projection">
     <link rel="stylesheet" href="../SlickGrid-master/slick.grid.css" type="text/css">
-    <link rel="stylesheet" href="../SlickGrid-master/css/smoothness/jquery-ui-1.8.16.custom.css" type="text/css">
+<!--    <link rel="stylesheet" href="../SlickGrid-master/css/smoothness/jquery-ui-1.8.16.custom.css" type="text/css">
+-->
+
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+
     <link rel="stylesheet" type="text/css" href="../js/jquery.jqplot.css" >
     <link rel="stylesheet" type="text/css" href="../js/jqPagination-master/css/jqpagination.css"> 
     {{!goog_anal_script}}
@@ -80,6 +84,51 @@ To get more detailed help on searching, click the &quot;Help!&quot; link in the 
   <span class="majorlabel"> seconds. </span>
 </div>
 
+<!-- Start experiperiments -->
+<div class="hideShowToggle">
+<button id="hideShowPortfolios">Hide/Show Portfolios</button>
+</div>
+
+<div class="row">
+     <div class="col-md-4" id="control_area">
+    	 <button type="button" class="btn btn-like" id="next_button">Next</button>
+	 <button type="button" class="btn btn-dislike" id="prev_button">Prev</button>
+     </div>
+     <div class="col-md-4">
+    	 <button type="button" class="btn btn-like" id="like_button">Like</button>
+         <span id="vote_quantity"> </span>
+	 <button type="button" class="btn btn-dislike" id="dislike_button">Dislike</button>
+      </div>
+</div>
+<div class="row">
+     <div class="col-md-4" id="current_decorations">
+          <p>Tags For This Record</p>
+          <ul id="current_tag_list"></ul>
+     </div>
+     <div class="col-md-4">
+          <p>Portfolios For This Record</p>
+          <ul id="current_portfolio_list"></ul>
+     </div>
+</div>
+<div class="row" id="portfolios">
+      <div class="col-md-8"> 
+    	 <button type="button" class="btn btn-like" id="add_portfolio_button">Add Portfolio</button>
+    	 <input type="text" id="new_portfolio_name" placeholder="New Portfolio Name...">
+         <div>All Portfolios</div>
+                 <ul id="portfolio_list"></ul>
+      </div>
+</div>
+<div class="col-md-4" id="tags">
+      <button type="button" class="btn btn-like" id="add_tag_button">Add Tag</button>
+      <input type="text" id="new_tag_name" placeholder="New Tag...">
+      <p>All Tags</p>
+      <ul id="tag_list"></ul>
+</div>
+
+
+
+
+
         <!-- Start results header -->
         <div>
 <div class="hideShowToggle">
@@ -87,7 +136,6 @@ To get more detailed help on searching, click the &quot;Help!&quot; link in the 
 </div>
 
 <div id="detail-header">
-
   <span id="paginationHolder1">
   </span>
 
@@ -146,6 +194,12 @@ Clicking on a column header will sort both the grid and the detail area by that 
 
 </div>
 
+
+<form id="fakeform" method="post" action="PortfolioPage">        
+    <input type="hidden" name="antiCSRF" value="{{acsrf}}" />
+    <input type="hidden" name="session_id" value="{{session_id}}" />
+    <input id="portfolioinput" type="hidden" name="portfolio" value="" />
+</form>
      <script  src="../js/jquery.min.js"></script>
 
 
@@ -176,12 +230,11 @@ Clicking on a column header will sort both the grid and the detail area by that 
 
 	<link href="../js/feedback_me/css/jquery.feedback_me.css" rel="stylesheet" type="text/css" />
 	<script  src="../js/jquery-ui.min.js"></script>
-
 	<script  src="../js/feedback_me/js/jquery.feedback_me.js"></script>
-
 	<script  src="./js/StandardFunctions.js"></script>
 	<script  src="./js/Utility.js"></script>
 	<script  src="./js/GUISpecifics.js"></script>
+	<script  src="../gui/MorrisDataDecorator/js/handlers.js"></script>
 
  <script>
 $(function() {
@@ -201,6 +254,7 @@ $(function() {
 });
 });
 </script>
+
 <style>
 .ui-tooltip, .arrow:after {
    background: black;
@@ -252,7 +306,35 @@ $(function() {
 </style>
 <script>
 
+// These should probably be parametrized
+var portfolio_url = "/gui/portfolio";
+var tag_url = "/gui/tag";
+
+HANDLER_NAMESPACE_OBJECT.portfolio_url = portfolio_url;
+HANDLER_NAMESPACE_OBJECT.tag_url = tag_url;
+
+// BEGIN set up click handlers
+$('#next_button').click(next_handler);
+$('#prev_button').click(prev_handler);
+$('#like_button').click(like_handler);
+$('#dislike_button').click(dislike_handler);
+$('#add_portfolio_button').click(add_portfolio_handler);
+$('#add_tag_button').click(add_tag_handler);
+// END   set up click handlers
+
+function Portfolio() {
+      var portfolio = $(this).text();
+      $("#portfolioinput").val(portfolio);
+      $("#fakeform").submit();
+}
+
+function refreshDroppablesPortfolios() {
+      $(".droppableportfolio").click(Portfolio);
+}
+
 $(document).ready(function(){
+        get_portfolio_list(refreshDroppablesPortfolios);
+        get_tag_list(refreshDroppablesPortfolios);
 	//set up some minimal options for the feedback_me plugin
 	fm_options = {
                 custom_params: {
@@ -266,15 +348,31 @@ $(document).ready(function(){
 		message_required : false,
 		show_asterisk_for_required : true,
                 close_on_click_outside: false,
-		feedback_url : "/gui/record_feedback",
+		feedback_url : '{{feedback_url}}',
                 show_radio_button_list : true,
                 radio_button_list_required : false,
                 radio_button_list_title: "How likely are you to recommend Prices Paid to a colleague (1 means not likely, 5 means very likely)?"
         };
-		
+
 	//init feedback_me plugin
 	fm.init(fm_options);
-});
+        $("#hideShowGrid").click(function() { 
+		    $("#myGrid").toggle();
+		 });
+
+         $("#hideShowPortfolios").click(function() { 
+		    $("#portfolios").toggle();
+		 });
+
+	 $("#hideShowDetails").click(function() { 
+		    $("#detailArea").toggle();
+		 });
+
+	 $("#hideShowGraph").click(function() { 
+		    $("#chartContainer").toggle();
+	 });
+    }
+);
 
 
 
@@ -287,6 +385,7 @@ function Logout() {
 }
 
 $("#logoutLink").click(Logout);
+
 
 
 
@@ -313,17 +412,6 @@ var internalFieldLabel = [];
 internalFieldLabel["starred"] = "Favorite";
 internalFieldLabel["color"] = "Color";
 
-$("#hideShowGrid").click(function() { 
-    $("#myGrid").toggle();
-});
-
-$("#hideShowDetails").click(function() { 
-    $("#detailArea").toggle();
-});
-
-$("#hideShowGraph").click(function() { 
-    $("#chartContainer").toggle();
-});
 
 
 // Note: that search_string here is html-encoded by Bottle,
@@ -417,18 +505,6 @@ function sortByColumn(col,asc) {
 			 currentSortCol == "unitsOrdered" ? numberSort : stringSort);
 }
 
-    function renderRow(label,content) {
-	var row = "";
-	row += "<tr>";
-	row += "<td>";
-	row += label;
-	row += "</td>";
-	row += "<td>";
-	row += content;
-	row += "</td>";
-	row += "</tr>";
-	return row;
-    }
 
 // WARNING!!!
 // This seems to do nothing on IE8.  Fixing this problem for IE8 is probably the most important thing 
@@ -448,7 +524,29 @@ Math.min((page+1)*PAGESIZE,transactionData.length));
 	    itemDetailAssociation[SCRATCH_NUMBER] = i+page*PAGESIZE;
 	    SCRATCH_NUMBER++;
 	});
+
+// Now we must make the drag/drop work.
+       $( ".droppablerecord" ).droppable({
+           tolerance: "touch",
+           drop: function(event, ui) {
+                 var text = ui.draggable.text();
+                 var portfolio = isPortfolio(text);
+		 alert("this hello = "+ $(this).attr('p3id'));
+		 var key = $(this).attr('p3id');
+                 var deco = (portfolio) ? HANDLER_NAMESPACE_OBJECT.portfolio_url
+		                        : HANDLER_NAMESPACE_OBJECT.tag_url;
+                 $.post(deco+"/add_record/"+text+"/"+key,
+//			function () { process_record_request(key);}
+		        function () {}
+                     ).fail(function() { alert("The addition of that record to the content_area portfolio failed."); });
+            }
+	});
+
+       $( ".droppablerecord" ).draggable({ revert: true });
+
     }
+
+
 
     var comclickcount = 0;
     $("#comDropdownWrapper").click(function(){
@@ -459,6 +557,7 @@ Math.min((page+1)*PAGESIZE,transactionData.length));
 	}
 	comclickcount++;
     });
+
 
 function processAjaxSearch(dataFromSearch) {
 // If we timed out or failed to authenticate, we need to alert the user.
@@ -474,6 +573,8 @@ function processAjaxSearch(dataFromSearch) {
 		 alert("No results returned.");
 		 return;
     }
+
+
 		 
     if (dataFromSearch[0]["status"] && (dataFromSearch[0]["status"] == "BadAuthentication")) {
         alert("Unable to Authenticate. Probably your session timed-out. Please log in again.");	 
