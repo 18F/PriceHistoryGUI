@@ -2,16 +2,12 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>PricesPaid v. 0.4 BETA </title>
+    <title>Portfolio</title>
     <meta name="robots" content="NOINDEX, NOFOLLOW">
     <link href="./theme/css/mainPage.css" rel="stylesheet" type="text/css" media="screen, projection">
     <link rel="stylesheet" href="../SlickGrid-master/slick.grid.css" type="text/css">
-<!--    <link rel="stylesheet" href="../SlickGrid-master/css/smoothness/jquery-ui-1.8.16.custom.css" type="text/css">
--->
-
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 
-    <link rel="stylesheet" type="text/css" href="../js/jquery.jqplot.css" >
     <link rel="stylesheet" type="text/css" href="../js/jqPagination-master/css/jqpagination.css"> 
     {{!goog_anal_script}}
 
@@ -24,36 +20,8 @@
         <div class="inner">
         <!-- FACTOR OUT -->
             <span id="pricespaid_logo"><img src="theme/img/pp_logo_beta.png" alt="PricesPaid"></span>
-		<span id="comDropdownWrapper" title="Choose a commodity type to search, based on (imperfect) PSC codes.">
-        <!-- FACTOR OUT -->
-                Commodity:
-                <select id="commodityChoice" >
-                    <option value="All">All</option>
-                    <option value="CPU">CPU</option>
-                    <option value="Software">Software</option>
-                    <option value="Supplies">Supplies</option>
-                    <option value="Punchcards">Punchcards</option>
-                    <option value="Configuration">Configuration</option>
-                    <option value="Mini-Micro">Mini-Micro</option>
-                    <option value="Component">Component</option>
-                </select>
-		</span>
-
-        <!-- Start search -->
-        <span id="smallSearch">
-                <input type="text" name="small_search_string" id="small_search_string" value="{{search_string}}" title=
-"
-Enter any number of search terms to get a list of results ranked by relevance to those terms. To limit a search to those only containing a certain terms, separate terms by the upper case AND, like &quot;laptop AND rugged&quot;.  To exclude results containing a term, put upper case NOT or - in front of it, like &quot;laptop AND NOT rugged&quot;
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-To get more detailed help on searching, click the &quot;Help!&quot; link in the upper right of this page.
-"
->
-                <input type="button" id="searchButton" value="Search" onclick="performSearch();">
-        </span>
-<a href="./SearchHelp" style="color: white">Help!</a>
 <span id="logoutLink" href="./Logout" style="color: white; cursor: pointer; text-decoration:underline">Logout</span>
+<a id="exportLink" href="./SimpleHTML?portfolio={{portfolio}}&antiCSRF={{acsrf}}&session_id={{session_id}}" style="color: white; cursor: pointer; text-decoration:underline">Export</a>
         </div>
 
     </div>
@@ -62,7 +30,7 @@ To get more detailed help on searching, click the &quot;Help!&quot; link in the 
     <div id="content" class="inner">
 
 <div id="loading">
-<h1>    Searching, Please Wait... </h1>
+<h1>Portfolio</h1>
 </div>
 
 <div class="hideShowToggle">
@@ -74,7 +42,7 @@ To get more detailed help on searching, click the &quot;Help!&quot; link in the 
 </div>
 
    <div id="results-header">
-  <span class="majorlabel">Your Search for: </span>
+  <span class="majorlabel">Your Portfolio Contains: </span>
   <span class="majorlabel" id="search_string_render"></span> 
   <span class="majorlabel">Returned :  </span>
   <span class="majorlabel" id="placeForNumberReturned"></span> 
@@ -89,16 +57,6 @@ To get more detailed help on searching, click the &quot;Help!&quot; link in the 
 <button id="hideShowPortfolios">Hide/Show Portfolios</button>
 </div>
 
-<div class="row">
-     <div class="col-md-4" id="current_decorations">
-          <p>Tags For This Record</p>
-          <ul id="current_tag_list"></ul>
-     </div>
-     <div class="col-md-4">
-          <p>Portfolios For This Record</p>
-          <ul id="current_portfolio_list"></ul>
-     </div>
-</div>
 <div class="row" id="portfolios">
       <div class="col-md-8"> 
     	 <button type="button" class="btn btn-like" id="add_portfolio_button">Add Portfolio</button>
@@ -113,8 +71,6 @@ To get more detailed help on searching, click the &quot;Help!&quot; link in the 
       <p>All Tags</p>
       <ul id="tag_list"></ul>
 </div>
-
-
 
 
 
@@ -183,15 +139,7 @@ Clicking on a column header will sort both the grid and the detail area by that 
 
 </div>
 
-
-<form id="fakeform" method="post" action="PortfolioPage">        
-    <input type="hidden" name="antiCSRF" value="{{acsrf}}" />
-    <input type="hidden" name="session_id" value="{{session_id}}" />
-    <input id="portfolioinput" type="hidden" name="portfolio" value="" />
-</form>
      <script  src="../js/jquery.min.js"></script>
-
-
     <script src="../SlickGrid-master/lib/jquery.event.drag-2.2.js"></script>
 
     <script src="../SlickGrid-master/slick.core.js"></script>
@@ -201,15 +149,6 @@ Clicking on a column header will sort both the grid and the detail area by that 
     
     <!--[if lt IE 9]>
     <![endif]-->
-    <script  src="../js/excanvas/excanvas.js"></script>
-    <script  src="../js/jquery.jqplot.min.js"></script>
-    
-    <script  src="../js/plugins/jqplot.canvasTextRenderer.min.js"></script>
-    <script  src="../js/plugins/jqplot.canvasAxisLabelRenderer.min.js"></script>
-    <script  src="../js/plugins/jqplot.highlighter.min.js"></script>
-    <script  src="../js/plugins/jqplot.cursor.min.js"></script>
-    <script  src="../js/plugins/jqplot.bubbleRenderer.min.js"></script>
-   <script  src="../js/plugins/jqplot.dateAxisRenderer.min.js"></script>
 
     <!-- Trying to get a bloody paginator to work! -->
     <script src="../js/jqPagination-master/js/jquery.jqpagination.js"></script>
@@ -224,75 +163,6 @@ Clicking on a column header will sort both the grid and the detail area by that 
 	<script  src="./js/Utility.js"></script>
 	<script  src="./js/GUISpecifics.js"></script>
 	<script  src="../gui/MorrisDataDecorator/js/handlers.js"></script>
-
- <script>
-$(function() {
-   $( document ).tooltip({
-       position: {
-       my: "center bottom-20",
-       at: "center top",
-       using: function( position, feedback ) {
-       $( this ).css( position );
-       $( "<div>" )
-           .addClass( "arrow" )
-           .addClass( feedback.vertical )
-           .addClass( feedback.horizontal )
-         .appendTo( this );
-     }
-    }
-});
-});
-</script>
-
-<style>
-.ui-tooltip, .arrow:after {
-   background: black;
-   border: 2px solid white;
-   width: 50%;
-}
-.ui-tooltip {
-   padding: 10px 20px;
-   color: white;
-   border-radius: 20px;
-   font: bold 14px "Helvetica Neue", Sans-Serif;
-#   text-transform: uppercase;
-   box-shadow: 0 0 7px black;
-}
-.arrow {
-   width: 70px;
-   height: 16px;
-   overflow: hidden;
-   position: absolute;
-   left: 50%;
-   margin-left: -35px;
-   bottom: -16px;
-}
-.arrow.top {
-   top: -16px;
-   bottom: auto;
-}
-.arrow.left {
-   left: 20%;
-}
-.arrow:after {
-  content: "";
-  position: absolute;
-  left: 20px;
-  top: -20px;
-  width: 25px;
-  height: 25px;
-  box-shadow: 6px 5px 9px -9px black;
-  -webkit-transform: rotate(45deg);
-  -moz-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  -o-transform: rotate(45deg);
-  tranform: rotate(45deg);
-}
-.arrow.top:after {
-  bottom: -20px;
-  top: auto;
-}
-</style>
 <script>
 
 // These should probably be parametrized
@@ -311,58 +181,23 @@ $('#add_portfolio_button').click(add_portfolio_handler);
 $('#add_tag_button').click(add_tag_handler);
 // END   set up click handlers
 
-function Portfolio() {
-      var portfolio = $(this).text();
-      $("#portfolioinput").val(portfolio);
-      $("#fakeform").submit();
-}
+get_portfolio_list();
+get_tag_list();
 
-function refreshDroppablesPortfolios() {
-      $(".droppableportfolio").click(Portfolio);
-}
 
-$(document).ready(function(){
-        get_portfolio_list(refreshDroppablesPortfolios);
-        get_tag_list(refreshDroppablesPortfolios);
-	//set up some minimal options for the feedback_me plugin
-	fm_options = {
-                custom_params: {
-                   session_id: '{{session_id}}',
-                   antiCSRF: '{{acsrf}}'
-                },
-		name_required : false,
-                name_label : "(Optional) tell us who you are",
-                message_label : "How can we do better?",
-		message_placeholder:"Go ahead, type your feedback here ...",
-		message_required : false,
-		show_asterisk_for_required : true,
-                close_on_click_outside: false,
-		feedback_url : '{{feedback_url}}',
-                show_radio_button_list : true,
-                radio_button_list_required : false,
-                radio_button_list_title: "How likely are you to recommend Prices Paid to a colleague (1 means not likely, 5 means very likely)?"
-        };
-
-	//init feedback_me plugin
-	fm.init(fm_options);
-        $("#hideShowGrid").click(function() { 
-		    $("#myGrid").toggle();
-		 });
-
-         $("#hideShowPortfolios").click(function() { 
-		    $("#portfolios").toggle();
-		 });
-
-	 $("#hideShowDetails").click(function() { 
-		    $("#detailArea").toggle();
-		 });
-
-	 $("#hideShowGraph").click(function() { 
-		    $("#chartContainer").toggle();
-	 });
-    }
-);
-
+function performSearch() {
+    $('#loading').show();
+    $('#results-header').hide();
+    timeSearchBegan = new Date();
+      $('#search_string_render').text('{{portfolio}}');
+      $.post("returnPortfolio",
+	   { antiCSRF: '{{acsrf}}',
+             session_id: '{{session_id}}',
+	     portfolio: '{{portfolio}}'
+	   },
+	   processAjaxSearch
+	  ).fail(function() { alert("The search failed in some way; please try something else."); });
+};
 
 
 function Logout() {
@@ -374,9 +209,6 @@ function Logout() {
 }
 
 $("#logoutLink").click(Logout);
-
-
-
 
 
 // WARNING!!! My understanding is we can't use jqPlot if 
@@ -401,19 +233,21 @@ var internalFieldLabel = [];
 internalFieldLabel["starred"] = "Favorite";
 internalFieldLabel["color"] = "Color";
 
+$("#hideShowPortfolios").click(function() { 
+    $("#portfolios").toggle();
+});
+
+$("#hideShowDetails").click(function() { 
+    $("#detailArea").toggle();
+});
+
+$("#hideShowGrid").click(function() { 
+		    $("#myGrid").toggle();
+});
 
 
 // Note: that search_string here is html-encoded by Bottle,
 // So presumably this does not represent a XSS vulnerability...
-$('#search_string_render').text('{{search_string}}');
-
-$('#commodities li').first().addClass("selected");
-var currentlySelectedCommodityElement  = '{{commodity_id}}';
-$('input[id=small_search_string]').on('keyup', function(e) {
-    if (e.which == 13) {
-        performSearch();
-    }
-});
 
 // This is my basic page math...
 var PAGESIZE = 5;
@@ -425,31 +259,7 @@ var timeSearchBegan;
 var grid;
 var currentColumn = "score";
 
-var currentCommodityId = '{{commodity_id}}';
 
-var com = $("#commodityChoice").val(currentCommodityId);
-
-function performSearch() {
-    $('#loading').show();
-    $('#results-header').hide();
-    timeSearchBegan = new Date();
-    var standard = standardCommodities[currentCommodityId];
-
-    var search = $('#small_search_string').val();
-    if (search.length == 0) {
-      alert("Please enter a search term.");
-    } else {
-      $('#search_string_render').text(search);
-      $.post("search",
-	   { search_string: search,
-             antiCSRF: '{{acsrf}}',
-             session_id: '{{session_id}}',
-             psc_pattern: standard
-	   },
-	   processAjaxSearch
-	  ).fail(function() { alert("The search failed in some way; please try something else."); });
-    }
-};
 
 function sortByColumnAndRedraw(col,asc) {
   sortByColumn(col,asc);
@@ -534,19 +344,6 @@ Math.min((page+1)*PAGESIZE,transactionData.length));
        $( ".droppablerecord" ).draggable({ revert: true });
 
     }
-
-
-
-    var comclickcount = 0;
-    $("#comDropdownWrapper").click(function(){
-	if ((comclickcount % 2) == 1) {
-	    var com = $("#commodityChoice").val();
-	    currentCommodityId = com;
-            performSearch();
-	}
-	comclickcount++;
-    });
-
 
 function processAjaxSearch(dataFromSearch) {
 // If we timed out or failed to authenticate, we need to alert the user.
@@ -768,98 +565,9 @@ recreatePagination();
             e.stopPropagation();
 	}
     });
-
-    var plotData = [[]];
-    var i = 0;
-    var thingToPlot = data.forEach(function (e) {
-	// we don't want to plot it if it is more than 4 times the median price, 
-	// as it is probably erroneous
-
-	if ((data.length < 15) || (medianUnitPrice <= 100.0) || (e.unitPrice < (medianUnitPrice * 4.0))) {
-	    var newArray = [];
-
-	    newArray[0] = e.orderDate;
-	    newArray[1] = Math.ceil(e.unitPrice * 100) / 100;
-	    newArray[2] = Math.sqrt(Math.abs(e.unitsOrdered));
-	    newArray[3] = {
-		label: e.vendor,
-		color:  e.color
-	    };
-	    plotData[0].push(newArray);
-	}
-    });
-
-    $('#chartdiv').empty();
-
-// It seems we no longer need this!
-//    if (isIE8orLower) {
-    if (false) {
-      $('#chartdiv').append("<div style='width: 700px; color: red; margin: 20px'>The graph not supported on Internet Explorer less than Version 9.  You appear to be using version "+ieversion+", or your browser is using that as its rendering mode for some reason. If you need the graph, upgrade, or use a different browser, or change the document mode.<\div>");
-    } else {
-    var plot1b = $.jqplot('chartdiv', plotData, {
-	title: 'Unit Prices',
-	seriesDefaults:{
-            renderer: $.jqplot.BubbleRenderer,
-            rendererOptions: {
-		bubbleAlpha: 0.6,
-		highlightAlpha: 0.8,
-		showLabels: false
-            },
-            shadow: true,
-            shadowAlpha: 0.05
-        },
-	axes:{
-            xaxis:{
-		renderer:$.jqplot.DateAxisRenderer,
-		label: '<span color: black;>Color denotes Vehicle.</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span>Bubble size denotes number of units.</span>'
-            },
-            yaxis:{
-		label: 'Dollars',
-		tickOptions:{
-		    formatString:'$%.2f'
-		}
-            }
-	},
-	highlighter: {
-            show: true,
-            sizeAdjust: 7.5
-	},
-	cursor: {
-            show: true,
-            tooltipLocation:'sw'
-	}
-    }
-			 );
-    }
-
-
-    // Now bind function to the highlight event to show the tooltip
-    // and highlight the row in the legend.
-    $('#chartdiv').bind('jqplotDataHighlight',
-			function (ev, seriesIndex, pointIndex, data, radius) {   
-			    var chart_left = $('#chartdiv').offset().left,
-			    chart_top = $('#chartdiv').offset().top,
-			    x = plot1b.axes.xaxis.u2p(data[0]),  // convert x axis unita to pixels
-			    y = plot1b.axes.yaxis.u2p(data[1]);  // convert y axis units to pixels
-			    var color = 'rgb(50%,50%,100%)';
-			    $('#tooltip1b').css({left:chart_left+x+radius+5, top:chart_top+y});
-			    
-			    $('#tooltip1b').html('<span style="font-size:14px;font-weight:bold;color: ' + color + ';">' + data[3] + '</span><br />' + 'x: ' + data[0] +
-						 '<br />' + 'y: ' + data[1] + '<br />' + 'r: ' + data[2]);
-			    
-			    $('#tooltip1b').show();
-			});
-    // Bind a function to the unhighlight event to clean up after highlighting.
-    $('#chartdiv').bind('jqplotDataUnhighlight',
-			function (ev, seriesIndex, pointIndex, data) {
-			    $('#tooltip1b').empty();
-			    $('#tooltip1b').hide();
-			});
 }
 
-
-
-  performSearch();
+performSearch()
 
 </script>
 

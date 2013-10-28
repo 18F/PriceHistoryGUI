@@ -193,6 +193,55 @@ def apisolr():
     d = ast.literal_eval(content)
     return d
 
+@app.route('/SimpleHTML',method='GET')
+def apisolr():
+    acsrf = request.query['antiCSRF']
+    ses_id = request.query['session_id']
+
+    if (not auth.is_valid_acsrf(ses_id)):
+        dict = {0: {"status": "BadAuthentication"}}
+        return dict;
+    auth.update_acsrf(ses_id)
+    portfolio = request.query['portfolio']
+
+    print "portfolio = "+portfolio
+    r = requests.get(URL_TO_MORRIS_PORTFOLIOS_API+"/decoration/"+portfolio)
+    content = r.text
+    d = ast.literal_eval(r.text)
+    p3ids = d['data']
+
+    payload = { 'username' : PricesPaidAPIUsername,\
+                                'password' : PricesPaidAPIPassword,\
+                                'p3ids' : pickle.dumps(p3ids)
+                }
+
+    r = requests.post(URLToPPSearchApiSolr+"/fromIds", data=payload, \
+                          auth=(PricesPaidAPIBasicAuthUsername, PricesPaidAPIBasicAuthPassword), verify=False)
+
+    LogActivity.logDebugInfo("Got Past Post to :"+URLToPPSearchApiSolr)
+
+    content = r.text
+
+    d = ast.literal_eval(content)
+    html = ""
+    for key, vdict in d.iteritems():
+# Turn this into a function!
+        html = html + produceHTML(vdict)
+    # Actually, here we need to loop over a template, but I will try this first!
+    return html
+
+def produceHTML(valuesdict):
+    html = ""
+    html = html + "<h2>"+valuesdict["productDescription"]+"</h1>"
+    html = html + "<h3>"+valuesdict["longDescription"]+"</h2>"
+    html = html + "<p>"+valuesdict["unitPrice"]+"</p>"
+    html = html + "<p>"+valuesdict["unitsOrdered"]+"</p>"
+    html = html + "<p>"+valuesdict["vendor"]+"</p>"
+    for k,v in valuesdict.iteritems():
+        html = html + "<p>"+k + ":" + str(v) + "</p>" + "\n"
+    html = html + "<p></p>" + "\n"
+    return html
+
 @app.route('/search',method='POST')
 def apisolr():
     acsrf = request.forms.get('antiCSRF')

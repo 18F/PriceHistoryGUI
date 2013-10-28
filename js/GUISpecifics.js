@@ -39,7 +39,31 @@ function renderDetailArea(dataRow,i) {
 	}
     }
 
-    html +=      '</div>';
+
+    html += ' <div class="col-md-4"> ';
+    html += '	 <button type="button" class="btn btn-like" id="like_button">Like</button> ';
+    html += '     <span id="vote_quantity"> </span> ';
+    html += ' <button type="button" class="btn btn-dislike" id="dislike_button">Dislike</button> ';
+    html += '  </div> ';
+
+
+    html += ' <div class="col-md-4"> ';
+    html += '      <p>Portfolios For This Record</p> ';
+    html += '      <ul id="current_portfolio_list"></ul> ';
+    html += ' </div>';
+
+    html += ' <div class="col-md-4" id="current_decorations">';
+    html += '      <p>Tags For This Record</p>';
+    html += '      <ul id="current_tag_list"></ul>';
+    html += ' </div>';
+
+    html += '<div class="col-md-4" id="tags">';
+    html +=  ' <button type="button" class="btn btn-like" id="add_tag_button">Add Tag</button>';
+    html +=  '  <input type="text" id="new_tag_name" placeholder="New Tag...">';
+    html +=  '  <p>All Tags</p>';
+    html +=  '  <ul id="tag_list"></ul>';
+    html +=  '  </div>';
+
     return html;
 }
 
