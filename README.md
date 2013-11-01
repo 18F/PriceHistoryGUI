@@ -3,7 +3,7 @@ PricesPaidGUI
 
 # DESCRIPTION
 
-PricesPaidGUI, in conjunction with its sister project also available at githup, PricesPaidAPI,
+PricesPaidGUI, in conjunction with its sister project also available at github, PricesPaidAPI,
 is a system to allow government buyers to research actual prices paid in order to lower the 
 price the Federal Government pays for goods and services. It was initiated by a team of 
 Presidentail Innovation Fellows (Round 2), consisting of Robert L. Read, Martin Ringlein, 
