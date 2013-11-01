@@ -3,7 +3,7 @@ PricesPaidGUI
 
 # DESCRIPTION
 
-PricesPaidGUI, in conjunction with its sister project also available at githup, PricesPaidAPI,
+PricesPaidGUI, in conjunction with its sister project also available at github, PricesPaidAPI,
 is a system to allow government buyers to research actual prices paid in order to lower the 
 price the Federal Government pays for goods and services. It was initiated by a team of 
 Presidentail Innovation Fellows (Round 2), consisting of Robert L. Read, Martin Ringlein, 
@@ -37,12 +37,12 @@ with the fact that the data returned is likely highly imperfect.
 
 HOW YOU CAN HELP
 
-We need help with tis, even though it is premature to ask for it, because the code is so rough. 
+We need help with this, even though it is premature to ask for it, because the code is so rough. 
 Here is a preliminary TODO list:
 
 * ) Factor out the PricesPaid specific GUI elements and fields in order to make the project both  
 cleaner and potentially applicable to other forms of data.
-* ) Clean up my not very good javascript, primarily by factoring it spearate files that can be loaded.
+* ) Clean up my not very good javascript, primarily by factoring it into separate files that can be loaded.
 * ) Help make the GUI much better than it is today.  We are activley working on this, so there is
 of course the danger of some duplication of effort---but so be it.
 * ) help us implement "portfolios" of selected transactions.
