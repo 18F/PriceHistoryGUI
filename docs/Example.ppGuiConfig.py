@@ -2,9 +2,12 @@
 BottlePortNumber = 8080
 BottleHostname = 'localhost'
 PathToDataFiles = "../cookedData"
+# URLToPPSearchApi = "https://shdsapi.org/api"
 URLToPPSearchApiSolr = "https://localhost/apisolr"
 URLToSolr = 'http://localhost:8983/solr'
 WsgiAbsolutePath = '/home/robert/PricesPaid/PricesPaidGUI'
+
+LocalURLToRecordFeedback = '/gui/record_feedback'
 
 # If you want google analytics, put it here, if not, use an empty script
 GoogleAnalyticsInclusionScript = """   <script>
@@ -21,8 +24,8 @@ LIMIT_NUMBER_BAD_LOGINS = 5
 LIMIT_TIME_TO_RETRY = 60*60
 
 
-P3APISALT = "changeme"
-PricesPaidAPIUsername = 'putALegitimateUserNameHere'
-PricesPaidAPIPassword = 'putThatUsersPasswordHere'
-PricesPaidAPIBasicAuthUsername = 'PutTheAPIsBasicAuthIdentityHere'
-PricesPaidAPIBasicAuthPassword = 'PutTheAPIsBasicAuthPaswordHere'
+P3APISALT = "defaultSalt"
+PricesPaidAPIUsername = 'defaultUser'
+PricesPaidAPIPassword = 'defaultPassword'
+PricesPaidAPIBasicAuthUsername = 'defaultBasicAuthUser'
+PricesPaidAPIBasicAuthPassword = 'defaultBasicAuthPassword'
