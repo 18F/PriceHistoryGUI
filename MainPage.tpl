@@ -74,6 +74,8 @@ To get more detailed help on searching, click the &quot;Help!&quot; link in the 
 </div>
 
    <div id="results-header">
+  <span class="majorlabel">Results to return: </span>
+  <input type="text" id="num_results_to_return" placeholder="100" title="Change number of results returned here. More results will slow your response time. If you find yourself paging through too many results, try adding terms to your search to increase the relevancy of your results, excluding terms by putting a minus sign (-) in front of a term you want to exclude.">
   <span class="majorlabel">Your Search for: </span>
   <span class="majorlabel" id="search_string_render"></span> 
   <span class="majorlabel">Returned :  </span>
@@ -301,6 +303,7 @@ var tag_url = "/gui/tag";
 
 HANDLER_NAMESPACE_OBJECT.portfolio_url = portfolio_url;
 HANDLER_NAMESPACE_OBJECT.tag_url = tag_url;
+DEFAULT_NUM_RESULTS = 100;
 
 // BEGIN set up click handlers
 $('#next_button').click(next_handler);
@@ -429,6 +432,10 @@ var currentCommodityId = '{{commodity_id}}';
 
 var com = $("#commodityChoice").val(currentCommodityId);
 
+function isNumber(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
 function performSearch() {
     $('#loading').show();
     $('#results-header').hide();
@@ -436,6 +443,11 @@ function performSearch() {
     var standard = standardCommodities[currentCommodityId];
 
     var search = $('#small_search_string').val();
+    var max_results = $('#num_results_to_return').val();
+    var max_results_num = parseFloat(max_results);
+    if (!isNumber(max_results_num)) {
+       max_results_num = DEFAULT_NUM_RESULTS;
+    }
     if (search.length == 0) {
       alert("Please enter a search term.");
     } else {
@@ -444,7 +456,8 @@ function performSearch() {
 	   { search_string: search,
              antiCSRF: '{{acsrf}}',
              session_id: '{{session_id}}',
-             psc_pattern: standard
+             psc_pattern: standard,
+             numRows: max_results_num
 	   },
 	   processAjaxSearch
 	  ).fail(function() { alert("The search failed in some way; please try something else."); });

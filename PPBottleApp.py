@@ -256,13 +256,16 @@ def apisolr():
     search_string = request.forms.get('search_string')
     psc_pattern = request.forms.get('psc_pattern')
 
+    max_results = request.forms.get('numRows')
+
     LogActivity.logSearchBegun(ses_id,psc_pattern,search_string)
 
 
     payload = { 'username' : PricesPaidAPIUsername,\
                                 'password' : PricesPaidAPIPassword,\
                                 'search_string': search_string,\
-                                'psc_pattern': psc_pattern}
+                                'psc_pattern': psc_pattern,\
+                                'numRows': max_results }
 
     r = requests.post(URLToPPSearchApiSolr, data=payload, \
                           auth=(PricesPaidAPIBasicAuthUsername, PricesPaidAPIBasicAuthPassword), verify=False)

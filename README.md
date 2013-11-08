@@ -53,3 +53,41 @@ only make government buyers a few perecentage points more efficient to accomplis
 Your help may make all the difference in the world---and may easily exceed our own efforts.
 
 Please direct questions to Robert L. Read at <read.robert@gmail.com>.
+
+INSTALLATION
+
+Thanks to John Hardy for attempting to work through some of this.  
+
+These instructions are probably insufficient for a clean install right now.  I will improve them as soon as I can.
+
+The PricesPaidGUI project is separated from its sister, PricesPaidAPI, to keep a nice clean distinction between the GUI and Middle (Business Logic) Layer.  In practice, a user probably wants to install the PricesPaidAPI first. Additionally, it is dependent on a third project of mine, the MorrisDataDecorator.
+
+I've been told I should be able to get all of this working with PyPi, but until I do, here is an attempt at installation instructions.
+
+You will need to have installed:
+*) Python
+*) easy_install
+*) bottle
+*) requests
+*) SOLR
+*) solrpy-0.9.5
+
+I use Apache, mod_wsgi, and mod_ssl, but technically those things are not necessary.  Bottle can cat as a webserver quite nicely for a demonstration project.
+
+You will also need some data.  I have provided an example data file in the "cookedData" directory in PricesPaidAPI, but it only contains a few transactions and is not interesting.  I am working with the government to get a proper file released, but have so far not been able to get around security and privacy concerns.  However, there is a documented process for building an adapter to your own Prices Paid data file which you can follow.
+
+Although in general configuration files allow flexibility in how to organize the system, I'm currently using a single directory for the install of the MorrisDataDecorator, the PricesPaidAPI, and the PricesPaidGUI.
+
+Here are some recommended steps:
+
+*) Install the MorrisDataDecorator following the instructions found there.  This project has automated unit tests. It implements a website, which you might wish to briefly bring up in bottle to be assured that it works, but really we are using it of the API definition and some back-end implementation.
+*) Install the PricesPaidAPI following the instructions found there.
+*) Install the PricesPaidGUI following the instructions found here.
+*) create your own "cookedData" directory with my example or your own.
+*) Carefully adjust ppGuiConfig.py to match your installation instructions.
+*) Install SOLR.
+*) In the PricesPaidAPI directory, execute "python SolrLodr.py" to load the data in your cookedData directory into SOLR.  Use the Solr administrative interface to make sure the documents are correctly inject.  SolrLodr produces a log file of errors.
+*) Start up Apache (or bottle) and try to get it working.
+
+
+
