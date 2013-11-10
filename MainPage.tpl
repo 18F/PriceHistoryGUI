@@ -191,6 +191,15 @@ Clicking on a column header will sort both the grid and the detail area by that 
     <input type="hidden" name="session_id" value="{{session_id}}" />
     <input id="portfolioinput" type="hidden" name="portfolio" value="" />
 </form>
+
+<form method="get" id="fakeLogoutForm" action="./">
+</form>
+<form method="post" id="fakeReturnForm" action="./PricesPaid">
+    <input type="hidden" name="antiCSRF" value="{{acsrf}}" />
+    <input type="hidden" name="session_id" value="{{session_id}}" />
+</form>
+</div>
+
      <script  src="../js/jquery.min.js"></script>
 
 
@@ -224,7 +233,9 @@ Clicking on a column header will sort both the grid and the detail area by that 
 	<script  src="../js/feedback_me/js/jquery.feedback_me.js"></script>
 	<script  src="./js/StandardFunctions.js"></script>
 	<script  src="./js/Utility.js"></script>
+	<script  src="./js/header.js"></script>
 	<script  src="./js/GUISpecifics.js"></script>
+	<script  src="./js/pagination.js"></script>
 	<script  src="../gui/MorrisDataDecorator/js/handlers.js"></script>
 
  <script>
@@ -288,7 +299,7 @@ $(function() {
   -moz-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   -o-transform: rotate(45deg);
-  tranform: rotate(45deg);
+  transform: rotate(45deg);
 }
 .arrow.top:after {
   bottom: -20px;
@@ -296,6 +307,15 @@ $(function() {
 }
 </style>
 <script>
+
+$(document).ready(function(){
+    $("#logoutLink").click(Logout);
+
+    $("#pricespaid_logo").click(function() { 
+	$('#fakeReturnForm').submit();
+    });
+});
+
 
 // These should probably be parametrized
 var portfolio_url = "/gui/portfolio";
@@ -368,29 +388,7 @@ $(document).ready(function(){
 
 
 
-function Logout() {
-      $.post("Logout",
-	   { antiCSRF: '{{acsrf}}',
-             session_id: '{{session_id}}'
-	});
-      alert("You are now securely logged out.");
-}
 
-$("#logoutLink").click(Logout);
-
-
-
-
-
-// WARNING!!! My understanding is we can't use jqPlot if 
-// we have IE8.  They may want to switch to a simple mode,
-// but I will just add a message in the chartdiv!
-var isIE8orLower = false;
-if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)){ //test for MSIE x.x;
- var ieversion=new Number(RegExp.$1); // capture x.x portion and store as a number
- if (ieversion<9)
-    isIE8orLower = true;
-}
 // This is an ugly global variable hack that seems to be 
 // needed to events properly bound to dynamically created elements!
 var SCRATCH_NUMBER = 0;
@@ -464,47 +462,12 @@ function performSearch() {
     }
 };
 
-function sortByColumnAndRedraw(col,asc) {
-  sortByColumn(col,asc);
+function sortByColumnAndRedraw(transactionData,col,asc) {
+  sortByColumn(transactionData,col,asc);
 // I would rather reset the current page, but it is buggy...
 // This is the best that I can do on short notice.
 //  currentPage = 0;
   redrawDetailArea(currentPage);
-}
-function sortByColumn(col,asc) {
-// We need to reset the currentPage when we sort
-    var currentSortCol = col;
-    var isAsc = asc;
-    var stringSort = function(a,b) {
-	var ret;
-	if (a[currentSortCol] < b[currentSortCol]) {
-	    ret = 1;
-	} else if (a[currentSortCol] > b[currentSortCol]) {
-            ret = -1;
-	} else {
-            ret = 0;
-	}
-	if (isAsc) 
-	    return -1*ret;
-	else 
-	    return ret;
-    }
-    var numberSort = function(a,b) {
-	var ret;
-	if (parseFloat(a[currentSortCol]) < parseFloat(b[currentSortCol])) {
-	    ret = 1;
-	} else if (parseFloat(a[currentSortCol]) > parseFloat(b[currentSortCol])) {
-            ret = -1;
-	} else {
-            ret = 0;
-	}
-	if (isAsc) 
-	    return -1*ret;
-	else 
-	    return ret;
-    }
-    transactionData.sort(currentSortCol == "unitPrice" || 
-			 currentSortCol == "unitsOrdered" ? numberSort : stringSort);
 }
 
 
@@ -533,7 +496,6 @@ Math.min((page+1)*PAGESIZE,transactionData.length));
            drop: function(event, ui) {
                  var text = ui.draggable.text();
                  var portfolio = isPortfolio(text);
-		 alert("this hello = "+ $(this).attr('p3id'));
 		 var key = $(this).attr('p3id');
                  var deco = (portfolio) ? HANDLER_NAMESPACE_OBJECT.portfolio_url
 		                        : HANDLER_NAMESPACE_OBJECT.tag_url;
@@ -594,25 +556,6 @@ function processAjaxSearch(dataFromSearch) {
     var numberDiv = document.getElementById('placeForNumberReturned');
     numberDiv.innerHTML = totalNumber;
 
-// destroy pagination  if it exists and recreate...
-// This is needed to keep jqPaginate from getting confused, 
-// I don't know why.  I should send them email about it.
-function recreatePagination() {
-    var html = "";
-    html += '<div class="large pagination">';
-    html += '<a href="#" class="first" data-action="first">&laquo;</a>';
-    html += '<a href="#" class="previous" data-action="previous">&lsaquo;</a>';
-    html += '<input type="text" readonly="readonly" data-max-page="40" />';
-    html += '<a href="#" class="next" data-action="next">&rsaquo;</a>';
-    html += '<a href="#" class="last" data-action="last">&raquo;</a>';
-    html += '</div>';
-    $('#paginationHolder1').html(html);
-
-// I can't use the second paginator until I tie everything together with
-// javascript --- this will take too much time.
-//    var wrappedHtml = '<p>'+html+'</p>';
-//    $('#paginationHolder2').html(wrappedHtml);
-}
 
 recreatePagination();
 
@@ -653,19 +596,7 @@ recreatePagination();
             }
             return ret;
         });
-    function medianSortedValues(values) { 
-        if (values.length != 0) {
-	 var half = Math.floor(values.length/2);
-	 if(values.length % 2) {
-              return parseFloat(values[half]["unitPrice"]);
-	 } else {
-	      return (parseFloat(values[half-1]["unitPrice"]) +
-              parseFloat(values[half]["unitPrice"])) / 2.0;
-	 }
-	} else {
-	    return 0.0;
-	}
-    }
+
     var medianValue = medianSortedValues(transactionData);
     var medianUnitPrice = (transactionData.length > 0) ? medianValue
         : 0.0;
@@ -682,7 +613,7 @@ recreatePagination();
 
    var currentColumn = "score";
    var currentOrderIsAscending = false; 
-   sortByColumn(currentColumn,currentOrderIsAscending);
+   sortByColumn(transactionData,currentColumn,currentOrderIsAscending);
 
     var options = {
         editable: true,
@@ -727,7 +658,7 @@ recreatePagination();
 	if ((colclickcount % 2) == 1) {
 	    var col = $("#sortColumn").val();
 	    currentColumn = col;
-	    refreshSort(currentColumn,currentOrderIsAscending);
+	    refreshSort(transactionData,currentColumn,currentOrderIsAscending);
 	}
 	colclickcount++;
     });
@@ -737,13 +668,13 @@ recreatePagination();
 	if ((ordclickcount % 2) == 1) {
 	    var ord = $("#sortOrder").val();
             currentOrderIsAscending =  (ord == "asc");
-	    refreshSort(currentColumn,currentOrderIsAscending);
+	    refreshSort(transactionData,currentColumn,currentOrderIsAscending);
 	}
 	ordclickcount++;
     });
 
-    function refreshSort(col,ord) {
-        sortByColumnAndRedraw(col,ord);
+    function refreshSort(transactionData,col,ord) {
+        sortByColumnAndRedraw(transactionData,col,ord);
         grid.setData(transactionData);
         grid.invalidateAllRows();
         grid.render();
@@ -760,7 +691,7 @@ recreatePagination();
 	    var currentSortCol;
 	    var isAsc = args.sortAsc;
 	    currentSortCol = args.sortCol.field;
-	    sortByColumnAndRedraw(currentSortCol,isAsc);
+	    sortByColumnAndRedraw(transactionData,currentSortCol,isAsc);
 
 	    grid.setData(transactionData);
 	    grid.invalidateAllRows();

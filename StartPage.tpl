@@ -1,6 +1,10 @@
 <!DOCTYPE html> 
 <html><head>
 <!--
+
+This page is completely obsolete.
+
+
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>PricesPaid v. 0.4 BETA Start</title>
     <meta name="robots" content="NOINDEX, NOFOLLOW">
@@ -32,24 +36,17 @@
 
 <div id="content" role="main">
 <div class="container">
+
 	<div id="commodities">
-		<h2>Step 1: Select a commodity type</h2>
-        <h3>For more efficient and relevant results, select the 
-commodity type that best represents the item your searching for from the list
- below, </h3>
-        <ol class="clearfix" id="commoditylist">
-            <li class="cpu" id="CPU"><span><h4>CPU</h4><p><strong>Ex:</strong> Computers, Laptops, Servers (PSC codes matching 702__).</p></span></li>
-            <li class="supplies" id="Supplies"><span><h4>Supplies</h4><p><strong>Ex:</strong> 935,000 Office Supplies from GSA OS2  (PSC matching codes 7510_)</span></p></span></li>
-	    <li class="component"  id="Component"><span><h4>Component</h4><p><strong>Ex:</strong> IT components (PSC matching codes 75050)</p></span></li>
-            <li class="configuration" id="Configuration"><span><h4>Configuration</h4><p><strong>Ex:</strong> Miscellaneous (PSC matching codes 7010_)</p></span></li>
-            <li class="minimicro"  id="MiniMicro"><span><h4>Mini-micro</h4><p><strong>Ex:</strong> Mini- and Micro- computer components (PSC matching codes 7042_)</p></span></li>
-            <li class="punchcards" id="Punchcards"><span><h4>Punchcards</h4><p><strong>Ex:</strong> Yes, real punchcards, sometimes still used. (PSC matching codes 7040_)</p></span></li>
-            <li class="software" id="Software"><span><h4>Software</h4><p><strong>Ex:</strong> Computer software (PSC matching codes 7030_)</p></span></li>
-            <li class="all" id="All"><span><h4>All</h4><p><strong>Ex:</strong> Search all of our current data</p></span></li>
-        </ol>
-
-
-        	<h2>Step 2: Site Search</h2>
+	  <p>Welcome to the Prices Paid (P3) website!</p>
+	  <p>Begin by entering term you want to search for.</p>
+	  <p>The database currently contains these datasets:</p>
+    <ol>
+    	<li>OS2 -- Office Supply data from the Strategic Sourcing Initiative (FSSI).</li>
+       <li>GSA Advantage -- One calendar quarter of data.</li>
+       <li>Reverse Auction -- IT equipment purchased via reverse auction.</li>
+       <li></li>
+    </ol>
 
             <form id="searchform" method="post" action="PricesPaid">        
 

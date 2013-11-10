@@ -108,17 +108,20 @@ def pptriv():
                     session_id=ses_id,\
                     psc_pattern=psc_pattern,goog_anal_script=GoogleAnalyticsInclusionScript)
 
-# I want to swallow these silently due to a weird browser problem
 @app.route('/PricesPaid',method='GET')
 def swallow(): 
-    return "true"
+    acsrf = request.query['antiCSRF']
+    ses_id = request.query['session_id']
+    return render_main_page(acsrf,ses_id)
 
 
 @app.route('/PricesPaid',method='POST')
 def pptriv():
     acsrf = request.forms.get('antiCSRF')
     ses_id = request.forms.get('session_id')
+    return render_main_page(acsrf,ses_id)
 
+def render_main_page(acsf,ses_id):
     if (not auth.is_valid_acsrf(ses_id)):
         return template('Login',message='Improper Credentials or Timeout.',goog_anal_script=GoogleAnalyticsInclusionScript)
     
@@ -127,7 +130,6 @@ def pptriv():
     search_string = request.forms.get('search_string')
     search_string = search_string if search_string is not None else "Dell Latitude"
     commodity_id = request.forms.get('commodity_id')
-    print 'COMMODITY_ID = '+commodity_id
 
     LogActivity.logPageTurn(ses_id,"MainPage")
     return template('MainPage',search_string=search_string,\

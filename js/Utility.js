@@ -21,3 +21,55 @@ function numberWithCommas(x) {
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     return parts.join(".");
 }
+
+
+function medianSortedValues(values) { 
+    if (values.length != 0) {
+	var half = Math.floor(values.length/2);
+	if(values.length % 2) {
+            return parseFloat(values[half]["unitPrice"]);
+	} else {
+	    return (parseFloat(values[half-1]["unitPrice"]) +
+		    parseFloat(values[half]["unitPrice"])) / 2.0;
+	}
+    } else {
+	return 0.0;
+    }
+}
+
+function sortByColumn(transactionData,col,asc) {
+// We need to reset the currentPage when we sort
+    var currentSortCol = col;
+    var isAsc = asc;
+    var stringSort = function(a,b) {
+	var ret;
+	if (a[currentSortCol] < b[currentSortCol]) {
+	    ret = 1;
+	} else if (a[currentSortCol] > b[currentSortCol]) {
+            ret = -1;
+	} else {
+            ret = 0;
+	}
+	if (isAsc) 
+	    return -1*ret;
+	else 
+	    return ret;
+    }
+    var numberSort = function(a,b) {
+	var ret;
+	if (parseFloat(a[currentSortCol]) < parseFloat(b[currentSortCol])) {
+	    ret = 1;
+	} else if (parseFloat(a[currentSortCol]) > parseFloat(b[currentSortCol])) {
+            ret = -1;
+	} else {
+            ret = 0;
+	}
+	if (isAsc) 
+	    return -1*ret;
+	else 
+	    return ret;
+    }
+    transactionData.sort(currentSortCol == "unitPrice" || 
+			 currentSortCol == "unitsOrdered" ? numberSort : stringSort);
+    return transactionData;
+}
