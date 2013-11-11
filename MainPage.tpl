@@ -18,10 +18,19 @@
 </head>
 <body>
 
+<div id="sidebar">
+<h2>Column 2</h2>
+<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit...</p>
+<ul>
+<li><a href="#">Link 1</a></li>
+<li><a href="#">Link 2</a></li>
+</ul>
+</div>
+
     <!-- Start header -->
     <div id="header">
         <!-- Top part of header -->
-        <div class="inner">
+        <div>
         <!-- FACTOR OUT -->
             <span id="pricespaid_logo"><img src="theme/img/pp_logo_beta.png" alt="PricesPaid"></span>
 		<span id="comDropdownWrapper" title="Choose a commodity type to search, based on (imperfect) PSC codes.">
@@ -59,7 +68,7 @@ To get more detailed help on searching, click the &quot;Help!&quot; link in the 
     </div>
 
     <!-- Content ... below the header -->
-    <div id="content" class="inner">
+    <div id="content">
 
 <div id="loading">
 <h1>    Searching, Please Wait... </h1>
@@ -185,6 +194,13 @@ Clicking on a column header will sort both the grid and the detail area by that 
 
 </div>
 
+<!-- end of "content" -->
+</div> 
+    <div id="footer">
+    	<p>PricesPaid (v. 0.4 BETA) is an official website of the U.S. Government, powered by GSA.</p>
+    	<p><strong>Send Feedbak/Report Issues to:</strong> <a href="mailto:robert.read@gsa.gov">robert.read@gsa.gov</a></p>
+    </div>   
+
 
 <form id="fakeform" method="post" action="PortfolioPage">        
     <input type="hidden" name="antiCSRF" value="{{acsrf}}" />
@@ -198,7 +214,7 @@ Clicking on a column header will sort both the grid and the detail area by that 
     <input type="hidden" name="antiCSRF" value="{{acsrf}}" />
     <input type="hidden" name="session_id" value="{{session_id}}" />
 </form>
-</div>
+
 
      <script  src="../js/jquery.min.js"></script>
 
@@ -233,6 +249,9 @@ Clicking on a column header will sort both the grid and the detail area by that 
 	<script  src="../js/feedback_me/js/jquery.feedback_me.js"></script>
 	<script  src="./js/StandardFunctions.js"></script>
 	<script  src="./js/Utility.js"></script>
+	<script  src="./js/result_rendering.js"></script>
+	<script  src="./js/plot_rendering.js"></script>
+	<script  src="./js/grid_rendering.js"></script>
 	<script  src="./js/header.js"></script>
 	<script  src="./js/GUISpecifics.js"></script>
 	<script  src="./js/pagination.js"></script>
@@ -448,6 +467,7 @@ function performSearch() {
     }
     if (search.length == 0) {
       alert("Please enter a search term.");
+      $('#loading').hide();
     } else {
       $('#search_string_render').text(search);
       $.post("search",
@@ -462,53 +482,6 @@ function performSearch() {
     }
 };
 
-function sortByColumnAndRedraw(transactionData,col,asc) {
-  sortByColumn(transactionData,col,asc);
-// I would rather reset the current page, but it is buggy...
-// This is the best that I can do on short notice.
-//  currentPage = 0;
-  redrawDetailArea(currentPage);
-}
-
-
-// WARNING!!!
-// This seems to do nothing on IE8.  Fixing this problem for IE8 is probably the most important thing 
-// we can do.  It was always pretty unattractive anyway---I must find a way to simplify.
-// It may or may not be "on(click", stuff, it just deosn't render anytrhing!.
-// The first thing to try is probably switching out of JQuery and doing a "getelementById" and innerHTML solution.
-    function redrawDetailArea(page) {
-	var detailAreaDiv = $("#"+'detailArea');
-	detailAreaDiv.empty();
-	var smallSlice = transactionData.slice(page*PAGESIZE,
-Math.min((page+1)*PAGESIZE,transactionData.length));
-	smallSlice.forEach(function (e,i,a) {
-            detailAreaDiv.append(renderStyledDetail(e,SCRATCH_NUMBER));
-	    $(document).on( "click", "#itemDetails"+SCRATCH_NUMBER, detailItemHandler );
-
-// Ugly....
-	    itemDetailAssociation[SCRATCH_NUMBER] = i+page*PAGESIZE;
-	    SCRATCH_NUMBER++;
-	});
-
-// Now we must make the drag/drop work.
-       $( ".droppablerecord" ).droppable({
-           tolerance: "touch",
-           drop: function(event, ui) {
-                 var text = ui.draggable.text();
-                 var portfolio = isPortfolio(text);
-		 var key = $(this).attr('p3id');
-                 var deco = (portfolio) ? HANDLER_NAMESPACE_OBJECT.portfolio_url
-		                        : HANDLER_NAMESPACE_OBJECT.tag_url;
-                 $.post(deco+"/add_record/"+text+"/"+key,
-//			function () { process_record_request(key);}
-		        function () {}
-                     ).fail(function() { alert("The addition of that record to the content_area portfolio failed."); });
-            }
-	});
-
-       $( ".droppablerecord" ).draggable({ revert: true });
-
-    }
 
 
 
@@ -568,7 +541,7 @@ recreatePagination();
                 currentPage     : 1,
 		paged		: function(page) {
                 currentPage = page - 1;
-                redrawDetailArea(currentPage);
+                redrawDetailArea(transactionData,currentPage);
 		}
 	});
 
@@ -577,231 +550,11 @@ recreatePagination();
     var secondsSpent = (timeSearchEnded-timeSearchBegan)/1000.0;
     $('#timeSpentRender').text(secondsSpent.toFixed(2));
 
-    // Now I'm going to try something weird, which seems justified by the nature
-    // of our data--I'm only going to plot the lowest-prices 80%.  The upper
-    // 20% is often something not really in the data set you are looking at
-    // and it messes up the plot.  This should really be under the control
-    // of the user, but that will have to wait.
-    // In order to do this we will sort on unitPrice, which is probably
-    // a good way to present the data anyway.
-    transactionData.sort(
-        function (a,b) {
-            var ret;
-            if (parseFloat(a["unitPrice"]) < parseFloat(b["unitPrice"])) {
-                ret = 1;
-            } else if (parseFloat(a["unitPrice"]) > parseFloat(b["unitPrice"])) {
-                ret = -1;
-            } else {
-                ret = 0;
-            }
-            return ret;
-        });
+    var medianUnitPrice = 0.0;
 
-    var medianValue = medianSortedValues(transactionData);
-    var medianUnitPrice = (transactionData.length > 0) ? medianValue
-        : 0.0;
-
-    var sumOfUnitPrice = 0.0;
-    transactionData.forEach(function(d) {
-        var x = parseFloat(d["unitPrice"]);
-        if (!isNaN(x))
-            sumOfUnitPrice += x
-        else {
-            d["unitPrice"] = "0.0";
-        }
-    });
-
-   var currentColumn = "score";
-   var currentOrderIsAscending = false; 
-   sortByColumn(transactionData,currentColumn,currentOrderIsAscending);
-
-    var options = {
-        editable: true,
-        asyncEditorLoading: false,
-        enableCellNavigation: true,
-        enableColumnReorder: false
-    };
-
-
-    transactionData.forEach(function (e,i,a) {
-        var obj = e;
-        e["starred"] = "";
-// This randomizes color but keeps the same colors associated with the same 
-// field...
-        e.color = standardColors[Math.abs(Hashcode.value(e["awardIdIdv"])) % NUM_STANDARD_COLORS];
-        data[i] = obj;
-    });
-
-    redrawDetailArea(0);
-
-    function renderStarredTransactionsInDetailArea() {
-	var div = document.getElementById('detailArea');
-	div.innerHTML = "";
-	data.forEach(function (e) {
-            if (e.starred == "Starred") {
-		div.innerHTML += renderStyledDetail(e);
-	    }
-	});
-    }
-
-    // Define function used to get the data and sort it.
-    function getItem(index) {
-	return transactionData[index];
-    }
-    function getLength() {
-	return transactionData.length;
-    }
-    var colclickcount = 0;
-
-
-    $("#columnDropdownWrapper").click(function(){
-	if ((colclickcount % 2) == 1) {
-	    var col = $("#sortColumn").val();
-	    currentColumn = col;
-	    refreshSort(transactionData,currentColumn,currentOrderIsAscending);
-	}
-	colclickcount++;
-    });
-
-    var ordclickcount = 0;
-    $("#orderDropdownWrapper").click(function(){
-	if ((ordclickcount % 2) == 1) {
-	    var ord = $("#sortOrder").val();
-            currentOrderIsAscending =  (ord == "asc");
-	    refreshSort(transactionData,currentColumn,currentOrderIsAscending);
-	}
-	ordclickcount++;
-    });
-
-    function refreshSort(transactionData,col,ord) {
-        sortByColumnAndRedraw(transactionData,col,ord);
-        grid.setData(transactionData);
-        grid.invalidateAllRows();
-        grid.render();
-        redrawDetailArea(currentPage);
-    }
-
-    $(function () {
-	$('#myGrid').innerHTML = "";
-	grid = new Slick.Grid("#myGrid", transactionData, columns, options);
-
-	// There's got to be a way to make this more compact!!!
-	grid.onSort.subscribe(function (e, args) {
-
-	    var currentSortCol;
-	    var isAsc = args.sortAsc;
-	    currentSortCol = args.sortCol.field;
-	    sortByColumnAndRedraw(transactionData,currentSortCol,isAsc);
-
-	    grid.setData(transactionData);
-	    grid.invalidateAllRows();
-	    grid.render();
-	    redrawDetailArea(currentPage);
-	});
-    });
-
-    grid.onClick.subscribe(function (e) {
-	var cell = grid.getCellFromEvent(e);
-	if (grid.getColumns()[cell.cell].id == "starred") {
-            if (!grid.getEditorLock().commitCurrentEdit()) {
-		return;
-            }
-            var states = { "": "Starred", "Starred": ""};
-            data[cell.row].starred = states[data[cell.row].starred];
-            grid.updateRow(cell.row);
-            e.stopPropagation();
-	}
-    });
-
-    var plotData = [[]];
-    var i = 0;
-    var thingToPlot = data.forEach(function (e) {
-	// we don't want to plot it if it is more than 4 times the median price, 
-	// as it is probably erroneous
-
-	if ((data.length < 15) || (medianUnitPrice <= 100.0) || (e.unitPrice < (medianUnitPrice * 4.0))) {
-	    var newArray = [];
-
-	    newArray[0] = e.orderDate;
-	    newArray[1] = Math.ceil(e.unitPrice * 100) / 100;
-	    newArray[2] = Math.sqrt(Math.abs(e.unitsOrdered));
-	    newArray[3] = {
-		label: e.vendor,
-		color:  e.color
-	    };
-	    plotData[0].push(newArray);
-	}
-    });
-
-    $('#chartdiv').empty();
-
-// It seems we no longer need this!
-//    if (isIE8orLower) {
-    if (false) {
-      $('#chartdiv').append("<div style='width: 700px; color: red; margin: 20px'>The graph not supported on Internet Explorer less than Version 9.  You appear to be using version "+ieversion+", or your browser is using that as its rendering mode for some reason. If you need the graph, upgrade, or use a different browser, or change the document mode.<\div>");
-    } else {
-    var plot1b = $.jqplot('chartdiv', plotData, {
-	title: 'Unit Prices',
-	seriesDefaults:{
-            renderer: $.jqplot.BubbleRenderer,
-            rendererOptions: {
-		bubbleAlpha: 0.6,
-		highlightAlpha: 0.8,
-		showLabels: false
-            },
-            shadow: true,
-            shadowAlpha: 0.05
-        },
-	axes:{
-            xaxis:{
-		renderer:$.jqplot.DateAxisRenderer,
-		label: '<span color: black;>Color denotes Vehicle.</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span>Bubble size denotes number of units.</span>'
-            },
-            yaxis:{
-		label: 'Dollars',
-		tickOptions:{
-		    formatString:'$%.2f'
-		}
-            }
-	},
-	highlighter: {
-            show: true,
-            sizeAdjust: 7.5
-	},
-	cursor: {
-            show: true,
-            tooltipLocation:'sw'
-	}
-    }
-			 );
-    }
-
-
-    // Now bind function to the highlight event to show the tooltip
-    // and highlight the row in the legend.
-    $('#chartdiv').bind('jqplotDataHighlight',
-			function (ev, seriesIndex, pointIndex, data, radius) {   
-			    var chart_left = $('#chartdiv').offset().left,
-			    chart_top = $('#chartdiv').offset().top,
-			    x = plot1b.axes.xaxis.u2p(data[0]),  // convert x axis unita to pixels
-			    y = plot1b.axes.yaxis.u2p(data[1]);  // convert y axis units to pixels
-			    var color = 'rgb(50%,50%,100%)';
-			    $('#tooltip1b').css({left:chart_left+x+radius+5, top:chart_top+y});
-			    
-			    $('#tooltip1b').html('<span style="font-size:14px;font-weight:bold;color: ' + color + ';">' + data[3] + '</span><br />' + 'x: ' + data[0] +
-						 '<br />' + 'y: ' + data[1] + '<br />' + 'r: ' + data[2]);
-			    
-			    $('#tooltip1b').show();
-			});
-    // Bind a function to the unhighlight event to clean up after highlighting.
-    $('#chartdiv').bind('jqplotDataUnhighlight',
-			function (ev, seriesIndex, pointIndex, data) {
-			    $('#tooltip1b').empty();
-			    $('#tooltip1b').hide();
-			});
-}
-
-
+    grid_rendering();
+  initialize_plot(data,medianUnitPrice);
+  }
 
   performSearch();
 

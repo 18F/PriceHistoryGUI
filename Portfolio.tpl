@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Portfolio</title>
+    <title>Portfolio v. 0.4 BETA Search</title>
     <meta name="robots" content="NOINDEX, NOFOLLOW">
     <link href="./theme/css/mainPage.css" rel="stylesheet" type="text/css" media="screen, projection">
     <link rel="stylesheet" href="../SlickGrid-master/slick.grid.css" type="text/css">
@@ -10,7 +10,6 @@
 
     <link rel="stylesheet" type="text/css" href="../js/jqPagination-master/css/jqpagination.css"> 
     {{!goog_anal_script}}
-
 </head>
 <body>
 
@@ -118,13 +117,6 @@
 
 <div id="detailArea"></div>
 
-<!-- This should not be turned on until I can tie everything together better
-with javascript
-  <span id="paginationHolder2">
-</span>
--->
-
-
 <div style="clear:both"></div>
 
 
@@ -136,6 +128,11 @@ Clicking on a column header will sort both the grid and the detail area by that 
 </p>
   <div id="myGrid" style="height:500px;"></div> 
 <p></p>
+
+    <div id="footer">
+    	<p>PricesPaid (v. 0.4 BETA) is an official website of the U.S. Government, powered by GSA.</p>
+    	<p><strong>Send Feedbak/Report Issues to:</strong> <a href="mailto:robert.read@gsa.gov">robert.read@gsa.gov</a></p>
+    </div>   
 
 <form method="get" id="fakeLogoutForm" action="./">
 </form>
@@ -167,6 +164,8 @@ Clicking on a column header will sort both the grid and the detail area by that 
 	<script  src="../js/feedback_me/js/jquery.feedback_me.js"></script>
 	<script  src="./js/StandardFunctions.js"></script>
 	<script  src="./js/Utility.js"></script>
+	<script  src="./js/result_rendering.js"></script>
+	<script  src="./js/grid_rendering.js"></script>
 	<script  src="./js/header.js"></script>
 	<script  src="./js/GUISpecifics.js"></script>
 	<script  src="./js/pagination.js"></script>
@@ -259,54 +258,8 @@ var currentColumn = "score";
 
 
 
-function sortByColumnAndRedraw(transactionData,col,asc) {
-  sortByColumn(transactionData,col,asc);
-// I would rather reset the current page, but it is buggy...
-// This is the best that I can do on short notice.
-//  currentPage = 0;
-  redrawDetailArea(currentPage);
-}
 
 
-// WARNING!!!
-// This seems to do nothing on IE8.  Fixing this problem for IE8 is probably the most important thing 
-// we can do.  It was always pretty unattractive anyway---I must find a way to simplify.
-// It may or may not be "on(click", stuff, it just deosn't render anytrhing!.
-// The first thing to try is probably switching out of JQuery and doing a "getelementById" and innerHTML solution.
-    function redrawDetailArea(page) {
-	var detailAreaDiv = $("#"+'detailArea');
-	detailAreaDiv.empty();
-	var smallSlice = transactionData.slice(page*PAGESIZE,
-Math.min((page+1)*PAGESIZE,transactionData.length));
-	smallSlice.forEach(function (e,i,a) {
-            detailAreaDiv.append(renderStyledDetail(e,SCRATCH_NUMBER));
-	    $(document).on( "click", "#itemDetails"+SCRATCH_NUMBER, detailItemHandler );
-
-// Ugly....
-	    itemDetailAssociation[SCRATCH_NUMBER] = i+page*PAGESIZE;
-	    SCRATCH_NUMBER++;
-	});
-
-// Now we must make the drag/drop work.
-       $( ".droppablerecord" ).droppable({
-           tolerance: "touch",
-           drop: function(event, ui) {
-                 var text = ui.draggable.text();
-                 var portfolio = isPortfolio(text);
-		 alert("this hello = "+ $(this).attr('p3id'));
-		 var key = $(this).attr('p3id');
-                 var deco = (portfolio) ? HANDLER_NAMESPACE_OBJECT.portfolio_url
-		                        : HANDLER_NAMESPACE_OBJECT.tag_url;
-                 $.post(deco+"/add_record/"+text+"/"+key,
-//			function () { process_record_request(key);}
-		        function () {}
-                     ).fail(function() { alert("The addition of that record to the content_area portfolio failed."); });
-            }
-	});
-
-       $( ".droppablerecord" ).draggable({ revert: true });
-
-    }
 
 function processAjaxSearch(dataFromSearch) {
 // If we timed out or failed to authenticate, we need to alert the user.
@@ -352,7 +305,7 @@ recreatePagination();
                 currentPage     : 1,
 		paged		: function(page) {
                 currentPage = page - 1;
-                redrawDetailArea(currentPage);
+                redrawDetailArea(transactionData,currentPage);
 		}
 	});
 
@@ -361,141 +314,10 @@ recreatePagination();
     var secondsSpent = (timeSearchEnded-timeSearchBegan)/1000.0;
     $('#timeSpentRender').text(secondsSpent.toFixed(2));
 
-    // Now I'm going to try something weird, which seems justified by the nature
-    // of our data--I'm only going to plot the lowest-prices 80%.  The upper
-    // 20% is often something not really in the data set you are looking at
-    // and it messes up the plot.  This should really be under the control
-    // of the user, but that will have to wait.
-    // In order to do this we will sort on unitPrice, which is probably
-    // a good way to present the data anyway.
-    transactionData.sort(
-        function (a,b) {
-            var ret;
-            if (parseFloat(a["unitPrice"]) < parseFloat(b["unitPrice"])) {
-                ret = 1;
-            } else if (parseFloat(a["unitPrice"]) > parseFloat(b["unitPrice"])) {
-                ret = -1;
-            } else {
-                ret = 0;
-            }
-            return ret;
-        });
+// This is currently global to grid_rendering...
+    var medianUnitPrice = 0.0;
 
-    var medianValue = medianSortedValues(transactionData);
-    var medianUnitPrice = (transactionData.length > 0) ? medianValue
-        : 0.0;
-
-    var sumOfUnitPrice = 0.0;
-    transactionData.forEach(function(d) {
-        var x = parseFloat(d["unitPrice"]);
-        if (!isNaN(x))
-            sumOfUnitPrice += x
-        else {
-            d["unitPrice"] = "0.0";
-        }
-    });
-
-   var currentColumn = "score";
-   var currentOrderIsAscending = false; 
-   sortByColumn(transactionData,currentColumn,currentOrderIsAscending);
-
-    var options = {
-        editable: true,
-        asyncEditorLoading: false,
-        enableCellNavigation: true,
-        enableColumnReorder: false
-    };
-
-
-    transactionData.forEach(function (e,i,a) {
-        var obj = e;
-        e["starred"] = "";
-// This randomizes color but keeps the same colors associated with the same 
-// field...
-        e.color = standardColors[Math.abs(Hashcode.value(e["awardIdIdv"])) % NUM_STANDARD_COLORS];
-        data[i] = obj;
-    });
-
-    redrawDetailArea(0);
-
-    function renderStarredTransactionsInDetailArea() {
-	var div = document.getElementById('detailArea');
-	div.innerHTML = "";
-	data.forEach(function (e) {
-            if (e.starred == "Starred") {
-		div.innerHTML += renderStyledDetail(e);
-	    }
-	});
-    }
-
-    // Define function used to get the data and sort it.
-    function getItem(index) {
-	return transactionData[index];
-    }
-    function getLength() {
-	return transactionData.length;
-    }
-    var colclickcount = 0;
-
-
-    $("#columnDropdownWrapper").click(function(){
-	if ((colclickcount % 2) == 1) {
-	    var col = $("#sortColumn").val();
-	    currentColumn = col;
-	    refreshSort(currentColumn,currentOrderIsAscending);
-	}
-	colclickcount++;
-    });
-
-    var ordclickcount = 0;
-    $("#orderDropdownWrapper").click(function(){
-	if ((ordclickcount % 2) == 1) {
-	    var ord = $("#sortOrder").val();
-            currentOrderIsAscending =  (ord == "asc");
-	    refreshSort(currentColumn,currentOrderIsAscending);
-	}
-	ordclickcount++;
-    });
-
-    function refreshSort(col,ord) {
-        sortByColumnAndRedraw(transactionData,col,ord);
-        grid.setData(transactionData);
-        grid.invalidateAllRows();
-        grid.render();
-        redrawDetailArea(currentPage);
-    }
-
-    $(function () {
-	$('#myGrid').innerHTML = "";
-	grid = new Slick.Grid("#myGrid", transactionData, columns, options);
-
-	// There's got to be a way to make this more compact!!!
-	grid.onSort.subscribe(function (e, args) {
-
-	    var currentSortCol;
-	    var isAsc = args.sortAsc;
-	    currentSortCol = args.sortCol.field;
-	    sortByColumnAndRedraw(transactionData,currentSortCol,isAsc);
-
-	    grid.setData(transactionData);
-	    grid.invalidateAllRows();
-	    grid.render();
-	    redrawDetailArea(currentPage);
-	});
-    });
-
-    grid.onClick.subscribe(function (e) {
-	var cell = grid.getCellFromEvent(e);
-	if (grid.getColumns()[cell.cell].id == "starred") {
-            if (!grid.getEditorLock().commitCurrentEdit()) {
-		return;
-            }
-            var states = { "": "Starred", "Starred": ""};
-            data[cell.row].starred = states[data[cell.row].starred];
-            grid.updateRow(cell.row);
-            e.stopPropagation();
-	}
-    });
+   grid_rendering();
 }
 
 performSearch()

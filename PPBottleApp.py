@@ -97,7 +97,7 @@ def pptriv():
         LogActivity.logBadCredentials(username)
         return template('Login',message='Improper Credentials.',goog_anal_script=GoogleAnalyticsInclusionScript)
     search_string = request.forms.get('search_string')
-    search_string = search_string if search_string is not None else "Dell Latitude"
+    search_string = search_string if search_string is not None else ""
     psc_pattern = request.forms.get('psc_pattern')
     ses_id = auth.create_session_id()
     LogActivity.logSessionBegin(username,ses_id)
@@ -128,7 +128,7 @@ def render_main_page(acsf,ses_id):
     auth.update_acsrf(ses_id)
 
     search_string = request.forms.get('search_string')
-    search_string = search_string if search_string is not None else "Dell Latitude"
+    search_string = search_string if search_string is not None else ""
     commodity_id = request.forms.get('commodity_id')
 
     LogActivity.logPageTurn(ses_id,"MainPage")
