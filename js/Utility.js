@@ -3,17 +3,17 @@
 // WARNING!!! This is needed to make forEach work on IE8.
 // This is from the Mozilla site.  I have no idea if this 
 // is a better idea than replaces forEach'es everywhere or not.
-if (!Array.prototype.forEach) {
-    Array.prototype.forEach = function (fn, scope) {
-        'use strict';
-        var i, len;
-        for (i = 0, len = this.length; i < len; ++i) {
-            if (i in this) {
-                fn.call(scope, this[i], i, this);
+    if (!Array.prototype.forEach) {
+	Array.prototype.forEach = function (fn, scope) {
+            'use strict';
+            var i, len;
+            for (i = 0, len = this.length; i < len; ++i) {
+		if (i in this) {
+                    fn.call(scope, this[i], i, this);
+		}
             }
-        }
-    };
-}
+	};
+    }
 
 
 function numberWithCommas(x) {
@@ -37,39 +37,4 @@ function medianSortedValues(values) {
     }
 }
 
-function sortByColumn(transactionData,col,asc) {
-// We need to reset the currentPage when we sort
-    var currentSortCol = col;
-    var isAsc = asc;
-    var stringSort = function(a,b) {
-	var ret;
-	if (a[currentSortCol] < b[currentSortCol]) {
-	    ret = 1;
-	} else if (a[currentSortCol] > b[currentSortCol]) {
-            ret = -1;
-	} else {
-            ret = 0;
-	}
-	if (isAsc) 
-	    return -1*ret;
-	else 
-	    return ret;
-    }
-    var numberSort = function(a,b) {
-	var ret;
-	if (parseFloat(a[currentSortCol]) < parseFloat(b[currentSortCol])) {
-	    ret = 1;
-	} else if (parseFloat(a[currentSortCol]) > parseFloat(b[currentSortCol])) {
-            ret = -1;
-	} else {
-            ret = 0;
-	}
-	if (isAsc) 
-	    return -1*ret;
-	else 
-	    return ret;
-    }
-    transactionData.sort(currentSortCol == "unitPrice" || 
-			 currentSortCol == "unitsOrdered" ? numberSort : stringSort);
-    return transactionData;
-}
+
