@@ -28,9 +28,11 @@ footer, header, hgroup, menu, nav, section {
 body {
 	line-height: 1;
 }
+/*
 ol, ul {
 	list-style: none;
 }
+*/
 blockquote, q {
 	quotes: none;
 }
@@ -60,28 +62,6 @@ body {
 }
 
 
-/* Header ----- */
-#header {
-	background:url('../img/bg_header.jpg') no-repeat top center; 
-	-webkit-background-size:cover;
-	-ms-background-size:cover;
-	-moz-background-size:cover;
-	-o-background-size:cover;
-	-khtml-background-size:cover;
-	background-size:cover;
-
-	color:#fff;
-/*	padding:30px 0 0; */
-}
-#header #pricespaid_logo {
-	float:left;
-        margin-right: 20px;
-}
-#header #gsa_logo {
-	color:#777777;
-	font-size:12px;
-	float:right;
-}
 
 .hideShowToggle {
 }
@@ -92,8 +72,6 @@ body {
     padding:60px;
 }
 
-#smallSearch {
-}
 
 #startpagesearch {
     margin-top: 0px;
@@ -113,7 +91,7 @@ body {
 #small_search {
 	font-size:18px;
 }
-
+/*
 #searchButton {
 }
 #searchButton {
@@ -129,13 +107,16 @@ body {
         margin-right: 10px;
 	text-decoration:none;
 }
+*/
 #searchButton:hover {
 	background-color:#378de5;
 }
+
 #searchButton:active {
 	position:relative;
 	top:1px;
 }
+
 #small_search_string {
         margin-left: 20px;
         width: 35%;
@@ -397,11 +378,9 @@ Note sure I really need them  */
 }
 
 
-#footer {margin:60px 0 20px 0; padding:20px; border-top:1px solid #e2e2e2; clear:both;}
-#footer p {color:#666; text-align:center; line-height:20px;}
-
-
 #bigsearchbutton {width:100px; height:78px; background:#5ab162 url(../img2/btn_search.png) no-repeat center center; border:1px solid #5ab162; text-indent:-5000px; }
+
+#searchButton {width:60px; height:60px; background:#5ab162 url(../img/small_icn_search.png) no-repeat center; border:1px solid #5ab162; text-indent:-5000px; }
 
 #bigsearchform {padding: 50px;}
 
@@ -409,17 +388,121 @@ Note sure I really need them  */
 
 
 
+/* Basic design parameters include:
+- Sidebar width (content Margin needs to be the same)
+- Header height (must match sidebar-search height)
+*/
 #sidebar {
     position: fixed;
+    top: 0px;
     right: 0%;
-    width:250px;
-    background:#c9c;
+    width:300px;
+    background: white;
     z-index: 3;
+}
+
+#sidebar_search {
+    background: #c9defb;
+    height: 60px;
+}
+
+#small_search_string {
+    width: 200px;
+}
+
+#portfolio_title {
+    position: absolute;
+    font-size: 24px;
+    margin-left: 15px;
+    margin-top: 18px;
 }
 
 #content {
     left: 0%;
-    width:1000px;
+    margin-left:25px;
+    margin-right:25px;
+    max-width:700px;
 }
 
+
+/* Header ----- */
+#header {
+/*	background:url('../img/bg_header.jpg') no-repeat top center; */
+	-webkit-background-size:cover;
+	-ms-background-size:cover;
+	-moz-background-size:cover;
+	-o-background-size:cover;
+	-khtml-background-size:cover;
+	background-size:cover;
+
+	background: #5e9ded;
+
+	color:#fff;
+/*	padding:30px 0 0; */
+	height: 60px;
+/* make this same as the sidebar width */
+        margin-right: 300px;
+	left: 0%;
+}
+#header #pricespaid_logo {
+	float:left;
+        margin-right: 30px;
+	background: #294668;
+	height: 40px;
+	width: 250px;
+	padding: 10px;
+        vertical-align: middle;
+}
+#header #pricespaid_logo img {
+        vertical-align: -20px;
+	height: 30px;
+}
+
+#header #gsa_logo {
+	color:#777777;
+	font-size:12px;
+	float:right;
+}
+/* This are all computed against the sidebar thickness */
+#helplink {
+    position:absolute;
+    right: 0px;
+    margin-right: 330px;
+    font-size: 24px;
+    top:18px; 
+    text-decoration:underline;
+    color: white;
+}
+
+#exportLink {
+    position:absolute;
+    right: 0px;
+    margin-right: 330px;
+    font-size: 24px;
+    top:18px; 
+    text-decoration:underline;
+    color: white;
+}
+
+#logoutLink {
+    position:absolute;
+    right: 0px;
+    margin-right: 500px;
+    font-size: 24px;
+    top:18px; 
+    text-decoration:underline;
+    color: white;
+}
+
+.decoration {
+    background: LightGray;
+    padding: 10px;
+    width: 240px;
+}
+
+.decoration img {
+    width: 16px;
+    padding: 4px;
+    vertical-align: middle;
+}
 
