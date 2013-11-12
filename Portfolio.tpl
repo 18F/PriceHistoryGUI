@@ -4,6 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Portfolio v. 0.4 BETA Search</title>
     <meta name="robots" content="NOINDEX, NOFOLLOW">
+    <link href="./theme/css/shared.css" rel="stylesheet" type="text/css" media="screen, projection">
     <link href="./theme/css/mainPage.css" rel="stylesheet" type="text/css" media="screen, projection">
     <link rel="stylesheet" href="../SlickGrid-master/slick.grid.css" type="text/css">
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
@@ -13,15 +14,53 @@
 </head>
 <body>
 
+<div id="sidebar">
+  <div id="sidebar_search">
+    <div id="portfolio_title">
+    {{portfolio}}
+    </div>
+  </div>
+
+<!-- Start experiperiments -->
+  <div class="row">
+<!--
+     <div class="col-md-4" id="current_decorations">
+          <p>Tags For This Record</p>
+          <ul id="current_tag_list"></ul>
+     </div>
+-->
+     <div class="col-md-4">
+          <p>Portfolios For This Record</p>
+          <ul id="current_portfolio_list"></ul>
+     </div>
+  </div>
+  <div class="row" id="portfolios">
+      <div class="col-md-8"> 
+    	 <button type="button" class="btn btn-like" id="add_portfolio_button">Add Portfolio</button>
+    	 <input type="text" id="new_portfolio_name" placeholder="New Portfolio Name...">
+         <div>All Portfolios</div>
+                 <ul id="portfolio_list"></ul>
+      </div>
+  </div>
+<!--
+<div class="col-md-4" id="tags">
+      <button type="button" class="btn btn-like" id="add_tag_button">Add Tag</button>
+      <input type="text" id="new_tag_name" placeholder="New Tag...">
+      <p>All Tags</p>
+      <ul id="tag_list"></ul>
+</div>
+-->
+
+</div>
+
+
     <!-- Start header -->
     <div id="header">
         <!-- Top part of header -->
-        <div class="inner">
         <!-- FACTOR OUT -->
             <span id="pricespaid_logo"><img src="theme/img/pp_logo_beta.png" alt="PricesPaid"></span>
-<span id="logoutLink" href="./Logout" style="color: white; cursor: pointer; text-decoration:underline">Logout</span>
-<a id="exportLink" href="./SimpleHTML?portfolio={{portfolio}}&antiCSRF={{acsrf}}&session_id={{session_id}}" style="color: white; cursor: pointer; text-decoration:underline" target="_blank">Export</a>
-        </div>
+<span id="logoutLink" href="./Logout">Logout</span>
+<a id="exportLink" href="./SimpleHTML?portfolio={{portfolio}}&antiCSRF={{acsrf}}&session_id={{session_id}}" target="_blank">Export</a>
 
     </div>
 
@@ -32,52 +71,16 @@
 <h1>Portfolio</h1>
 </div>
 
-<div class="hideShowToggle">
-<button id="hideShowGraph" >Hide/Show Graph</button>  
-</div>
-
-<div id="chartContainer">
-    <div id="chartdiv" ></div>
-</div>
-
    <div id="results-header">
-  <span class="majorlabel">Your Portfolio Contains: </span>
-  <span class="majorlabel" id="search_string_render"></span> 
-  <span class="majorlabel">Returned :  </span>
-  <span class="majorlabel" id="placeForNumberReturned"></span> 
-  <span class="majorlabel">Results </span>
-  <span class="majorlabel">in </span>
-  <span class="majorlabel" id="timeSpentRender">in </span>
-  <span class="majorlabel"> seconds. </span>
-</div>
+    <span class="majorlabel" id="placeForNumberReturned"></span> 
+    <span class="majorlabel">&nbsp;Transactions </span>
+    <span class="joininglabel">in portfolio</span>
+    <span class="majorlabel" id="search_string_render"></span> 
 
-<!-- Start experiperiments -->
-<div class="hideShowToggle">
-<button id="hideShowPortfolios">Hide/Show Portfolios</button>
 </div>
-
-<div class="row" id="portfolios">
-      <div class="col-md-8"> 
-    	 <button type="button" class="btn btn-like" id="add_portfolio_button">Add Portfolio</button>
-    	 <input type="text" id="new_portfolio_name" placeholder="New Portfolio Name...">
-         <div>All Portfolios</div>
-                 <ul id="portfolio_list"></ul>
-      </div>
-</div>
-<div class="col-md-4" id="tags">
-      <button type="button" class="btn btn-like" id="add_tag_button">Add Tag</button>
-      <input type="text" id="new_tag_name" placeholder="New Tag...">
-      <p>All Tags</p>
-      <ul id="tag_list"></ul>
-</div>
-
-
 
         <!-- Start results header -->
         <div>
-<div class="hideShowToggle">
-<button id="hideShowDetails">Hide/Show Details</button>
-</div>
 
 <div id="detail-header">
   <span id="paginationHolder1">
@@ -85,21 +88,7 @@
 
   <span id="results-sortby">
    <label>Sort by:</label>
-   <span id="columnDropdownWrapper">
-      <select id="sortColumn" >
-          <option value="score">Query Relevance</option>
-          <option value="unitPrice">Unit Price</option>
-          <option value="unitsOrdered">Units</option>
-          <option value="orderDate">Date</option>
-          <option value="vendor">Vendor</option>
-          <option value="productDescription">Product Description</option>
-          <option value="longDescription">Long Description</option>
-          <option value="contractingAgency">Contracting Agency</option>
-          <option value="awardIdIdv">Award ID/IDV</option>
-          <option value="commodityType">Commodity Type</option>
-          <option value="psc">PSC</option>
-     </select>
-   </span>
+   {{!column_dropdown}}
   </span>
 
   <span id="results-sortdir">
@@ -129,10 +118,7 @@ Clicking on a column header will sort both the grid and the detail area by that 
   <div id="myGrid" style="height:500px;"></div> 
 <p></p>
 
-    <div id="footer">
-    	<p>PricesPaid (v. 0.4 BETA) is an official website of the U.S. Government, powered by GSA.</p>
-    	<p><strong>Send Feedbak/Report Issues to:</strong> <a href="mailto:robert.read@gsa.gov">robert.read@gsa.gov</a></p>
-    </div>   
+{{!footer_html}}
 
 <form method="get" id="fakeLogoutForm" action="./">
 </form>
@@ -205,7 +191,7 @@ function performSearch() {
     $('#loading').show();
     $('#results-header').hide();
     timeSearchBegan = new Date();
-      $('#search_string_render').text('{{portfolio}}');
+      $('#search_string_render').html('&ldquo;{{portfolio}}&rdquo;');
       $.post("returnPortfolio",
 	   { antiCSRF: '{{acsrf}}',
              session_id: '{{session_id}}',

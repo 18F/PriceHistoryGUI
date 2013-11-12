@@ -72,8 +72,7 @@ function refreshSort(grid,transactionData,col,ord,currentPage) {
 Math.min((page+1)*PAGESIZE,transactionData.length));
 	smallSlice.forEach(function (e,i,a) {
             detailAreaDiv.append(renderStyledDetail(e,SCRATCH_NUMBER));
-	    $(document).on( "click", "#itemDetails"+SCRATCH_NUMBER, detailItemHandler );
-
+	    $(document).on( "click", "#scratch"+SCRATCH_NUMBER, detailItemHandler);
 // Ugly....
 	    itemDetailAssociation[SCRATCH_NUMBER] = i+page*PAGESIZE;
 	    SCRATCH_NUMBER++;

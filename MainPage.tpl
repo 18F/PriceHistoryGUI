@@ -4,10 +4,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>PricesPaid v. 0.4 BETA </title>
     <meta name="robots" content="NOINDEX, NOFOLLOW">
+    <link href="./theme/css/shared.css" rel="stylesheet" type="text/css" media="screen, projection">
     <link href="./theme/css/mainPage.css" rel="stylesheet" type="text/css" media="screen, projection">
     <link rel="stylesheet" href="../SlickGrid-master/slick.grid.css" type="text/css">
-<!--    <link rel="stylesheet" href="../SlickGrid-master/css/smoothness/jquery-ui-1.8.16.custom.css" type="text/css">
--->
 
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 
@@ -19,12 +18,61 @@
 <body>
 
 <div id="sidebar">
-<h2>Column 2</h2>
-<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit...</p>
-<ul>
-<li><a href="#">Link 1</a></li>
-<li><a href="#">Link 2</a></li>
-</ul>
+  <div id="sidebar_search">
+        <!-- Start search -->
+        <span id="smallSearch">
+       <input id="searchButton" name="submit" value="Search" class="input_submit" title="Click here to search the database" type="submit" onclick="performSearch();">
+                <input type="text" name="small_search_string" id="small_search_string" value="{{search_string}}" title=
+"
+Enter any number of search terms to get a list of results ranked by relevance to those terms. To limit a search to those only containing a certain terms, separate terms by the upper case AND, like &quot;laptop AND rugged&quot;.  To exclude results containing a term, put upper case NOT or - in front of it, like &quot;laptop AND NOT rugged&quot;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+To get more detailed help on searching, click the &quot;Help!&quot; link in the upper right of this page.
+"
+>
+
+        </span>
+</div>
+
+  <span>Limit results to: </span>
+  <input type="text" id="num_results_to_return" placeholder="100" title="Change number of results returned here. More results will slow your response time. If you find yourself paging through too many results, try adding terms to your search to increase the relevancy of your results, excluding terms by putting a minus sign (-) in front of a term you want to exclude.">
+
+  <!-- Start experiperiments -->
+<!--  <div class="hideShowToggle">
+  <button id="hideShowPortfolios">Hide/Show Portfolios</button>
+  </div>
+-->
+
+  <div class="row">
+<!--
+     <div class="col-md-4" id="current_decorations">
+          <p>Tags For This Record</p>
+          <ul id="current_tag_list"></ul>
+     </div>
+-->
+     <div class="col-md-4">
+          <p>Portfolios For This Record</p>
+          <ul id="current_portfolio_list"></ul>
+     </div>
+  </div>
+  <div class="row" id="portfolios">
+      <div class="col-md-8"> 
+    	 <button type="button" class="btn btn-like" id="add_portfolio_button">Add Portfolio</button>
+    	 <input type="text" id="new_portfolio_name" placeholder="New Portfolio Name...">
+         <div>All Portfolios</div>
+                 <ul id="portfolio_list"></ul>
+      </div>
+  </div>
+<!--
+<div class="col-md-4" id="tags">
+      <button type="button" class="btn btn-like" id="add_tag_button">Add Tag</button>
+      <input type="text" id="new_tag_name" placeholder="New Tag...">
+      <p>All Tags</p>
+      <ul id="tag_list"></ul>
+</div>
+-->
+
 </div>
 
     <!-- Start header -->
@@ -33,8 +81,11 @@
         <div>
         <!-- FACTOR OUT -->
             <span id="pricespaid_logo"><img src="theme/img/pp_logo_beta.png" alt="PricesPaid"></span>
+
+<!--  I'm not sure the commodity search is useful at all.
+
 		<span id="comDropdownWrapper" title="Choose a commodity type to search, based on (imperfect) PSC codes.">
-        <!-- FACTOR OUT -->
+
                 Commodity:
                 <select id="commodityChoice" >
                     <option value="All">All</option>
@@ -47,24 +98,11 @@
                     <option value="Component">Component</option>
                 </select>
 		</span>
+-->
 
-        <!-- Start search -->
-        <span id="smallSearch">
-                <input type="text" name="small_search_string" id="small_search_string" value="{{search_string}}" title=
-"
-Enter any number of search terms to get a list of results ranked by relevance to those terms. To limit a search to those only containing a certain terms, separate terms by the upper case AND, like &quot;laptop AND rugged&quot;.  To exclude results containing a term, put upper case NOT or - in front of it, like &quot;laptop AND NOT rugged&quot;
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-To get more detailed help on searching, click the &quot;Help!&quot; link in the upper right of this page.
-"
->
-                <input type="button" id="searchButton" value="Search" onclick="performSearch();">
-        </span>
-<a href="./SearchHelp" style="color: white">Help!</a>
-<span id="logoutLink" href="./Logout" style="color: white; cursor: pointer; text-decoration:underline">Logout</span>
         </div>
-
+<div id="logoutLink">Logout</div>
+<div id="helplink" ><a href="./SearchHelp" >Help!</a></div>
     </div>
 
     <!-- Content ... below the header -->
@@ -74,55 +112,13 @@ To get more detailed help on searching, click the &quot;Help!&quot; link in the 
 <h1>    Searching, Please Wait... </h1>
 </div>
 
-<div class="hideShowToggle">
-<button id="hideShowGraph" >Hide/Show Graph</button>  
-</div>
-
-<div id="chartContainer">
-    <div id="chartdiv" ></div>
-</div>
 
    <div id="results-header">
-  <span class="majorlabel">Results to return: </span>
-  <input type="text" id="num_results_to_return" placeholder="100" title="Change number of results returned here. More results will slow your response time. If you find yourself paging through too many results, try adding terms to your search to increase the relevancy of your results, excluding terms by putting a minus sign (-) in front of a term you want to exclude.">
-  <span class="majorlabel">Your Search for: </span>
-  <span class="majorlabel" id="search_string_render"></span> 
-  <span class="majorlabel">Returned :  </span>
-  <span class="majorlabel" id="placeForNumberReturned"></span> 
-  <span class="majorlabel">Results </span>
-  <span class="majorlabel">in </span>
-  <span class="majorlabel" id="timeSpentRender">in </span>
-  <span class="majorlabel"> seconds. </span>
-</div>
+    <span class="majorlabel" id="placeForNumberReturned"></span> 
+    <span class="majorlabel">&nbsp;Results </span>
+    <span class="joininglabel">for </span>
+    <span class="majorlabel" id="search_string_render"></span> 
 
-<!-- Start experiperiments -->
-<div class="hideShowToggle">
-<button id="hideShowPortfolios">Hide/Show Portfolios</button>
-</div>
-
-<div class="row">
-     <div class="col-md-4" id="current_decorations">
-          <p>Tags For This Record</p>
-          <ul id="current_tag_list"></ul>
-     </div>
-     <div class="col-md-4">
-          <p>Portfolios For This Record</p>
-          <ul id="current_portfolio_list"></ul>
-     </div>
-</div>
-<div class="row" id="portfolios">
-      <div class="col-md-8"> 
-    	 <button type="button" class="btn btn-like" id="add_portfolio_button">Add Portfolio</button>
-    	 <input type="text" id="new_portfolio_name" placeholder="New Portfolio Name...">
-         <div>All Portfolios</div>
-                 <ul id="portfolio_list"></ul>
-      </div>
-</div>
-<div class="col-md-4" id="tags">
-      <button type="button" class="btn btn-like" id="add_tag_button">Add Tag</button>
-      <input type="text" id="new_tag_name" placeholder="New Tag...">
-      <p>All Tags</p>
-      <ul id="tag_list"></ul>
 </div>
 
 
@@ -130,36 +126,15 @@ To get more detailed help on searching, click the &quot;Help!&quot; link in the 
 
 
         <!-- Start results header -->
-        <div>
-<div class="hideShowToggle">
-<button id="hideShowDetails">Hide/Show Details</button>
-</div>
-
-<div id="detail-header">
-  <span id="paginationHolder1">
-  </span>
+        <div id="sortcontrols">
 
   <span id="results-sortby">
-   <label>Sort by:</label>
-   <span id="columnDropdownWrapper">
-      <select id="sortColumn" >
-          <option value="score">Query Relevance</option>
-          <option value="unitPrice">Unit Price</option>
-          <option value="unitsOrdered">Units</option>
-          <option value="orderDate">Date</option>
-          <option value="vendor">Vendor</option>
-          <option value="productDescription">Product Description</option>
-          <option value="longDescription">Long Description</option>
-          <option value="contractingAgency">Contracting Agency</option>
-          <option value="awardIdIdv">Award ID/IDV</option>
-          <option value="commodityType">Commodity Type</option>
-          <option value="psc">PSC</option>
-     </select>
-   </span>
+   <label>Sort:</label>
+   {{!column_dropdown}}
   </span>
 
   <span id="results-sortdir">
-   <label>Sort order:</label>
+   <label>Order:</label>
    <span id="orderDropdownWrapper">
       <select id="sortOrder" >
           <option value="dsc">Descending</option>
@@ -167,6 +142,12 @@ To get more detailed help on searching, click the &quot;Help!&quot; link in the 
      </select>
    </span>
   </span>
+         </div>
+
+<div id="detail-header">
+  <span id="paginationHolder1">
+  </span>
+
 </div>
    
 <div style="clear:both;"></div>
@@ -192,15 +173,22 @@ Clicking on a column header will sort both the grid and the detail area by that 
   <div id="myGrid" style="height:500px;"></div> 
 <p></p>
 
+<div style="clear:both"></div>
+
+<div class="hideShowToggle">
+<button id="hideShowGraph" >Hide/Show Graph</button>  
+</div>
+
+<div id="chartContainer">
+    <div id="chartdiv" ></div>
+</div>
+
 </div>
 
 <!-- end of "content" -->
 </div> 
-    <div id="footer">
-    	<p>PricesPaid (v. 0.4 BETA) is an official website of the U.S. Government, powered by GSA.</p>
-    	<p><strong>Send Feedbak/Report Issues to:</strong> <a href="mailto:robert.read@gsa.gov">robert.read@gsa.gov</a></p>
-    </div>   
 
+{{!footer_html}}
 
 <form id="fakeform" method="post" action="PortfolioPage">        
     <input type="hidden" name="antiCSRF" value="{{acsrf}}" />
@@ -274,58 +262,6 @@ $(function() {
     }
 });
 });
-</script>
-
-<style>
-.ui-tooltip, .arrow:after {
-   background: black;
-   border: 2px solid white;
-   width: 50%;
-}
-.ui-tooltip {
-   padding: 10px 20px;
-   color: white;
-   border-radius: 20px;
-   font: bold 14px "Helvetica Neue", Sans-Serif;
-#   text-transform: uppercase;
-   box-shadow: 0 0 7px black;
-}
-.arrow {
-   width: 70px;
-   height: 16px;
-   overflow: hidden;
-   position: absolute;
-   left: 50%;
-   margin-left: -35px;
-   bottom: -16px;
-}
-.arrow.top {
-   top: -16px;
-   bottom: auto;
-}
-.arrow.left {
-   left: 20%;
-}
-.arrow:after {
-  content: "";
-  position: absolute;
-  left: 20px;
-  top: -20px;
-  width: 25px;
-  height: 25px;
-  box-shadow: 6px 5px 9px -9px black;
-  -webkit-transform: rotate(45deg);
-  -moz-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  -o-transform: rotate(45deg);
-  transform: rotate(45deg);
-}
-.arrow.top:after {
-  bottom: -20px;
-  top: auto;
-}
-</style>
-<script>
 
 $(document).ready(function(){
     $("#logoutLink").click(Logout);
@@ -381,6 +317,7 @@ $(document).ready(function(){
                 close_on_click_outside: false,
 		feedback_url : '{{feedback_url}}',
                 show_radio_button_list : true,
+                position: 'left-bottom',
                 radio_button_list_required : false,
                 radio_button_list_title: "How likely are you to recommend Prices Paid to a colleague (1 means not likely, 5 means very likely)?"
         };
@@ -425,7 +362,7 @@ internalFieldLabel["color"] = "Color";
 
 // Note: that search_string here is html-encoded by Bottle,
 // So presumably this does not represent a XSS vulnerability...
-$('#search_string_render').text('{{search_string}}');
+$('#search_string_render').html('&ldquo;{{search_string}}&rdquo;');
 
 $('#commodities li').first().addClass("selected");
 var currentlySelectedCommodityElement  = '{{commodity_id}}';
@@ -469,7 +406,7 @@ function performSearch() {
       alert("Please enter a search term.");
       $('#loading').hide();
     } else {
-      $('#search_string_render').text(search);
+      $('#search_string_render').html('&ldquo;'+search+'&rdquo;');
       $.post("search",
 	   { search_string: search,
              antiCSRF: '{{acsrf}}',

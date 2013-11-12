@@ -35,6 +35,11 @@ PathToCSSFiles=PathToExternalFiles+"css/"
 
 app = Bottle()
 
+# Begin Common Template Strings
+FOOTER_HTML = template('Footer')
+COLUMN_DROPDOWN_HTML = template('ColumnDropdown')
+
+# End Common Template Strings
 
 @app.route('/theme/<path:path>')
 def server_static(path):
@@ -51,6 +56,9 @@ def server_static(filename):
 @app.route('/MorrisDataDecorator/js/<filename>')
 def server_static(filename):
     return static_file(filename, root="../MorrisDataDecorator/js/")
+@app.route('/MorrisDataDecorator/imgs/<filename>')
+def server_static(filename):
+    return static_file(filename, root="../MorrisDataDecorator/imgs/")
 
 from bottle import template
 
@@ -85,7 +93,9 @@ def logoutViaGet():
 @app.route('/Login')
 def login():
     LogActivity.logPageTurn("nosession","LoginPage")
-    return template('Login',message='',goog_anal_script=GoogleAnalyticsInclusionScript)
+    return template('Login',message='',
+                    footer_html=FOOTER_HTML,
+                    goog_anal_script=GoogleAnalyticsInclusionScript)
 
 @app.route('/StartPage',method='POST')
 def pptriv():
@@ -95,7 +105,9 @@ def pptriv():
     time.sleep(1.0);
     if (not auth.does_authenticate(username,password)):
         LogActivity.logBadCredentials(username)
-        return template('Login',message='Improper Credentials.',goog_anal_script=GoogleAnalyticsInclusionScript)
+        return template('Login',message='Improper Credentials.',
+                    footer_html=FOOTER_HTML,
+                        goog_anal_script=GoogleAnalyticsInclusionScript)
     search_string = request.forms.get('search_string')
     search_string = search_string if search_string is not None else ""
     psc_pattern = request.forms.get('psc_pattern')
@@ -106,6 +118,7 @@ def pptriv():
                     acsrf=auth.get_acsrf(ses_id),\
                     username=username, \
                     session_id=ses_id,\
+                    footer_html=FOOTER_HTML,\
                     psc_pattern=psc_pattern,goog_anal_script=GoogleAnalyticsInclusionScript)
 
 @app.route('/PricesPaid',method='GET')
@@ -123,7 +136,9 @@ def pptriv():
 
 def render_main_page(acsf,ses_id):
     if (not auth.is_valid_acsrf(ses_id)):
-        return template('Login',message='Improper Credentials or Timeout.',goog_anal_script=GoogleAnalyticsInclusionScript)
+        return template('Login',message='Improper Credentials or Timeout.',
+                    footer_html=FOOTER_HTML,
+goog_anal_script=GoogleAnalyticsInclusionScript)
     
     auth.update_acsrf(ses_id)
 
@@ -136,6 +151,8 @@ def render_main_page(acsf,ses_id):
                     acsrf=auth.get_acsrf(ses_id),\
                     session_id=ses_id,\
                     feedback_url=LocalURLToRecordFeedback,\
+                    footer_html=FOOTER_HTML,\
+                    column_dropdown=COLUMN_DROPDOWN_HTML,\
                     commodity_id=commodity_id,goog_anal_script=GoogleAnalyticsInclusionScript)
 
 @app.route('/PortfolioPage',method='POST')
@@ -144,7 +161,9 @@ def render_portfolio():
     ses_id = request.forms.get('session_id')
 
     if (not auth.is_valid_acsrf(ses_id)):
-        return template('Login',message='Improper Credentials or Timeout.',goog_anal_script=GoogleAnalyticsInclusionScript)
+        return template('Login',message='Improper Credentials or Timeout.',
+                    footer_html=FOOTER_HTML,
+goog_anal_script=GoogleAnalyticsInclusionScript)
 
     auth.update_acsrf(ses_id)
 
@@ -156,6 +175,8 @@ def render_portfolio():
                     session_id=ses_id,\
                     portfolio=portfolio,\
                     feedback_url=LocalURLToRecordFeedback,\
+                    footer_html=FOOTER_HTML,\
+                    column_dropdown=COLUMN_DROPDOWN_HTML,\
                         goog_anal_script=GoogleAnalyticsInclusionScript)
 
 

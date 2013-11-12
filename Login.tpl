@@ -4,6 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
        <title>Prices Paid v. 0.4 BETA - Login</title>
        <meta name="robots" content="NOINDEX, NOFOLLOW">
+    <link href="./theme/css/shared.css" rel="stylesheet" type="text/css" media="screen, projection">
        <link href="/gui/theme/css/loginPage.css" rel="stylesheet" type="text/css" media="screen, projection">
     {{!goog_anal_script}}
     </head>
@@ -46,6 +47,8 @@ If you have longer feedback, a technical question, or need technical support, pl
 </form>
 </div>
 </div>
+
+{{!footer_html}}
 
 </body>
 </html>

@@ -69,7 +69,7 @@ function renderDetailArea(dataRow,i) {
 
 
 function detailItemHandler(e) {
-    var num = "itemDetails".length;
+    var num = "scratch".length;
     var scratch = $(this).attr('id').substring(num);
     var id = itemDetailAssociation[scratch];
     var expandableSection = $("#expandArea"+scratch);
@@ -93,24 +93,86 @@ function renderRow(label,content) {
     return row;
 }
 
-function renderStyledDetail(dataRow,scratchNumber) {
+/* The design of the result is:
+result , comprised of result-top, and result-bottom, and I will put result-detail in middle
+result-top will be result-left and result-right.  Result-right will float right.
+result-bottom has three areas result-bottom agency, result-bottom vehicle, and result-botom vendor.  This will be spans, with widths set
+in percentages.
+*/
+
+function renderAgency(dataRow) {
     var html = "";
-// This is a joke---in fact, we need to put the id here!
-    html +=      ' <div p3id="'+dataRow.p3id+'" class="result mydraggable droppablerecord">';
-    html +=      '<p class="result-details "><strong> '+dataRow.productDescription.substring(0,60)+' </strong> '+dataRow.longDescription.substring(0,160)+' </p>';
-    html +=      '<div class="result-meta">';
-    html +=          '<p class="result-unitscost"><strong> $'+numberWithCommas(dataRow.unitPrice)+'</strong> '+numberWithCommas(dataRow.unitsOrdered)+' units</p>';
-    html +=          '<p class="result-whenwho">'+dataRow.orderDate+' <strong> '+dataRow.contractingAgency.substring(0,30)+'</strong></p>';
-    html +=      '</div>';
+    html += '<div class="result-agency">';
+    html += '<div class="agency-name">' + dataRow.contractingAgency.substring(0,30) +"</div>";
+    html += '<div>' + dataRow.orderDate +"</div>";
+    html += '</div>\n';
+    return html;
+}
+function renderVehicle(dataRow) {
+    var html = "";
+    html += '<div class="result-vehicle">'+dataRow.awardIdIdv+'</div>\n';
+    return html;
+}
+function renderVendor(dataRow) {
+    var html = "";
+    html += '<div class="result-vendor">'+dataRow.vendor.substring(0,50)+'</div>\n';
+    return html;
+}
+
+function renderResultBottom(dataRow) {
+    var html = "";
+    html += '<div class="result-bottom">\n';
+    html += renderAgency(dataRow);
+    html += renderVehicle(dataRow);
+    html += renderVendor(dataRow);
+    html += '</div>\n';
+    return html;
+}
+
+function renderResultLeft(dataRow) {
+   var html = "";
+    html += '<div class="result-left">\n';
+    html += '<div class="result-short-desc">' + dataRow.productDescription.substring(0,60) +"</div>";
+    html += '<div class="result-long-desc">' + dataRow.longDescription.substring(0,160) +"</div>";
+    html += '</div>\n';
+    return html;
+}
+
+function renderResultRight(dataRow) {
+   var html = "";
+    html += '<div class="result-right">\n';
+    html += '<div class="result-cost"><span class="result-cost-glyph">$</span><span class="result-cost-number">'+numberWithCommas(dataRow.unitPrice) +"</span></div>";
+    html += '<div class="result-units">'+numberWithCommas(dataRow.unitsOrdered)+'</div>';
+    html += '</div>\n';
+    return html;
+}
+
+function renderResultTop(dataRow) {
+   var html = "";
+    html += '<div class="result-top">\n';
+    html += renderResultLeft(dataRow);
+    html += renderResultRight(dataRow);
+    html += '</div>\n';
+    return html;
+}
+
+function renderExpandArea(dataRow,scratchNumber) {
+   var html = "";
     html +=      '<div style="clear:both;"></div>';
-    html +=      '<div class="result-smallprint">';
-    html +=          '<span class="indicator red" style="background-color:'+dataRow.color+';" ></span>';
-    html +=          '<p><strong>Award ID/IDV:</strong> '+dataRow.awardIdIdv+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Vendor:</strong> '+dataRow.vendor.substring(0,50)+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>PSC:</strong> '+dataRow.psc+ '</p>';
     var itemDetails = "itemDetails"+scratchNumber;
     var expandArea = "expandArea"+scratchNumber;
-    html +=          '<span class="result-more">Click for Item Details  <img id="'+itemDetails+'" src="theme/img/display-details.png" /></span>';
+ var expandArea = "expandArea"+scratchNumber;
     html += '<span id="'+expandArea+'"></span>';
     html +=          '<div style="clear:both;"></div>';
-    html +=      '</div>';
+    return html;
+}
+
+function renderStyledDetail(dataRow,scratchNumber) {
+    var html = "";
+    html += '<div class="result" id="scratch'+scratchNumber+'">\n';
+    html += renderResultTop(dataRow);
+    html += renderExpandArea(dataRow,scratchNumber);
+    html += renderResultBottom(dataRow);
+    html += '</div>\n';
     return html;
 }
