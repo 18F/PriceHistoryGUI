@@ -5,19 +5,18 @@
     <meta charset="UTF-8">
     <title>PricesPaid v. 0.4 BETA Start</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./theme/css/shared.css" rel="stylesheet" type="text/css" media="screen, projection">
     <link href="./theme/css/mainPage.css" rel="stylesheet" type="text/css" media="screen, projection">
     {{!goog_anal_script}}
 </head>
 
 <body id="start">
 
-<div id="header" style="min-height: 75px;">
+<div id="header">
         <!-- Top part of header -->
-        <div class="inner">
         <!-- FACTOR OUT -->
             <span id="pricespaid_logo"><img src="theme/img/pp_logo_beta.png" alt="PricesPaid"></span>
-<span id="logoutLink" href="./Logout" style="color: white; cursor: pointer; text-decoration:underline; margin-left: 400px;">Logout</span>
-        </div>
+<div id="logoutLink" href="./Logout">Logout</div>
 </div>
 
 <form method="get" id="fakeLogoutForm" action="./">
@@ -44,15 +43,14 @@
 		<input type="hidden" name="antiCSRF" value="{{acsrf}}" />
 		<input type="hidden" name="session_id" value="{{session_id}}" />
 		<input type="hidden" name="commodity_id" id="commodity_id" />
-        	<div><input name="search_string" id="search_string" placeholder="Search ..." maxlength="500" class="input_text" title="Search the database" type="text">
+        	<div><input name="search_string" id="search_string" 
+			    placeholder="Search ..." maxlength="500" 
+			    class="input_text" title="Search the database" type="text">
 
 <input id="bigsearchbutton" name="submit" value="Search" class="input_submit" title="Click here to search the database" type="submit"></div>
             </form>
 
-    <div id="footer">
-    	<p>PricesPaid (v. 0.4 BETA) is an official website of the U.S. Government, powered by GSA.</p>
-    	<p><strong>Send Feedbak/Report Issues to:</strong> <a href="mailto:robert.read@gsa.gov">robert.read@gsa.gov</a></p>
-    </div>   
+{{!footer_html}}
 
 </div>
 </body>

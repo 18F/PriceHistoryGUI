@@ -143,14 +143,23 @@ body {
 	margin-bottom:70px;
 }
 
+#sortcontrols {
+    padding: 3px;
+    border-top-style:solid;
+    border-bottom-style:solid;
+    border-width:2px;
+    border-color:LightGray;
+}
 
 /* Results ----- */
 #results-header {
 /*	border-top:1px solid #ddd;
 	border-bottom:1px solid #ddd;
 */
-	padding:10px 0;
+	padding:20px;
+	margin-left: 30px;
 	margin-bottom:10px;
+	margin-top:30px;
 }
 #results-header h2 {
 	font-size:24px;
@@ -185,7 +194,17 @@ body {
 	font-size: 20px;
 	color:#666;
 }
+#results-sortby label {
+	font-size: 20px;
+	color:#666;
+}
+#results-sortby select {
+        color: Blue;
+}
 
+#orderDropdownWrapper select {
+        color: Blue;
+}
 
 #sortOrder {
     font-size: 20px;
@@ -199,6 +218,7 @@ body {
 .result {
 	background-color:#fff;
 	margin-bottom:15px;
+	margin-top:15px;
 }
 .result .result-image {
 	float:left;
@@ -293,8 +313,7 @@ body {
 	vertical-align:middle;
 	margin-top:-5px;
 }
-/* Marty --- why is this inheriting a bunch of stuff I have to override?
-I don't believe I should have to specify all this, but my css skills are weak. */
+
 .itemDetailArea {
         font-size: 15px;
         color: black;
@@ -344,7 +363,15 @@ Note sure I really need them  */
 }
 
 .majorlabel {
-        margin-right: 5%;
+        font-size: 30px;
+	font-weight: bolder;
+}
+
+.joininglabel {
+        font-size: 22px;
+	font-style: italic;
+	margin-left: 20px;
+	margin-right: 20px;
 }
 
 #tooltip1b {
@@ -506,3 +533,83 @@ Note sure I really need them  */
     vertical-align: middle;
 }
 
+.result-agency {
+    float: left;
+    width: 33%;
+    border:solid;
+    border-width:1px;
+    border-color:LightGray;
+    background: #fbfbfb;
+    height: 60px;
+}
+.agency-name {
+    font-weight: bolder;
+}
+.result-vehicle {
+    float: left;
+    width: 33%;
+    border:solid;
+    border-width:1px;
+    border-color:LightGray;
+    background: #fbfbfb;
+    height: 60px;
+}
+.result-vendor {
+    float: right;
+    width: 33%;
+    border:solid;
+    border-width:1px;
+    border-color:LightGray;
+    background: #fbfbfb;
+    height: 60px;
+}
+.result-bottom {
+    background: #fbfbfb;
+    height: 60px;
+    margin-top: 20px;
+}
+.result-right {
+    float: right;
+    width: 33%;
+    background: white;
+    text-align: right;
+}
+.result-left {
+    float: left;
+    width: 66%;
+    background: white;
+}
+.result-short-desc {
+    font-weight: bolder;
+    color: #538eda;
+}
+.result-long-desc {
+}
+.result-top {
+    background: white;
+    padding: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.result-cost {
+    font-weight: bold;
+    padding: 3px;
+    height: 20px;
+}
+.result-cost-glyph {
+    background: #009900;
+    color: #f1f8f0;
+    font-weight: bold;
+    padding: 3px;
+    height: 20px;
+} 
+.result-cost-number {
+    background: #3fd33f;
+    color: white;
+    font-weight: bold;
+    padding: 3px;
+    height: 20px;
+} 
+.result-units {
+    font-weight: bold;
+}
