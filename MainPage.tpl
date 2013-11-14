@@ -38,6 +38,7 @@ To get more detailed help on searching, click the &quot;Help!&quot; link in the 
   <span>Limit results to: </span>
   <input type="text" id="num_results_to_return" placeholder="100" title="Change number of results returned here. More results will slow your response time. If you find yourself paging through too many results, try adding terms to your search to increase the relevancy of your results, excluding terms by putting a minus sign (-) in front of a term you want to exclude.">
 
+  <div id="sidebarpaginator">   <span id="paginationHolder2"> </div>
   <!-- Start experiperiments -->
 <!--  <div class="hideShowToggle">
   <button id="hideShowPortfolios">Hide/Show Portfolios</button>
@@ -81,25 +82,6 @@ To get more detailed help on searching, click the &quot;Help!&quot; link in the 
         <div>
         <!-- FACTOR OUT -->
             <span id="pricespaid_logo"><img src="theme/img/pp_logo_beta.png" alt="PricesPaid"></span>
-
-<!--  I'm not sure the commodity search is useful at all.
-
-		<span id="comDropdownWrapper" title="Choose a commodity type to search, based on (imperfect) PSC codes.">
-
-                Commodity:
-                <select id="commodityChoice" >
-                    <option value="All">All</option>
-                    <option value="CPU">CPU</option>
-                    <option value="Software">Software</option>
-                    <option value="Supplies">Supplies</option>
-                    <option value="Punchcards">Punchcards</option>
-                    <option value="Configuration">Configuration</option>
-                    <option value="Mini-Micro">Mini-Micro</option>
-                    <option value="Component">Component</option>
-                </select>
-		</span>
--->
-
         </div>
 <div id="logoutLink">Logout</div>
 <div id="helplink" ><a href="./SearchHelp" >Help!</a></div>
@@ -114,6 +96,7 @@ To get more detailed help on searching, click the &quot;Help!&quot; link in the 
 
 
    <div id="results-header">
+    <span class="majorlabel" id="optionalPrefix">First &nbsp;</span> 
     <span class="majorlabel" id="placeForNumberReturned"></span> 
     <span class="majorlabel">&nbsp;Results </span>
     <span class="joininglabel">for </span>
@@ -390,6 +373,15 @@ function isNumber(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
+function get_max_results() {
+    var max_results = $('#num_results_to_return').val();
+    var max_results_num = parseFloat(max_results);
+    if (!isNumber(max_results_num)) {
+       max_results_num = DEFAULT_NUM_RESULTS;
+    }
+     return max_results_num;
+}
+
 function performSearch() {
     $('#loading').show();
     $('#results-header').hide();
@@ -397,11 +389,7 @@ function performSearch() {
     var standard = standardCommodities[currentCommodityId];
 
     var search = $('#small_search_string').val();
-    var max_results = $('#num_results_to_return').val();
-    var max_results_num = parseFloat(max_results);
-    if (!isNumber(max_results_num)) {
-       max_results_num = DEFAULT_NUM_RESULTS;
-    }
+    var max_results_num = get_max_results();
     if (search.length == 0) {
       alert("Please enter a search term.");
       $('#loading').hide();
@@ -465,6 +453,12 @@ function processAjaxSearch(dataFromSearch) {
 
     var numberDiv = document.getElementById('placeForNumberReturned');
     numberDiv.innerHTML = totalNumber;
+    var max_results_num = get_max_results();
+    if (totalNumber >= max_results_num) {
+       $('#optionalPrefix').show();
+    } else {
+       $('#optionalPrefix').hide();
+    }
 
 
 recreatePagination();

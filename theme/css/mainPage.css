@@ -170,6 +170,7 @@ body {
 #detail-header {
 	font-size: 40px;
         padding: 7px;
+	margin-left: 20%
 }
 
 /* These can probably be replaced by classes */
@@ -407,7 +408,7 @@ Note sure I really need them  */
 
 #bigsearchbutton {width:100px; height:78px; background:#5ab162 url(../img2/btn_search.png) no-repeat center center; border:1px solid #5ab162; text-indent:-5000px; }
 
-#searchButton {width:60px; height:60px; background:#5ab162 url(../img/small_icn_search.png) no-repeat center; border:1px solid #5ab162; text-indent:-5000px; }
+#searchButton {width:60px; height:60px; background: #c9defb url(../img/icn_search.png) no-repeat center; border:1px solid #c9defb; text-indent:-5000px; }
 
 #bigsearchform {padding: 50px;}
 
@@ -426,6 +427,7 @@ Note sure I really need them  */
     width:300px;
     background: white;
     z-index: 3;
+    margin-top: 25px;
 }
 
 #sidebar_search {
@@ -470,6 +472,8 @@ Note sure I really need them  */
 /* make this same as the sidebar width */
         margin-right: 300px;
 	left: 0%;
+	margin-top: 25px;
+	margin-left: 25px;
 }
 #header #pricespaid_logo {
 	float:left;
@@ -490,33 +494,32 @@ Note sure I really need them  */
 	font-size:12px;
 	float:right;
 }
-/* This are all computed against the sidebar thickness */
-#helplink {
-    position:absolute;
-    right: 0px;
-    margin-right: 330px;
-    font-size: 24px;
-    top:18px; 
-    text-decoration:underline;
-    color: white;
-}
 
 #exportLink {
     position:absolute;
     right: 0px;
     margin-right: 330px;
     font-size: 24px;
-    top:18px; 
     text-decoration:underline;
     color: white;
 }
 
 #logoutLink {
     position:absolute;
+    margin-top: 15px;
     right: 0px;
-    margin-right: 500px;
+     margin-right: 500px;
     font-size: 24px;
-    top:18px; 
+    text-decoration:underline;
+    color: white;
+}
+/* This are all computed against the sidebar thickness */
+#helplink {
+   position:absolute;
+    margin-top: 15px;
+   right: 0px;
+    margin-right: 330px;
+    font-size: 24px;
     text-decoration:underline;
     color: white;
 }
