@@ -12,8 +12,6 @@ function recreatePagination() {
     html += '</div>';
     $('#paginationHolder1').html(html);
 
-// I can't use the second paginator until I tie everything together with
-// javascript --- this will take too much time.
-//    var wrappedHtml = '<p>'+html+'</p>';
-//    $('#paginationHolder2').html(wrappedHtml);
+// TODO:  uncomment this when we have a way to synchronzie the paginators
+//    $('#paginationHolder2').html(html);
 }
