@@ -142,7 +142,7 @@ function renderResultRight(dataRow) {
    var html = "";
     html += '<div class="result-right">\n';
     html += '<div class="result-cost"><span class="result-cost-glyph">$</span><span class="result-cost-number">'+numberWithCommas(dataRow.unitPrice) +"</span></div>";
-    html += '<div class="result-units">'+numberWithCommas(dataRow.unitsOrdered)+'</div>';
+    html += '<div class="result-units">'+numberWithCommas(dataRow.unitsOrdered)+' Units</div>';
     html += '</div>\n';
     return html;
 }
@@ -159,9 +159,7 @@ function renderResultTop(dataRow) {
 function renderExpandArea(dataRow,scratchNumber) {
    var html = "";
     html +=      '<div style="clear:both;"></div>';
-    var itemDetails = "itemDetails"+scratchNumber;
     var expandArea = "expandArea"+scratchNumber;
- var expandArea = "expandArea"+scratchNumber;
     html += '<span id="'+expandArea+'"></span>';
     html +=          '<div style="clear:both;"></div>';
     return html;
@@ -169,7 +167,7 @@ function renderExpandArea(dataRow,scratchNumber) {
 
 function renderStyledDetail(dataRow,scratchNumber) {
     var html = "";
-    html += '<div class="result" id="scratch'+scratchNumber+'">\n';
+    html += '<div class="result droppablerecord" id="scratch'+scratchNumber+'" p3id="'+dataRow.p3id+'">\n';
     html += renderResultTop(dataRow);
     html += renderExpandArea(dataRow,scratchNumber);
     html += renderResultBottom(dataRow);

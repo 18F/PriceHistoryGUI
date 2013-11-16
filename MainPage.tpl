@@ -4,6 +4,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>PricesPaid v. 0.4 BETA </title>
     <meta name="robots" content="NOINDEX, NOFOLLOW">
+    <link rel="stylesheet" type="text/css" 
+	  href="./theme/css/decoration_gui.css" >
     <link href="./theme/css/shared.css" rel="stylesheet" type="text/css" media="screen, projection">
     <link href="./theme/css/mainPage.css" rel="stylesheet" type="text/css" media="screen, projection">
     <link rel="stylesheet" href="../SlickGrid-master/slick.grid.css" type="text/css">
@@ -11,7 +13,10 @@
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 
     <link rel="stylesheet" type="text/css" href="../js/jquery.jqplot.css" >
+
     <link rel="stylesheet" type="text/css" href="../js/jqPagination-master/css/jqpagination.css"> 
+
+    <link rel="stylesheet" type="text/css" href="../js/jquery.jqplot.css" >
     {{!goog_anal_script}}
 
 </head>
@@ -33,47 +38,28 @@ To get more detailed help on searching, click the &quot;Help!&quot; link in the 
 >
 
         </span>
-</div>
+   </div>
 
   <span>Limit results to: </span>
   <input type="text" id="num_results_to_return" placeholder="100" title="Change number of results returned here. More results will slow your response time. If you find yourself paging through too many results, try adding terms to your search to increase the relevancy of your results, excluding terms by putting a minus sign (-) in front of a term you want to exclude.">
 
-  <div id="sidebarpaginator">   <span id="paginationHolder2"> </div>
-  <!-- Start experiperiments -->
-<!--  <div class="hideShowToggle">
-  <button id="hideShowPortfolios">Hide/Show Portfolios</button>
-  </div>
--->
 
-  <div class="row">
-<!--
-     <div class="col-md-4" id="current_decorations">
-          <p>Tags For This Record</p>
-          <ul id="current_tag_list"></ul>
-     </div>
--->
-     <div class="col-md-4">
-          <p>Portfolios For This Record</p>
-          <ul id="current_portfolio_list"></ul>
+  <div id="sidebarpaginator">   <span id="paginationHolder2"> </div>
+  <div>
+     <p>Portfolios For This Record</p>
+     <div>
+          <div id="current_portfolio_list"></div>
      </div>
   </div>
-  <div class="row" id="portfolios">
-      <div class="col-md-8"> 
+  <div>
+      <div> 
     	 <button type="button" class="btn btn-like" id="add_portfolio_button">Add Portfolio</button>
     	 <input type="text" id="new_portfolio_name" placeholder="New Portfolio Name...">
-         <div>All Portfolios</div>
-                 <ul id="portfolio_list"></ul>
+         <div  id="portfolios">
+         <div id="portfolio_list"></div>
+	 </div>
       </div>
   </div>
-<!--
-<div class="col-md-4" id="tags">
-      <button type="button" class="btn btn-like" id="add_tag_button">Add Tag</button>
-      <input type="text" id="new_tag_name" placeholder="New Tag...">
-      <p>All Tags</p>
-      <ul id="tag_list"></ul>
-</div>
--->
-
 </div>
 
     <!-- Start header -->
@@ -103,9 +89,6 @@ To get more detailed help on searching, click the &quot;Help!&quot; link in the 
     <span class="majorlabel" id="search_string_render"></span> 
 
 </div>
-
-
-
 
 
         <!-- Start results header -->
@@ -269,22 +252,27 @@ $('#prev_button').click(prev_handler);
 $('#like_button').click(like_handler);
 $('#dislike_button').click(dislike_handler);
 $('#add_portfolio_button').click(add_portfolio_handler);
-$('#add_tag_button').click(add_tag_handler);
+// $('#add_tag_button').click(add_tag_handler);
 // END   set up click handlers
 
-function Portfolio() {
-      var portfolio = $(this).text();
+function Portfolio(click) {
+//      alert("click.ui"+click.ui.attr('id'));
+      var portfolio = $(this).attr('id').substring("draggable-id-".length);
+      alert("portfolio = "+portfolio);
       $("#portfolioinput").val(portfolio);
       $("#fakeform").submit();
 }
 
 function refreshDroppablesPortfolios() {
+//     alert("RefreshDroppables called");
       $(".droppableportfolio").click(Portfolio);
 }
 
+HANDLER_NAMESPACE_OBJECT.refresh_droppables = refreshDroppablesPortfolios;
+
 $(document).ready(function(){
         get_portfolio_list(refreshDroppablesPortfolios);
-        get_tag_list(refreshDroppablesPortfolios);
+//        get_tag_list(refreshDroppablesPortfolios);
 	//set up some minimal options for the feedback_me plugin
 	fm_options = {
                 custom_params: {
@@ -391,7 +379,7 @@ function performSearch() {
     var search = $('#small_search_string').val();
     var max_results_num = get_max_results();
     if (search.length == 0) {
-      alert("Please enter a search term.");
+//      alert("Please enter a search term.");
       $('#loading').hide();
     } else {
       $('#search_string_render').html('&ldquo;'+search+'&rdquo;');
@@ -423,6 +411,7 @@ function performSearch() {
 
 function processAjaxSearch(dataFromSearch) {
 // If we timed out or failed to authenticate, we need to alert the user.
+//    var search = $('#small_search_string').val();
     if (!(dataFromSearch != null && typeof dataFromSearch === 'object')) {
 		 alert("No results returned.");
 		 return;

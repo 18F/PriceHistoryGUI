@@ -4,6 +4,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Portfolio v. 0.4 BETA Search</title>
     <meta name="robots" content="NOINDEX, NOFOLLOW">
+    <link rel="stylesheet" type="text/css" 
+	  href="./theme/css/decoration_gui.css" >
     <link href="./theme/css/shared.css" rel="stylesheet" type="text/css" media="screen, projection">
     <link href="./theme/css/mainPage.css" rel="stylesheet" type="text/css" media="screen, projection">
     <link rel="stylesheet" href="../SlickGrid-master/slick.grid.css" type="text/css">
@@ -21,38 +23,26 @@
     </div>
   </div>
 
-<!-- Start experiperiments -->
-  <div class="row">
-<!--
-     <div class="col-md-4" id="current_decorations">
-          <p>Tags For This Record</p>
-          <ul id="current_tag_list"></ul>
-     </div>
--->
-     <div class="col-md-4">
-          <p>Portfolios For This Record</p>
+  <div id="sidebarpaginator">   <span id="paginationHolder2"> </div>
+<div id="portfolios">
+  <div>
+     <p>Portfolios For This Record</p>
+     <div>
           <ul id="current_portfolio_list"></ul>
      </div>
   </div>
-  <div class="row" id="portfolios">
-      <div class="col-md-8"> 
+  <div>
+      <div> 
     	 <button type="button" class="btn btn-like" id="add_portfolio_button">Add Portfolio</button>
     	 <input type="text" id="new_portfolio_name" placeholder="New Portfolio Name...">
-         <div>All Portfolios</div>
-                 <ul id="portfolio_list"></ul>
+         <div  id="portfolios">
+                 <div id="portfolio_list"></div>
+</div>
       </div>
   </div>
-<!--
-<div class="col-md-4" id="tags">
-      <button type="button" class="btn btn-like" id="add_tag_button">Add Tag</button>
-      <input type="text" id="new_tag_name" placeholder="New Tag...">
-      <p>All Tags</p>
-      <ul id="tag_list"></ul>
-</div>
--->
 
 </div>
-
+</div>
 
     <!-- Start header -->
     <div id="header">
@@ -60,7 +50,6 @@
         <!-- FACTOR OUT -->
             <span id="pricespaid_logo"><img src="theme/img/pp_logo_beta.png" alt="PricesPaid"></span>
 <span id="logoutLink" href="./Logout">Logout</span>
-<a id="exportLink" href="./SimpleHTML?portfolio={{portfolio}}&antiCSRF={{acsrf}}&session_id={{session_id}}" target="_blank">Export</a>
 
     </div>
 
@@ -77,14 +66,11 @@
     <span class="joininglabel">in portfolio</span>
     <span class="majorlabel" id="search_string_render"></span> 
 
+
 </div>
 
         <!-- Start results header -->
-        <div>
-
-<div id="detail-header">
-  <span id="paginationHolder1">
-  </span>
+        <div id="sortcontrols">
 
   <span id="results-sortby">
    <label>Sort by:</label>
@@ -100,6 +86,17 @@
      </select>
    </span>
   </span>
+
+<span id="exportButton">
+<a id="exportLink" href="./SimpleHTML?portfolio={{portfolio}}&antiCSRF={{acsrf}}&session_id={{session_id}}" target="_blank">Export</a>
+<img src="theme/img/icn_export.svg" alt="PricesPaid" height="20px;">
+</span>
+         </div>
+
+<div id="detail-header">
+  <span id="paginationHolder1">
+  </span>
+
 </div>
    
 <div style="clear:both;"></div>
@@ -180,11 +177,11 @@ $('#prev_button').click(prev_handler);
 $('#like_button').click(like_handler);
 $('#dislike_button').click(dislike_handler);
 $('#add_portfolio_button').click(add_portfolio_handler);
-$('#add_tag_button').click(add_tag_handler);
+// $('#add_tag_button').click(add_tag_handler);
 // END   set up click handlers
 
 get_portfolio_list();
-get_tag_list();
+// get_tag_list();
 
 
 function performSearch() {
@@ -251,14 +248,17 @@ function processAjaxSearch(dataFromSearch) {
 // If we timed out or failed to authenticate, we need to alert the user.
     if (!(dataFromSearch != null && typeof dataFromSearch === 'object')) {
 		 alert("No results returned.");
+dataFromSearch = {};
 		 return;
     }
     if ((typeof dataFromSearch) == 'undefined') {
 		 alert("No results returned.");
+dataFromSearch = {};
 		 return;
     }
     if (dataFromSearch[0] === undefined) {
 		 alert("No results returned.");
+dataFromSearch = {};
 		 return;
     }
 
@@ -266,7 +266,9 @@ function processAjaxSearch(dataFromSearch) {
 		 
     if (dataFromSearch[0]["status"] && (dataFromSearch[0]["status"] == "BadAuthentication")) {
         alert("Unable to Authenticate. Probably your session timed-out. Please log in again.");	 
+dataFromSearch = {};
     }
+
     $('#loading').hide();
     $('#results-header').show();
     var timeSearchEnded = new Date();
