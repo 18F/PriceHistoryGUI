@@ -59,6 +59,10 @@ def server_static(filename):
 @app.route('/MorrisDataDecorator/imgs/<filename>')
 def server_static(filename):
     return static_file(filename, root="../MorrisDataDecorator/imgs/")
+@app.route('/MorrisDataDecorator/css/<filename>')
+def server_static(filename):
+    return static_file(filename, root="../MorrisDataDecorator/css/")
+
 
 from bottle import template
 
@@ -159,7 +163,6 @@ goog_anal_script=GoogleAnalyticsInclusionScript)
 def render_portfolio():
     acsrf = request.forms.get('antiCSRF')
     ses_id = request.forms.get('session_id')
-
     if (not auth.is_valid_acsrf(ses_id)):
         return template('Login',message='Improper Credentials or Timeout.',
                     footer_html=FOOTER_HTML,
@@ -366,6 +369,12 @@ def get_records(columns):
 def add_record_to_portfolio(key,portfolio):
     r = requests.post(URL_TO_MORRIS_PORTFOLIOS_API+"/decoration/add_record/"+portfolio+"/"+key)
     return r.text
+
+@app.route('/portfolio/delete_decoration/<portfolio>',method='POST')
+def delete_portfolio(portfolio):
+    r = requests.post(URL_TO_MORRIS_PORTFOLIOS_API+"/delete_decoration/"+portfolio)
+    return r.text
+
 # End Portfolio work
 
 # Begin Tag work
@@ -403,4 +412,9 @@ def get_records(columns):
 @app.route('/tag/add_record/<tag>/<key>',method='POST')
 def add_record_to_tag(tag,key):
     r = requests.post(URL_TO_MORRIS_TAGS_API+"/decoration/add_record/"+tag+"/"+key)
+    return r.text
+
+@app.route('/tag/delete_decoration/<tag>',method='POST')
+def delet_tag(tag):
+    r = requests.post(URL_TO_MORRIS_PORTFOLIOS_API+"/delete_decoration/"+tag)
     return r.text

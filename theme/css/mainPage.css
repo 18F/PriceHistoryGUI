@@ -153,18 +153,9 @@ body {
 
 /* Results ----- */
 #results-header {
-/*	border-top:1px solid #ddd;
-	border-bottom:1px solid #ddd;
-*/
-	padding:20px;
-	margin-left: 30px;
+	padding:10px;
 	margin-bottom:10px;
-	margin-top:30px;
-}
-#results-header h2 {
-	font-size:24px;
-	font-weight:bold;
-	float:left;
+	margin-top:20px;
 }
 
 #detail-header {
@@ -200,11 +191,11 @@ body {
 	color:#666;
 }
 #results-sortby select {
-        color: Blue;
+        color: #538eda;
 }
 
 #orderDropdownWrapper select {
-        color: Blue;
+        color: #538eda;
 }
 
 #sortOrder {
@@ -218,12 +209,20 @@ body {
 /* Result ------- */
 .result {
 	background-color:#fff;
-	margin-bottom:15px;
+	margin-bottom:45px;
 	margin-top:15px;
+	cursor: pointer;
 }
+
+.result:hover
+{
+        color: green;
+} 
+
 .result .result-image {
 	float:left;
 }
+
 .result .result-details {
 	float:left;
 	border-left:2px solid #eee;
@@ -364,15 +363,15 @@ Note sure I really need them  */
 }
 
 .majorlabel {
-        font-size: 30px;
+        font-size: 25px;
 	font-weight: bolder;
 }
 
 .joininglabel {
         font-size: 22px;
 	font-style: italic;
-	margin-left: 20px;
-	margin-right: 20px;
+	margin-left: 15px;
+	margin-right: 15px;
 }
 
 #tooltip1b {
@@ -424,7 +423,8 @@ Note sure I really need them  */
     position: fixed;
     top: 0px;
     right: 0%;
-    width:300px;
+    width: 25%;
+    min-width: 200px;
     background: white;
     z-index: 3;
     margin-top: 25px;
@@ -439,6 +439,14 @@ Note sure I really need them  */
     width: 200px;
 }
 
+#portfolios {
+}
+
+#portfolio_list {
+    overflow: auto;
+    height: 500px;
+}
+
 #portfolio_title {
     position: absolute;
     font-size: 24px;
@@ -450,7 +458,8 @@ Note sure I really need them  */
     left: 0%;
     margin-left:25px;
     margin-right:25px;
-    max-width:700px;
+    min-width:500px;
+    width: 70%;
 }
 
 
@@ -495,14 +504,6 @@ Note sure I really need them  */
 	float:right;
 }
 
-#exportLink {
-    position:absolute;
-    right: 0px;
-    margin-right: 330px;
-    font-size: 24px;
-    text-decoration:underline;
-    color: white;
-}
 
 #logoutLink {
     position:absolute;
@@ -517,58 +518,53 @@ Note sure I really need them  */
 #helplink {
    position:absolute;
     margin-top: 15px;
-   right: 0px;
+    right: 0px;
     margin-right: 330px;
     font-size: 24px;
     text-decoration:underline;
     color: white;
 }
 
-.decoration {
-    background: LightGray;
-    padding: 10px;
-    width: 240px;
-}
-
-.decoration img {
-    width: 16px;
-    padding: 4px;
-    vertical-align: middle;
-}
-
 .result-agency {
+    padding: 1%;
     float: left;
-    width: 33%;
+    width: 31%;
     border:solid;
     border-width:1px;
     border-color:LightGray;
     background: #fbfbfb;
-    height: 60px;
+    height: 40px;
+    max-height: 40px;
 }
 .agency-name {
     font-weight: bolder;
 }
 .result-vehicle {
+    padding: 1%;
     float: left;
-    width: 33%;
+    width: 31%;
     border:solid;
     border-width:1px;
     border-color:LightGray;
     background: #fbfbfb;
-    height: 60px;
+    height: 40px;
+    max-height: 40px;
 }
 .result-vendor {
+    padding: 1%;
     float: right;
-    width: 33%;
+    width: 31%;
     border:solid;
     border-width:1px;
     border-color:LightGray;
     background: #fbfbfb;
-    height: 60px;
+    height: 40px;
+    max-height: 40px;
 }
 .result-bottom {
     background: #fbfbfb;
-    height: 60px;
+    height: 40px;
+    max-height: 40px;
     margin-top: 20px;
 }
 .result-right {
@@ -584,7 +580,9 @@ Note sure I really need them  */
 }
 .result-short-desc {
     font-weight: bolder;
+    font-size: 24px;
     color: #538eda;
+    margin-bottom: 10px;
 }
 .result-long-desc {
 }
@@ -615,4 +613,41 @@ Note sure I really need them  */
 } 
 .result-units {
     font-weight: bold;
+    padding: 5px;
 }
+/* This relates to the MorrisDataDecorator */
+.draggable-name {
+    cursor: pointer;
+}
+
+.draggable-handle  {
+    cursor: move;
+}
+
+.draggable-close  {
+    cursor: pointer;
+}
+
+#exportButton {
+    float: right;
+    background-color: DarkBlue;
+    height: 32px;
+    margin-left: 3%;
+    border-radius: 5px;
+    margin-right: 2%;
+    padding: 2px;
+}
+
+#exportButton img {
+    height: 28px;
+    padding: 3px;
+    vertical-align: middle;
+}
+
+#exportLink {
+    font-size: 16px;
+    text-decoration:underline;
+    color: white;
+    padding: 3px;
+}
+
