@@ -414,7 +414,6 @@ Note sure I really need them  */
 #introtextblock {margin-left: 100px; }
 
 
-
 /* Basic design parameters include:
 - Sidebar width (content Margin needs to be the same)
 - Header height (must match sidebar-search height)
@@ -443,8 +442,7 @@ Note sure I really need them  */
 }
 
 #portfolio_list {
-    overflow: auto;
-    height: 500px;
+    overflow:auto;
 }
 
 #portfolio_title {

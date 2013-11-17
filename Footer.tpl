@@ -1,4 +1,6 @@
     <div id="footer">
-    	<p>PricesPaid (v. 0.5 BETA) is an official website of the U.S. Government, powered by GSA.</p>
-    	<p><strong>Send Feedbak/Report Issues to:</strong> <a href="mailto:robert.read@gsa.gov">robert.read@gsa.gov</a></p>
+	<div id="footer-logo">
+          <img src="theme/img/gsa_logo.png" alt="GSA Logo">
+	</div>
+	<div id="footer-right"></div>
     </div>   
