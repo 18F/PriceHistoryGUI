@@ -146,7 +146,13 @@ Clicking on a column header will sort both the grid and the detail area by that 
 </form>
 </div>
 
+<div id="dialog">
+Transaction Added to Portfolio.
+</div>
+
 {{!footer_html}}
+
+</body>
 
      <script  src="../js/jquery.min.js"></script>
     <script src="../SlickGrid-master/lib/jquery.event.drag-2.2.js"></script>
@@ -188,7 +194,16 @@ Clicking on a column header will sort both the grid and the detail area by that 
 	<script  src="../gui/MorrisDataDecorator/js/handlers.js"></script>
 <script>
 
+HANDLER_NAMESPACE_OBJECT.decoration_add_dialog_id = "#dialog";
 
+$(HANDLER_NAMESPACE_OBJECT.decoration_add_dialog_id).dialog({
+    autoOpen: false,
+    modal: false,
+    buttons: [],
+    open: function(event, ui){
+     setTimeout("$('#dialog').dialog('close')",1500);
+    }
+});
 
 
 $(document).ready(function(){
@@ -339,5 +354,4 @@ performSearch()
 
 </script>
 
-</body>
 </html>

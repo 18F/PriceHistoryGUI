@@ -168,6 +168,10 @@ Clicking on a column header will sort both the grid and the detail area by that 
     <input type="hidden" name="session_id" value="{{session_id}}" />
 </form>
 
+<div id="dialog">
+Transaction Added to Portfolio.
+</div>
+
 </body>
 
 {{!footer_html}}
@@ -214,6 +218,18 @@ Clicking on a column header will sort both the grid and the detail area by that 
 	<script  src="../gui/MorrisDataDecorator/js/handlers.js"></script>
 
  <script>
+
+HANDLER_NAMESPACE_OBJECT.decoration_add_dialog_id = "#dialog";
+
+$(HANDLER_NAMESPACE_OBJECT.decoration_add_dialog_id).dialog({
+    autoOpen: false,
+    modal: false,
+    buttons: [],
+    open: function(event, ui){
+     setTimeout("$('#dialog').dialog('close')",1500);
+    }
+});
+
 $(function() {
    $( document ).tooltip({
        position: {
@@ -231,6 +247,8 @@ $(function() {
 });
 });
 
+
+
 $(document).ready(function(){
     $("#logoutLink").click(Logout);
 
@@ -246,6 +264,8 @@ var tag_url = "/gui/tag";
 
 HANDLER_NAMESPACE_OBJECT.portfolio_url = portfolio_url;
 HANDLER_NAMESPACE_OBJECT.tag_url = tag_url;
+HANDLER_NAMESPACE_OBJECT.decoration_add_dialog_id = "#dialog";
+
 DEFAULT_NUM_RESULTS = 100;
 
 // BEGIN set up click handlers
@@ -266,6 +286,8 @@ function Portfolio(click) {
 function refreshDroppablesPortfolios() {
       $(".droppableportfolio").click(Portfolio);
 }
+
+
 
 HANDLER_NAMESPACE_OBJECT.refresh_droppables = refreshDroppablesPortfolios;
 
@@ -309,6 +331,8 @@ $(document).ready(function(){
 	 $("#hideShowGraph").click(function() { 
 		    $("#chartContainer").toggle();
 	 });
+
+
     }
 );
 
@@ -400,6 +424,11 @@ function performSearch() {
 
 
 function processAjaxSearch(dataFromSearch) {
+
+
+
+
+
     dataFromSearch = handleEmptyResults(dataFromSearch);
     $('#loading').hide();
     $('#results-header').show();
