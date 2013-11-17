@@ -38,3 +38,24 @@ function medianSortedValues(values) {
 }
 
 
+function handleEmptyResults(dataFromSearch) {
+// If we timed out or failed to authenticate, we need to alert the user.
+//    var search = $('#small_search_string').val();
+    if (!(dataFromSearch != null && typeof dataFromSearch === 'object')) {
+//		 alert("No results returned.");
+		 return [];
+    }
+    if ((typeof dataFromSearch) == 'undefined') {
+//		 alert("No results returned.");
+		 return []
+    }
+    if (dataFromSearch[0] === undefined) {
+//		 alert("No results returned.");
+		 return [];
+    }
+    if (dataFromSearch[0]["status"] && (dataFromSearch[0]["status"] == "BadAuthentication")) {
+        alert("Unable to Authenticate. Probably your session timed-out. Please log in again.");	 
+         return [];
+    }
+    return dataFromSearch;
+}

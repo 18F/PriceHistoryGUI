@@ -2,7 +2,7 @@
 <html>
     <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-       <title>Prices Paid v. 0.4 BETA - Login</title>
+       <title>Prices Paid v. 0.5 BETA - Login</title>
        <meta name="robots" content="NOINDEX, NOFOLLOW">
     <link href="./theme/css/shared.css" rel="stylesheet" type="text/css" media="screen, projection">
        <link href="/gui/theme/css/loginPage.css" rel="stylesheet" type="text/css" media="screen, projection">

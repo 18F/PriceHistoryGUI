@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Portfolio v. 0.4 BETA Search</title>
+    <title>Portfolio v. 0.5 BETA Search</title>
     <meta name="robots" content="NOINDEX, NOFOLLOW">
     <link rel="stylesheet" type="text/css" 
 	  href="./theme/css/decoration_gui.css" >
@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 
     <link rel="stylesheet" type="text/css" href="../js/jqPagination-master/css/jqpagination.css"> 
+
+    <link rel="stylesheet" type="text/css" href="../js/jquery.jqplot.css" >
+
     {{!goog_anal_script}}
 </head>
 <body>
@@ -57,7 +60,6 @@
     <div id="content" class="inner">
 
 <div id="loading">
-<h1>Portfolio</h1>
 </div>
 
    <div id="results-header">
@@ -105,9 +107,20 @@
 
 <div style="clear:both"></div>
 
+<div class="hideShowToggle">
+<button id="hideShowGraph" >Hide/Show Graph</button>  
+</div>
+
+<div id="chartContainer">
+    <div id="chartdiv" ></div>
+</div>
+
+<div style="clear:both"></div>
 
 <div class="hideShowToggle">
 <button id="hideShowGrid">Hide/Show Grid</button>
+
+
 </div>
 <p>
 Clicking on a column header will sort both the grid and the detail area by that column.  Clicking on the header again will reverse the order of the sort.
@@ -115,7 +128,15 @@ Clicking on a column header will sort both the grid and the detail area by that 
   <div id="myGrid" style="height:500px;"></div> 
 <p></p>
 
+
 {{!footer_html}}
+
+<form id="fakeform" method="post" action="PortfolioPage">        
+    <input type="hidden" name="antiCSRF" value="{{acsrf}}" />
+    <input type="hidden" name="session_id" value="{{session_id}}" />
+    <input id="portfolioinput" type="hidden" name="portfolio" value="" />
+</form>
+
 
 <form method="get" id="fakeLogoutForm" action="./">
 </form>
@@ -131,10 +152,19 @@ Clicking on a column header will sort both the grid and the detail area by that 
     <script src="../SlickGrid-master/slick.core.js"></script>
     <script src="../SlickGrid-master/slick.editors.js"></script>
     <script src="../SlickGrid-master/slick.grid.js"></script>
+
     <!-- jqplot stuff -->
-    
     <!--[if lt IE 9]>
     <![endif]-->
+    <script  src="../js/excanvas/excanvas.js"></script>
+    <script  src="../js/jquery.jqplot.min.js"></script>
+    
+    <script  src="../js/plugins/jqplot.canvasTextRenderer.min.js"></script>
+    <script  src="../js/plugins/jqplot.canvasAxisLabelRenderer.min.js"></script>
+    <script  src="../js/plugins/jqplot.highlighter.min.js"></script>
+    <script  src="../js/plugins/jqplot.cursor.min.js"></script>
+    <script  src="../js/plugins/jqplot.bubbleRenderer.min.js"></script>
+   <script  src="../js/plugins/jqplot.dateAxisRenderer.min.js"></script>
 
     <!-- Trying to get a bloody paginator to work! -->
     <script src="../js/jqPagination-master/js/jquery.jqpagination.js"></script>
@@ -148,6 +178,7 @@ Clicking on a column header will sort both the grid and the detail area by that 
 	<script  src="./js/StandardFunctions.js"></script>
 	<script  src="./js/Utility.js"></script>
 	<script  src="./js/result_rendering.js"></script>
+	<script  src="./js/plot_rendering.js"></script>
 	<script  src="./js/grid_rendering.js"></script>
 	<script  src="./js/header.js"></script>
 	<script  src="./js/GUISpecifics.js"></script>
@@ -155,12 +186,21 @@ Clicking on a column header will sort both the grid and the detail area by that 
 	<script  src="../gui/MorrisDataDecorator/js/handlers.js"></script>
 <script>
 
+
+
+
 $(document).ready(function(){
     $("#logoutLink").click(Logout);
 
     $("#pricespaid_logo").click(function() { 
 	$('#fakeReturnForm').submit();
     });
+
+
+    $("#hideShowGraph").click(function() { 
+ 		    $("#chartContainer").toggle();
+    });
+
 });
 
 
@@ -179,6 +219,18 @@ $('#dislike_button').click(dislike_handler);
 $('#add_portfolio_button').click(add_portfolio_handler);
 // $('#add_tag_button').click(add_tag_handler);
 // END   set up click handlers
+
+function Portfolio(click) {
+      var portfolio = $(this).attr('id').substring("draggable-id-".length);
+      $("#portfolioinput").val(portfolio);
+      $("#fakeform").submit();
+}
+
+function refreshDroppablesPortfolios() {
+      $(".droppableportfolio").click(Portfolio);
+}
+
+HANDLER_NAMESPACE_OBJECT.refresh_droppables = refreshDroppablesPortfolios;
 
 get_portfolio_list();
 // get_tag_list();
@@ -225,7 +277,6 @@ $("#hideShowGrid").click(function() {
 		    $("#myGrid").toggle();
 });
 
-
 // Note: that search_string here is html-encoded by Bottle,
 // So presumably this does not represent a XSS vulnerability...
 
@@ -233,42 +284,13 @@ $("#hideShowGrid").click(function() {
 var PAGESIZE = 5;
 var currentPage = 0; 
 
-
 var timeSearchBegan;
 
 var grid;
 var currentColumn = "score";
 
-
-
-
-
-
 function processAjaxSearch(dataFromSearch) {
-// If we timed out or failed to authenticate, we need to alert the user.
-    if (!(dataFromSearch != null && typeof dataFromSearch === 'object')) {
-		 alert("No results returned.");
-dataFromSearch = {};
-		 return;
-    }
-    if ((typeof dataFromSearch) == 'undefined') {
-		 alert("No results returned.");
-dataFromSearch = {};
-		 return;
-    }
-    if (dataFromSearch[0] === undefined) {
-		 alert("No results returned.");
-dataFromSearch = {};
-		 return;
-    }
-
-
-		 
-    if (dataFromSearch[0]["status"] && (dataFromSearch[0]["status"] == "BadAuthentication")) {
-        alert("Unable to Authenticate. Probably your session timed-out. Please log in again.");	 
-dataFromSearch = {};
-    }
-
+    dataFromSearch = handleEmptyResults(dataFromSearch);
     $('#loading').hide();
     $('#results-header').show();
     var timeSearchEnded = new Date();
@@ -306,7 +328,10 @@ recreatePagination();
     var medianUnitPrice = 0.0;
 
    grid_rendering();
+initialize_plot(data,medianUnitPrice);
 }
+
+
 
 performSearch()
 
