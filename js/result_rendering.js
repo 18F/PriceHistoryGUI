@@ -89,9 +89,11 @@ Math.min((page+1)*PAGESIZE,transactionData.length));
                  var deco = (portfolio) ? HANDLER_NAMESPACE_OBJECT.portfolio_url
 		                        : HANDLER_NAMESPACE_OBJECT.tag_url;
                  $.post(deco+"/add_record/"+text+"/"+key,
-		        function () {}
-                     ).fail(function() { alert("The addition of that record to the content_area portfolio failed."); });
-            }
+		        function () {
+		    $(HANDLER_NAMESPACE_OBJECT.decoration_add_dialog_id).dialog('open');
+			}
+                       ).fail(function() { alert("The addition of that record to the content_area portfolio failed."); });
+           }
 	});
 
        $( ".droppablerecord" ).draggable({ revert: true });

@@ -43,7 +43,7 @@
 .ui-tooltip, .arrow:after {
    background: black;
    border: 2px solid white;
-   width: 50%;
+   width: 20%;
    z-index: 4;
 }
 .ui-tooltip {
@@ -95,4 +95,18 @@ top: -45px;
 left: -35px;
 opacity: 0.5;
 z-index: 15;
+}
+
+#dialog {
+    background: black;
+    color: white;
+    font-size: 24px;
+    padding: 30px;
+    border-syle: solid;
+    border-width: 5px;
+    border-color: red;
+}
+
+.no-close .ui-dialog-titlebar-close {
+    display: none;
 }
