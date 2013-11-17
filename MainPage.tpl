@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>PricesPaid v. 0.4 BETA </title>
+    <title>PricesPaid v. 0.5 BETA </title>
     <meta name="robots" content="NOINDEX, NOFOLLOW">
     <link rel="stylesheet" type="text/css" 
 	  href="./theme/css/decoration_gui.css" >
@@ -11,8 +11,6 @@
     <link rel="stylesheet" href="../SlickGrid-master/slick.grid.css" type="text/css">
 
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-
-    <link rel="stylesheet" type="text/css" href="../js/jquery.jqplot.css" >
 
     <link rel="stylesheet" type="text/css" href="../js/jqPagination-master/css/jqpagination.css"> 
 
@@ -27,7 +25,7 @@
         <!-- Start search -->
         <span id="smallSearch">
        <input id="searchButton" name="submit" value="Search" class="input_submit" title="Click here to search the database" type="submit" onclick="performSearch();">
-                <input type="text" name="small_search_string" id="small_search_string" value="{{search_string}}" title=
+                <input type="text" name="small_search_string" id="small_search_string" placeholder="Search ..." value="{{search_string}}" title=
 "
 Enter any number of search terms to get a list of results ranked by relevance to those terms. To limit a search to those only containing a certain terms, separate terms by the upper case AND, like &quot;laptop AND rugged&quot;.  To exclude results containing a term, put upper case NOT or - in front of it, like &quot;laptop AND NOT rugged&quot;
 
@@ -256,22 +254,19 @@ $('#add_portfolio_button').click(add_portfolio_handler);
 // END   set up click handlers
 
 function Portfolio(click) {
-//      alert("click.ui"+click.ui.attr('id'));
       var portfolio = $(this).attr('id').substring("draggable-id-".length);
-      alert("portfolio = "+portfolio);
       $("#portfolioinput").val(portfolio);
       $("#fakeform").submit();
 }
 
 function refreshDroppablesPortfolios() {
-//     alert("RefreshDroppables called");
       $(".droppableportfolio").click(Portfolio);
 }
 
 HANDLER_NAMESPACE_OBJECT.refresh_droppables = refreshDroppablesPortfolios;
 
 $(document).ready(function(){
-        get_portfolio_list(refreshDroppablesPortfolios);
+        get_portfolio_list();
 //        get_tag_list(refreshDroppablesPortfolios);
 	//set up some minimal options for the feedback_me plugin
 	fm_options = {
@@ -313,9 +308,6 @@ $(document).ready(function(){
     }
 );
 
-
-
-
 // This is an ugly global variable hack that seems to be 
 // needed to events properly bound to dynamically created elements!
 var SCRATCH_NUMBER = 0;
@@ -328,8 +320,6 @@ var transactionData = [];
 var internalFieldLabel = [];
 internalFieldLabel["starred"] = "Favorite";
 internalFieldLabel["color"] = "Color";
-
-
 
 // Note: that search_string here is html-encoded by Bottle,
 // So presumably this does not represent a XSS vulnerability...
@@ -379,9 +369,8 @@ function performSearch() {
     var search = $('#small_search_string').val();
     var max_results_num = get_max_results();
     if (search.length == 0) {
-//      alert("Please enter a search term.");
-      $('#loading').hide();
-    } else {
+      processAjaxSearch([]);
+     } else {
       $('#search_string_render').html('&ldquo;'+search+'&rdquo;');
       $.post("search",
 	   { search_string: search,
@@ -395,9 +384,6 @@ function performSearch() {
     }
 };
 
-
-
-
     var comclickcount = 0;
     $("#comDropdownWrapper").click(function(){
 	if ((comclickcount % 2) == 1) {
@@ -410,26 +396,7 @@ function performSearch() {
 
 
 function processAjaxSearch(dataFromSearch) {
-// If we timed out or failed to authenticate, we need to alert the user.
-//    var search = $('#small_search_string').val();
-    if (!(dataFromSearch != null && typeof dataFromSearch === 'object')) {
-		 alert("No results returned.");
-		 return;
-    }
-    if ((typeof dataFromSearch) == 'undefined') {
-		 alert("No results returned.");
-		 return;
-    }
-    if (dataFromSearch[0] === undefined) {
-		 alert("No results returned.");
-		 return;
-    }
-
-
-		 
-    if (dataFromSearch[0]["status"] && (dataFromSearch[0]["status"] == "BadAuthentication")) {
-        alert("Unable to Authenticate. Probably your session timed-out. Please log in again.");	 
-    }
+    dataFromSearch = handleEmptyResults(dataFromSearch);
     $('#loading').hide();
     $('#results-header').show();
     var timeSearchEnded = new Date();

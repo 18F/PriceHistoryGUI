@@ -83,13 +83,9 @@ Math.min((page+1)*PAGESIZE,transactionData.length));
        $( ".droppablerecord" ).droppable({
            tolerance: "touch",
            drop: function(event, ui) {
-	       alert("ui id "+ ui.draggable.attr('id'));
                var text = ui.draggable.attr('id').substring("draggable-id-".length);
-//                 var text = ui.draggable.text();
-	       alert("text = |"+ text+"|");
                  var portfolio = isPortfolio(text);
 		 var key = $(this).attr('p3id');
-	       alert("Drop occured!"+ key);
                  var deco = (portfolio) ? HANDLER_NAMESPACE_OBJECT.portfolio_url
 		                        : HANDLER_NAMESPACE_OBJECT.tag_url;
                  $.post(deco+"/add_record/"+text+"/"+key,

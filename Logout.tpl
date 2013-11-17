@@ -2,7 +2,7 @@
 <html>
     <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-       <title>Prices Paid v. 0.4 BETA - Legal Notice</title>
+       <title>Prices Paid v. 0.5 BETA - Legal Notice</title>
        <meta name="robots" content="NOINDEX, NOFOLLOW">
     {{!goog_anal_script}}
     </head>

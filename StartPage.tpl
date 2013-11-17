@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="UTF-8">
-    <title>PricesPaid v. 0.4 BETA Start</title>
+    <title>PricesPaid v. 0.5 BETA Start</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="./theme/css/shared.css" rel="stylesheet" type="text/css" media="screen, projection">
     <link href="./theme/css/mainPage.css" rel="stylesheet" type="text/css" media="screen, projection">
