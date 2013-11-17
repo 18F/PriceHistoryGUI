@@ -19,6 +19,7 @@
 
 </head>
 <body>
+<img id="betastripe" src="theme/img/Beta0.5.png"  alt="Beta 0.5">
 
 <div id="sidebar">
   <div id="sidebar_search">
@@ -152,7 +153,7 @@ Clicking on a column header will sort both the grid and the detail area by that 
 <!-- end of "content" -->
 </div> 
 
-{{!footer_html}}
+
 
 <form id="fakeform" method="post" action="PortfolioPage">        
     <input type="hidden" name="antiCSRF" value="{{acsrf}}" />
@@ -167,6 +168,9 @@ Clicking on a column header will sort both the grid and the detail area by that 
     <input type="hidden" name="session_id" value="{{session_id}}" />
 </form>
 
+</body>
+
+{{!footer_html}}
 
      <script  src="../js/jquery.min.js"></script>
 
@@ -447,5 +451,5 @@ recreatePagination();
 
 </script>
 
-</body>
+
 </html>

@@ -18,6 +18,7 @@
     {{!goog_anal_script}}
 </head>
 <body>
+<img id="betastripe" src="theme/img/Beta0.5.png"  alt="Beta 0.5">
 
 <div id="sidebar">
   <div id="sidebar_search">
@@ -129,7 +130,6 @@ Clicking on a column header will sort both the grid and the detail area by that 
 <p></p>
 
 
-{{!footer_html}}
 
 <form id="fakeform" method="post" action="PortfolioPage">        
     <input type="hidden" name="antiCSRF" value="{{acsrf}}" />
@@ -145,6 +145,8 @@ Clicking on a column header will sort both the grid and the detail area by that 
     <input type="hidden" name="session_id" value="{{session_id}}" />
 </form>
 </div>
+
+{{!footer_html}}
 
      <script  src="../js/jquery.min.js"></script>
     <script src="../SlickGrid-master/lib/jquery.event.drag-2.2.js"></script>

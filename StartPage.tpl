@@ -9,6 +9,7 @@
     <link href="./theme/css/mainPage.css" rel="stylesheet" type="text/css" media="screen, projection">
     {{!goog_anal_script}}
 </head>
+<img id="betastripe" src="theme/img/Beta0.5.png"  alt="Beta 0.5">
 
 <body id="start">
 
@@ -50,9 +51,9 @@
 <input id="bigsearchbutton" name="submit" value="Search" class="input_submit" title="Click here to search the database" type="submit"></div>
             </form>
 
-{{!footer_html}}
-
 </div>
+
+{{!footer_html}}
 </body>
     <script src="../js/jquery-1.10.2.min.js"></script>
 	<script  src="./js/header.js"></script>

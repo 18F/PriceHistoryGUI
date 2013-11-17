@@ -13,30 +13,28 @@ body {
 #loginLayout {
 	width:990px;
 	margin:0 auto;
-	position: relative;
 }
 
 #instructions {
-    width: 400px;
-    float: left;
     padding: 40px;
 }
 
 #credentials {
+    margin-left: auto;
+    margin-right: auto;
     background-color: #448825;
-    float: right;
     width: 350px;
     padding: 4px;
-    margin: 40px;
+    margin-bottom: 200px;
     position: relative
 }
 
 #credentials input {
-    float: right;
+    min-width: 300px;
 }
 
 #credentials span {
-    float: left;
+    min-width: 200px;
 }
 
 
