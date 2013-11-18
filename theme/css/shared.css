@@ -1,5 +1,5 @@
 #footer {
-    position: relative;
+     position: relative;
 	-webkit-background-size:cover;
 	-ms-background-size:cover;
 	-moz-background-size:cover;
@@ -25,6 +25,14 @@
 #footer-logo img {
     padding: 20px;
     margin-left: 10px;
+    }
+
+#footer-text {
+    position: absolute;
+    top: 0px;
+    font-size: 18px;
+    margin-left: 300px;
+    margin-top: 20px;
     }
 
 #footer-right {

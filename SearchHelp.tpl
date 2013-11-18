@@ -8,6 +8,18 @@
     </head>
     <body>
 
+<h2 class="boxed">Portfolios of Transactions</h2>
+<div class="section">
+<p>
+Portfolios are shared among all users.  Anyone can create a new Portfolio. Transactions are added to a Portfolio by dragging the portfolio onto the Transaction. A drag is performed by clicking and holding down the mouse button, and the drop is performed by releasing the mouse button while the pointer is on the Transaction.  </p>
+<p>
+By clicking on the name of a portfolio, the prices researcher will be taken to a separate page which shows only the transaction which are in the portfolio.  From this page, the Portfolio can be exported in the form of very simple HTML which can be easily imported into a word processor, such as Microsoft Word (R).
+</p>
+<p>
+A portfolio can be removed by clicking on the "x" at the right of the portfolio name.
+</p>
+</div>
+
 <h3>
 This text is a modification of the <a href="http://lucene.apache.org/core/4_1_0/queryparser/org/apache/lucene/queryparser/classic/package-summary.html">Lucene documentation</a> from the open-source Apache project, to which the Price Paid Portal is highly indebted.
 </h3>
