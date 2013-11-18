@@ -37,6 +37,7 @@
     	<li>OS2 -- Office Supply data from the Strategic Sourcing Initiative (FSSI).</li>
        <li>GSA Advantage -- One calendar quarter of data.</li>
        <li>Reverse Auction -- IT equipment purchased via reverse auction.</li>
+
     </ul>
 </div>
             <form id="bigsearchform" method="post" action="PricesPaid">        
