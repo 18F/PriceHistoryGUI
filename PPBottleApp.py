@@ -38,6 +38,7 @@ app = Bottle()
 # Begin Common Template Strings
 FOOTER_HTML = template('Footer')
 COLUMN_DROPDOWN_HTML = template('ColumnDropdown')
+EXTRA_LOGIN_METHODS = template('ExtraLoginMethods')
 
 # End Common Template Strings
 
@@ -99,6 +100,7 @@ def login():
     LogActivity.logPageTurn("nosession","LoginPage")
     return template('Login',message='',
                     footer_html=FOOTER_HTML,
+                    extra_login_methods=EXTRA_LOGIN_METHODS,
                     goog_anal_script=GoogleAnalyticsInclusionScript)
 
 @app.route('/StartPage',method='POST')
