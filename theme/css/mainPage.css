@@ -649,3 +649,17 @@ Note sure I really need them  */
     padding: 3px;
 }
 
+.draghandle {
+    background: LightBlue;
+    cursor: move;
+    padding: 5px;
+    color: gray;
+    font-size: 12px;
+    position: absolute;
+    right: -32px;
+    top: -16px;
+    z-index: 6;
+    height: 16px;
+    width: 16px;
+}
+

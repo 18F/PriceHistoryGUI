@@ -6,7 +6,7 @@
 	-o-background-size:cover;
 	-khtml-background-size:cover;
 	background-size:cover;
-	background: #dd0908;
+	background: #5e9ded;
 	color:#fff;
 	height: 60px;
 	left: 0%;
@@ -17,7 +17,7 @@
 }
 
 #footer-logo {
-    background: #680e0e;
+    background: #5e9ded;
     width: 100px;
     height: 60px;
     }
@@ -41,7 +41,7 @@
     right: 0px;
     width: 300px;
     height: 60px;
-    background: #ff9192;
+    background: #c9defb;
     }
 
 

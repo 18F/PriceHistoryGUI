@@ -113,20 +113,21 @@ function renderResultLeft(dataRow) {
     return html;
 }
 
-function renderResultRight(dataRow) {
+function renderResultRight(dataRow,transactionId) {
    var html = "";
     html += '<div class="result-right">\n';
+    html += '<div class="droppablerecord" id="'+transactionId+'"><img  title="Drag and drop on a portfolio" class="draghandle" alt="Drag Handle" src="./theme/img/icn_list.svg"></div>';
     html += '<div class="result-cost"><span class="result-cost-glyph">$</span><span class="result-cost-number">'+numberWithCommas(dataRow.unitPrice) +"</span></div>";
     html += '<div class="result-units">'+numberWithCommas(dataRow.unitsOrdered)+' Units</div>';
     html += '</div>\n';
     return html;
 }
 
-function renderResultTop(dataRow) {
+function renderResultTop(dataRow,transactionId) {
    var html = "";
     html += '<div class="result-top">\n';
     html += renderResultLeft(dataRow);
-    html += renderResultRight(dataRow);
+    html += renderResultRight(dataRow,transactionId);
     html += '</div>\n';
     return html;
 }
@@ -143,7 +144,7 @@ function renderExpandArea(dataRow,scratchNumber) {
 function renderStyledDetail(dataRow,scratchNumber) {
     var html = "";
     html += '<div class="result droppablerecord" id="scratch'+scratchNumber+'" p3id="'+dataRow.p3id+'">\n';
-    html += renderResultTop(dataRow);
+    html += renderResultTop(dataRow,dataRow.p3id);
     html += renderExpandArea(dataRow,scratchNumber);
     html += renderResultBottom(dataRow);
     html += '</div>\n';
