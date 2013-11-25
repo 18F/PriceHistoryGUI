@@ -83,6 +83,7 @@ Math.min((page+1)*PAGESIZE,transactionData.length));
        $( ".droppablerecord" ).droppable({
            tolerance: "touch",
            drop: function(event, ui) {
+	       
                var text = ui.draggable.attr('id').substring("draggable-id-".length);
                  var portfolio = isPortfolio(text);
 		 var key = $(this).attr('p3id');

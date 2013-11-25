@@ -7,7 +7,7 @@
        <link href="/gui/theme/css/loginPage.css" rel="stylesheet" type="text/css" media="screen, projection">
     <link href="./theme/css/shared.css" rel="stylesheet" type="text/css" media="screen, projection">
     <script src="../js/jquery-1.10.2.min.js"></script>
-    <script src="http://oauthd.dev.gsa.io/download/latest/oauth.js"></script>
+    <script src="//oauthd.dev.gsa.io/download/latest/oauth.js"></script>
     {{!goog_anal_script}}
 <style>
 ul.button-list {

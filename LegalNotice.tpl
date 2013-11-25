@@ -39,7 +39,7 @@ This is a Federal computer system and is the property of the United States Gover
 </p>
 
 <p>
-Only Federal employees are authorized to use this system.  It is intended for use by Federal acquisition personnel, including but not limited to procurement officials and program offices conducting market research.  Contractors, even those assisting the Federal Government with an acquisition, are not authorized to use this system because it may contain contractor information considered to be company confidential.  Unauthorized disclosure of company confidential information is subject to the penalties set forth in 18 U.S.C. § 1905 and 41 U.S.C. § 2105. 
+Only Federal employees are authorized to use this system.  It is intended for use by Federal acquisition personnel, including but not limited to procurement officials and program offices conducting market research.  Contractors, even those assisting the Federal Government with an acquisition, are not authorized to use this system or otherwise obtain information from this system because it may contain contractor information considered to be company confidential.  Unauthorized disclosure of company confidential information is subject to the penalties set forth in 18 U.S.C. § 1905 and 41 U.S.C. § 2105.  Information downloaded or otherwise obtained from the system must be protected in accordance with this agreement and may also be considered source selection sensitive pursuant to 41 USC 2101(7) and FAR part 3 in accordance with agency procedures. 
 </p>
 
 <p>
