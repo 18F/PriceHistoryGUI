@@ -260,13 +260,18 @@ def apisolr():
 
 def produceHTML(valuesdict):
     html = ""
-    html = html + "<h2>"+valuesdict["productDescription"]+"</h1>"
-    html = html + "<h3>"+valuesdict["longDescription"]+"</h2>"
-    html = html + "<p>"+valuesdict["unitPrice"]+"</p>"
-    html = html + "<p>"+valuesdict["unitsOrdered"]+"</p>"
-    html = html + "<p>"+valuesdict["vendor"]+"</p>"
+    html = html + "<h3 style= 'display:inline'>"+"Product Description: "+"</h3>"+ "<p style='display:inline'>"+ valuesdict["productDescription"]+"</p>"+"<br />"
+    html = html + "<h3 style= 'display:inline'>"+"Unit Price: "+"</h3>"+ "<p style='display:inline'>"+"$"+ valuesdict["unitPrice"]+"</p>"+"<br />"
+    html = html + "<h3 style= 'display:inline'>"+"Description: "+"</h3>"+ "<p style='display:inline'>"+ valuesdict["longDescription"]+"</p>"+"<br />"
+    html = html + "<h3 style= 'display:inline'>"+"Units Ordered: "+"</h3>"+ "<p style='display:inline'>"+ valuesdict["unitsOrdered"]+"</p>"+"<br />"
+    html = html + "<h3 style= 'display:inline'>"+"Vendor: "+"</h3>"+ "<p style='display:inline'>"+ valuesdict["vendor"]+"</p>"+"<br />"
+    html = html + "<h3 style= 'display:inline'>"+"Date: "+"</h3>"+ "<p style='display:inline'>"+ valuesdict["orderDate"]+"</p>"+"<br />"
+    html = html + "<h3 style= 'display:inline'>"+"Vehicle/Schedule Bought From: "+"</h3>"+ "<p style='display:inline'>"+ valuesdict["awardIdIdv"]+"</p>"+"<br />"
+    html = html + "<h3 style= 'display:inline'>"+"PSC Code: "+"</h3>"+ "<p style='display:inline'>"+ valuesdict["psc"]+"</p>"+"<br />"
+    html = html + "<h3 style= 'display:inline'>"+"Contracting Agency: "+"</h3>"+ "<p style='display:inline'>"+ valuesdict["contractingAgency"]+"</p>"+"<br />"     
     for k,v in valuesdict.iteritems():
-        html = html + "<p>"+k + ":" + str(v) + "</p>" + "\n"
+     if k not in ("unitPrice","longDescription" ,"productDescription" , "unitsOrdered" , "vendor", "score", "orderDate", "p3id", 'awardIdIdv', 'psc', "contractingAgency"): 
+        html = html + "<h3 style= 'display:inline'>" +k+ ":" +"</h3>"+ "<p style='display:inline'>"+str(v) + "</p>" +"<br />"+ "\n"
     html = html + "<p></p>" + "\n"
     return html
 
