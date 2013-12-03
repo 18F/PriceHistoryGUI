@@ -1,6 +1,5 @@
 
 <div id="buttonArea">
-<p></p>
 <div>
 <button class="loginButton" id="github">Sign in with GitHub</button>
 </div>
