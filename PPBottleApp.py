@@ -141,9 +141,10 @@ def pptriv():
     ses_id = request.forms.get('session_id')
     return render_main_page(acsrf,ses_id)
 
-def render_main_page(acsf,ses_id):
-    if (not auth.is_valid_acsrf(ses_id)):
+def render_main_page(acsrf,ses_id):
+    if (not auth.is_valid_acsrf(ses_id,acsrf)):
         return template('Login',message='Improper Credentials or Timeout.',
+                    extra_login_methods=EXTRA_LOGIN_METHODS,
                     footer_html=FOOTER_HTML,
 goog_anal_script=GoogleAnalyticsInclusionScript)
     
@@ -166,8 +167,9 @@ goog_anal_script=GoogleAnalyticsInclusionScript)
 def render_portfolio():
     acsrf = request.forms.get('antiCSRF')
     ses_id = request.forms.get('session_id')
-    if (not auth.is_valid_acsrf(ses_id)):
+    if (not auth.is_valid_acsrf(ses_id,acsrf)):
         return template('Login',message='Improper Credentials or Timeout.',
+                    extra_login_methods=EXTRA_LOGIN_METHODS,
                     footer_html=FOOTER_HTML,
 goog_anal_script=GoogleAnalyticsInclusionScript)
 
@@ -191,10 +193,10 @@ def apisolr():
     acsrf = request.forms.get('antiCSRF')
     ses_id = request.forms.get('session_id')
 
-    if (not auth.is_valid_acsrf(ses_id)):
+    if (not auth.is_valid_acsrf(ses_id,acsrf)):
         dict = {0: {"status": "BadAuthentication"}}
         return dict;
-    auth.update_acsrf(ses_id)
+
     portfolio = request.forms.get('portfolio')
 
     print "portfolio = "+portfolio
@@ -227,7 +229,7 @@ def apisolr():
     acsrf = request.query['antiCSRF']
     ses_id = request.query['session_id']
 
-    if (not auth.is_valid_acsrf(ses_id)):
+    if (not auth.is_valid_acsrf(ses_id,acsrf)):
         dict = {0: {"status": "BadAuthentication"}}
         return dict;
     auth.update_acsrf(ses_id)
@@ -276,11 +278,11 @@ def apisolr():
     acsrf = request.forms.get('antiCSRF')
     ses_id = request.forms.get('session_id')
 
-    if (not auth.is_valid_acsrf(ses_id)):
+    if (not auth.is_valid_acsrf(ses_id,acsrf)):
         dict = {0: {"status": "BadAuthentication"}}
         return dict;
 
-    auth.update_acsrf(ses_id)
+#    auth.update_acsrf(ses_id)
 
     search_string = request.forms.get('search_string')
     psc_pattern = request.forms.get('psc_pattern')
@@ -318,7 +320,7 @@ def feedback():
     ses_id = request.forms.get('session_id')
 
     LogActivity.logDebugInfo("acsrf ses_d :"+acsrf+ses_id)
-    if (not auth.is_valid_acsrf(ses_id)):
+    if (not auth.is_valid_acsrf(ses_id,acsrf)):
         dict = {0: {"status": "BadAuthentication"}}
         return dict;
 
@@ -341,8 +343,10 @@ def get_portfolios():
     LogActivity.logDebugInfo("Begin Get Portfolios")
     acsrf = request.query['antiCSRF']
     ses_id = request.query['session_id']
-    if (not auth.is_valid_acsrf(ses_id)):
+    LogActivity.logDebugInfo("Gotten on Portfolio: acsrf ses_id :"+acsrf+","+ses_id)
+    if (not auth.is_valid_acsrf(ses_id,acsrf)):
         dict = {0: {"status": "BadAuthentication"}}
+        LogActivity.logDebugInfo(" BadAuthentication :"+acsrf+","+ses_id)
         return dict;
     r = requests.get(URL_TO_MORRIS_PORTFOLIOS_API+"/decoration")
     d = ast.literal_eval(r.text)
@@ -352,7 +356,7 @@ def get_portfolios():
 def get_specific_tags(name):
     acsrf = request.query['antiCSRF']
     ses_id = request.query['session_id']
-    if (not auth.is_valid_acsrf(ses_id)):
+    if (not auth.is_valid_acsrf(ses_id,acsrf)):
         dict = {0: {"status": "BadAuthentication"}}
         return dict;
     r = requests.get(URL_TO_MORRIS_PORTFOLIOS_API+"/content/"+name)
@@ -364,7 +368,7 @@ def get_create_portfolio(name):
     ses_id = request.forms.get('session_id')
 
     LogActivity.logDebugInfo("acsrf ses_d :"+acsrf+ses_id)
-    if (not auth.is_valid_acsrf(ses_id)):
+    if (not auth.is_valid_acsrf(ses_id,acsrf)):
         dict = {0: {"status": "BadAuthentication"}}
         return dict;
     r = requests.post(URL_TO_MORRIS_PORTFOLIOS_API+"/decoration/"+name)
@@ -374,7 +378,7 @@ def get_create_portfolio(name):
 def get_export_portfolio():
     acsrf = request.query['antiCSRF']
     ses_id = request.query['session_id']
-    if (not auth.is_valid_acsrf(ses_id)):
+    if (not auth.is_valid_acsrf(ses_id,acsrf)):
         dict = {0: {"status": "BadAuthentication"}}
         return dict;
     r = requests.get(URL_TO_MORRIS_PORTFOLIOS_API+"/decoration_export")
@@ -385,7 +389,7 @@ def get_records():
     acsrf = request.query['antiCSRF']
     ses_id = request.query['session_id']
 
-    if (not auth.is_valid_acsrf(ses_id)):
+    if (not auth.is_valid_acsrf(ses_id,acsrf)):
         dict = {0: {"status": "BadAuthentication"}}
         return dict;
     r = requests.get(URL_TO_MORRIS_PORTFOLIOS_API+"/decoration_records")
@@ -396,7 +400,7 @@ def get_records(columns):
     acsrf = request.query['antiCSRF']
     ses_id = request.query['session_id']
 
-    if (not auth.is_valid_acsrf(ses_id)):
+    if (not auth.is_valid_acsrf(ses_id,acsrf)):
         dict = {0: {"status": "BadAuthentication"}}
         return dict;
     r = requests.get(URL_TO_MORRIS_PORTFOLIOS_API+"/content_records_with_client_data/"+columns)
@@ -408,7 +412,7 @@ def add_record_to_portfolio(key,portfolio):
     ses_id = request.forms.get('session_id')
 
     LogActivity.logDebugInfo("acsrf ses_d :"+acsrf+ses_id)
-    if (not auth.is_valid_acsrf(ses_id)):
+    if (not auth.is_valid_acsrf(ses_id,acsrf)):
         dict = {0: {"status": "BadAuthentication"}}
         return dict;
     r = requests.post(URL_TO_MORRIS_PORTFOLIOS_API+"/decoration/add_record/"+portfolio+"/"+key)
@@ -420,7 +424,7 @@ def delete_portfolio(portfolio):
     ses_id = request.forms.get('session_id')
 
     LogActivity.logDebugInfo("acsrf ses_d :"+acsrf+ses_id)
-    if (not auth.is_valid_acsrf(ses_id)):
+    if (not auth.is_valid_acsrf(ses_id,acsrf)):
         dict = {0: {"status": "BadAuthentication"}}
         return dict;
     r = requests.post(URL_TO_MORRIS_PORTFOLIOS_API+"/delete_decoration/"+portfolio)

@@ -73,6 +73,7 @@ def update_acsrf(session_id):
     acsrf = get_rand_string(13);
     timestamp = datetime.datetime.now();
     GLOBAL_SESSION_DICT[session_id] = [acsrf,timestamp]
+    LogActivity.logDebugInfo("SETTING ACSRF session, acsrf "+session_id+"."+GLOBAL_SESSION_DICT[session_id][0])
     return session_id;
     
     
@@ -80,13 +81,31 @@ CHARS = string.ascii_letters + string.digits
 def get_rand_string(length):
     return ''.join(random.choice(CHARS) for i in range(length))
 
-def is_valid_acsrf(session_id):
+def is_valid_acsrf_old(session_id):
     if (session_id in GLOBAL_SESSION_DICT):
         timestamp = GLOBAL_SESSION_DICT[session_id][1]
         timenow = datetime.datetime.now()
         timedelta = timenow - timestamp
         if (timedelta < datetime.timedelta(seconds=TokenTimeout)):
             return True
+        else:
+            LogActivity.logTimeout(session_id)
+            return False
+    else:
+        LogActivity.logMissingSession(session_id)
+        return False;
+
+def is_valid_acsrf(session_id,acsrf):
+    if (session_id in GLOBAL_SESSION_DICT):
+        timestamp = GLOBAL_SESSION_DICT[session_id][1]
+        timenow = datetime.datetime.now()
+        timedelta = timenow - timestamp
+        if (timedelta < datetime.timedelta(seconds=TokenTimeout)):
+            if (acsrf != GLOBAL_SESSION_DICT[session_id][0]):
+                LogActivity.logDebugInfo("ACSRF Mismatch provided vs. stored :"+acsrf+","+GLOBAL_SESSION_DICT[session_id][0])
+                return False
+            else:
+                return True
         else:
             LogActivity.logTimeout(session_id)
             return False
