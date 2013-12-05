@@ -113,6 +113,7 @@ def pptriv():
         LogActivity.logBadCredentials(username)
         return template('Login',message='Improper Credentials.',
                     footer_html=FOOTER_HTML,
+                    extra_login_methods=EXTRA_LOGIN_METHODS,
                         goog_anal_script=GoogleAnalyticsInclusionScript)
     search_string = request.forms.get('search_string')
     search_string = search_string if search_string is not None else ""
@@ -337,86 +338,93 @@ def feedback():
 # BEGIN SERVER-SIDE CALLS TO MORRIS PORTFOLIO API
 @app.route('/portfolio', method='GET')
 def get_portfolios():
-    LogActivity.logDebugInfo("Begin Create Portfolios")
+    LogActivity.logDebugInfo("Begin Get Portfolios")
+    acsrf = request.query['antiCSRF']
+    ses_id = request.query['session_id']
+    if (not auth.is_valid_acsrf(ses_id)):
+        dict = {0: {"status": "BadAuthentication"}}
+        return dict;
     r = requests.get(URL_TO_MORRIS_PORTFOLIOS_API+"/decoration")
     d = ast.literal_eval(r.text)
     return d
 
 @app.route('/portfolio/<name>', method='GET')
 def get_specific_tags(name):
+    acsrf = request.query['antiCSRF']
+    ses_id = request.query['session_id']
+    if (not auth.is_valid_acsrf(ses_id)):
+        dict = {0: {"status": "BadAuthentication"}}
+        return dict;
     r = requests.get(URL_TO_MORRIS_PORTFOLIOS_API+"/content/"+name)
     return r.text
 
 @app.route('/portfolio/<name>', method='POST')
 def get_create_portfolio(name):
+    acsrf = request.forms.get('antiCSRF')
+    ses_id = request.forms.get('session_id')
+
+    LogActivity.logDebugInfo("acsrf ses_d :"+acsrf+ses_id)
+    if (not auth.is_valid_acsrf(ses_id)):
+        dict = {0: {"status": "BadAuthentication"}}
+        return dict;
     r = requests.post(URL_TO_MORRIS_PORTFOLIOS_API+"/decoration/"+name)
     return r.text
 
 @app.route('/portfolio_export', method='GET')
 def get_export_portfolio():
+    acsrf = request.query['antiCSRF']
+    ses_id = request.query['session_id']
+    if (not auth.is_valid_acsrf(ses_id)):
+        dict = {0: {"status": "BadAuthentication"}}
+        return dict;
     r = requests.get(URL_TO_MORRIS_PORTFOLIOS_API+"/decoration_export")
     return r.text
 
 @app.route('/portfolio_records', method='GET')
 def get_records():
+    acsrf = request.query['antiCSRF']
+    ses_id = request.query['session_id']
+
+    if (not auth.is_valid_acsrf(ses_id)):
+        dict = {0: {"status": "BadAuthentication"}}
+        return dict;
     r = requests.get(URL_TO_MORRIS_PORTFOLIOS_API+"/decoration_records")
     return r.text
 
 @app.route('/portfolio_records_with_cd/<columns>', method='GET')
 def get_records(columns):
+    acsrf = request.query['antiCSRF']
+    ses_id = request.query['session_id']
+
+    if (not auth.is_valid_acsrf(ses_id)):
+        dict = {0: {"status": "BadAuthentication"}}
+        return dict;
     r = requests.get(URL_TO_MORRIS_PORTFOLIOS_API+"/content_records_with_client_data/"+columns)
     return r.text
 
 @app.route('/portfolio/add_record/<portfolio>/<key>',method='POST')
 def add_record_to_portfolio(key,portfolio):
+    acsrf = request.forms.get('antiCSRF')
+    ses_id = request.forms.get('session_id')
+
+    LogActivity.logDebugInfo("acsrf ses_d :"+acsrf+ses_id)
+    if (not auth.is_valid_acsrf(ses_id)):
+        dict = {0: {"status": "BadAuthentication"}}
+        return dict;
     r = requests.post(URL_TO_MORRIS_PORTFOLIOS_API+"/decoration/add_record/"+portfolio+"/"+key)
     return r.text
 
 @app.route('/portfolio/delete_decoration/<portfolio>',method='POST')
 def delete_portfolio(portfolio):
+    acsrf = request.forms.get('antiCSRF')
+    ses_id = request.forms.get('session_id')
+
+    LogActivity.logDebugInfo("acsrf ses_d :"+acsrf+ses_id)
+    if (not auth.is_valid_acsrf(ses_id)):
+        dict = {0: {"status": "BadAuthentication"}}
+        return dict;
     r = requests.post(URL_TO_MORRIS_PORTFOLIOS_API+"/delete_decoration/"+portfolio)
     return r.text
 
 # End Portfolio work
 
-# Begin Tag work
-@app.route('/tag', method='GET')
-def get_tags():
-    r = requests.get(URL_TO_MORRIS_TAGS_API+"/decoration")
-    d = ast.literal_eval(r.text)
-    return d
-
-@app.route('/tag/<name>', method='GET')
-def get_specific_tags(name):
-    r = requests.get(URL_TO_MORRIS_TAGS_API+"/content/"+name)
-    return r.text
-
-@app.route('/tag/<name>', method='POST')
-def get_create_tag(name):
-    r = requests.post(URL_TO_MORRIS_TAGS_API+"/decoration/"+name)
-    return r.text
-
-@app.route('/tag_export', method='GET')
-def get_export_tag():
-    r = requests.get(URL_TO_MORRIS_TAGS_API+"/decoration_export")
-    return r.text
-
-@app.route('/tag_records', method='GET')
-def get_records():
-    r = requests.get(URL_TO_MORRIS_TAGS_API+"/decoration_records")
-    return r.text
-
-@app.route('/tag_records_with_cd/<columns>', method='GET')
-def get_records(columns):
-    r = requests.get(URL_TO_MORRIS_TAGS_API+"/decoration_records_with_client_data/"+columns)
-    return r.text
-
-@app.route('/tag/add_record/<tag>/<key>',method='POST')
-def add_record_to_tag(tag,key):
-    r = requests.post(URL_TO_MORRIS_TAGS_API+"/decoration/add_record/"+tag+"/"+key)
-    return r.text
-
-@app.route('/tag/delete_decoration/<tag>',method='POST')
-def delet_tag(tag):
-    r = requests.post(URL_TO_MORRIS_PORTFOLIOS_API+"/delete_decoration/"+tag)
-    return r.text

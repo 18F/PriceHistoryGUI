@@ -259,7 +259,7 @@ $(document).ready(function(){
 
 
 // These should probably be parametrized
-var portfolio_url = "/gui/portfolio";
+var portfolio_url = "/gui/portfolio?antiCSRF={{acsrf}}&session_id={{session_id}}";
 var tag_url = "/gui/tag";
 
 HANDLER_NAMESPACE_OBJECT.portfolio_url = portfolio_url;
