@@ -39,6 +39,7 @@ app = Bottle()
 FOOTER_HTML = template('Footer')
 COLUMN_DROPDOWN_HTML = template('ColumnDropdown')
 EXTRA_LOGIN_METHODS = template('ExtraLoginMethods')
+PORTFOLIO_PANEL = template('PortfolioPanel')
 
 # End Common Template Strings
 
@@ -128,6 +129,27 @@ def pptriv():
                     footer_html=FOOTER_HTML,\
                     psc_pattern=psc_pattern,goog_anal_script=GoogleAnalyticsInclusionScript)
 
+@app.route('/StartPageReturned',method='POST')
+def StartPageReturned():
+    acsrf = request.forms.get('antiCSRF')
+    ses_id = request.forms.get('session_id')
+    if (not auth.is_valid_acsrf(ses_id,acsrf)):
+        return template('Login',message='Improper Credentials or Timeout.',
+                    extra_login_methods=EXTRA_LOGIN_METHODS,
+                    footer_html=FOOTER_HTML,
+                    goog_anal_script=GoogleAnalyticsInclusionScript)
+
+    search_string = request.forms.get('search_string')
+    search_string = search_string if search_string is not None else ""
+    psc_pattern = request.forms.get('psc_pattern')
+    ses_id = auth.create_session_id()
+    LogActivity.logPageTurn(ses_id,"StartPageReturned")
+    return template('StartPage',search_string=search_string,\
+                    acsrf=auth.get_acsrf(ses_id),\
+                    session_id=ses_id,\
+                    footer_html=FOOTER_HTML,\
+                    psc_pattern=psc_pattern,goog_anal_script=GoogleAnalyticsInclusionScript)
+
 @app.route('/PricesPaid',method='GET')
 def swallow(): 
     acsrf = request.query['antiCSRF']
@@ -160,6 +182,7 @@ goog_anal_script=GoogleAnalyticsInclusionScript)
                     session_id=ses_id,\
                     feedback_url=LocalURLToRecordFeedback,\
                     footer_html=FOOTER_HTML,\
+                    portfolio_panel=PORTFOLIO_PANEL,\
                     column_dropdown=COLUMN_DROPDOWN_HTML,\
                     commodity_id=commodity_id,goog_anal_script=GoogleAnalyticsInclusionScript)
 
@@ -171,7 +194,7 @@ def render_portfolio():
         return template('Login',message='Improper Credentials or Timeout.',
                     extra_login_methods=EXTRA_LOGIN_METHODS,
                     footer_html=FOOTER_HTML,
-goog_anal_script=GoogleAnalyticsInclusionScript)
+                    goog_anal_script=GoogleAnalyticsInclusionScript)
 
     auth.update_acsrf(ses_id)
 
@@ -184,6 +207,7 @@ goog_anal_script=GoogleAnalyticsInclusionScript)
                     portfolio=portfolio,\
                     feedback_url=LocalURLToRecordFeedback,\
                     footer_html=FOOTER_HTML,\
+                    portfolio_panel=PORTFOLIO_PANEL,\
                     column_dropdown=COLUMN_DROPDOWN_HTML,\
                         goog_anal_script=GoogleAnalyticsInclusionScript)
 

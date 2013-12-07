@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>PricesPaid v. 0.5 BETA </title>
+    <title>PricesPaid v. 2.0 BETA </title>
     <meta name="robots" content="NOINDEX, NOFOLLOW">
     <link rel="stylesheet" type="text/css" 
 	  href="./theme/css/decoration_gui.css" >
@@ -19,7 +19,7 @@
 
 </head>
 <body>
-<img id="betastripe" src="theme/img/Beta0.5.png"  alt="Beta 0.5">
+<img id="betastripe" src="theme/img/Beta2.0.png"  alt="Beta 2.0">
 
 <div id="sidebar">
   <div id="sidebar_search">
@@ -44,22 +44,8 @@ To get more detailed help on searching, click the &quot;Help!&quot; link in the 
 
 
   <div id="sidebarpaginator">   <span id="paginationHolder2"> </div>
-  <div>
-     <p>Portfolios For This Record</p>
-     <div>
-          <div id="current_portfolio_list"></div>
-     </div>
+  {{!portfolio_panel}}
   </div>
-  <div>
-      <div> 
-    	 <button type="button" class="btn btn-like" id="add_portfolio_button">Add Portfolio</button>
-    	 <input type="text" id="new_portfolio_name" placeholder="New Portfolio Name...">
-         <div  id="portfolios">
-         <div id="portfolio_list"></div>
-	 </div>
-      </div>
-  </div>
-</div>
 
     <!-- Start header -->
     <div id="header">
@@ -67,9 +53,10 @@ To get more detailed help on searching, click the &quot;Help!&quot; link in the 
         <div>
         <!-- FACTOR OUT -->
             <span id="pricespaid_logo"><img src="theme/img/pp_logo_beta.png" alt="PricesPaid"></span>
+            <div id="return_to_search">Main Search</div>
         </div>
 <div id="logoutLink">Logout</div>
-<div id="helplink" ><a href="./SearchHelp" >Help!</a></div>
+
     </div>
 
     <!-- Content ... below the header -->
@@ -163,7 +150,7 @@ Clicking on a column header will sort both the grid and the detail area by that 
 
 <form method="get" id="fakeLogoutForm" action="./">
 </form>
-<form method="post" id="fakeReturnForm" action="./PricesPaid">
+<form method="post" id="fakeReturnForm" action="./StartPageReturned">
     <input type="hidden" name="antiCSRF" value="{{acsrf}}" />
     <input type="hidden" name="session_id" value="{{session_id}}" />
 </form>
@@ -247,10 +234,12 @@ $(function() {
 });
 });
 
-
-
 $(document).ready(function(){
     $("#logoutLink").click(Logout);
+
+    $("#return_to_search").click(function() { 
+	$('#fakeReturnForm').submit();
+    });
 
     $("#pricespaid_logo").click(function() { 
 	$('#fakeReturnForm').submit();
@@ -259,10 +248,17 @@ $(document).ready(function(){
 
 
 // These should probably be parametrized
-var portfolio_url = "/gui/portfolio?antiCSRF={{acsrf}}&session_id={{session_id}}";
+var portfolio_url = "/gui/portfolio";
+var portfolio_url_addendum = "?antiCSRF={{acsrf}}&session_id={{session_id}}";
+var portfolio_post_data = { 
+             antiCSRF: '{{acsrf}}',
+             session_id: '{{session_id}}',
+};
 var tag_url = "/gui/tag";
 
 HANDLER_NAMESPACE_OBJECT.portfolio_url = portfolio_url;
+HANDLER_NAMESPACE_OBJECT.portfolio_url_addendum = portfolio_url_addendum;
+HANDLER_NAMESPACE_OBJECT.portfolio_post_data = portfolio_post_data;
 HANDLER_NAMESPACE_OBJECT.tag_url = tag_url;
 HANDLER_NAMESPACE_OBJECT.decoration_add_dialog_id = "#dialog";
 

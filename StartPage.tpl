@@ -3,13 +3,13 @@
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="UTF-8">
-    <title>PricesPaid v. 0.5 BETA Start</title>
+    <title>PricesPaid v. 2.0 BETA Start</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="./theme/css/shared.css" rel="stylesheet" type="text/css" media="screen, projection">
     <link href="./theme/css/mainPage.css" rel="stylesheet" type="text/css" media="screen, projection">
     {{!goog_anal_script}}
 </head>
-<img id="betastripe" src="theme/img/Beta0.5.png"  alt="Beta 0.5">
+<img id="betastripe" src="theme/img/Beta2.0.png"  alt="Beta 2.0">
 
 <body id="start">
 
@@ -18,6 +18,8 @@
         <!-- FACTOR OUT -->
             <span id="pricespaid_logo"><img src="theme/img/pp_logo_beta.png" alt="PricesPaid"></span>
 <div id="logoutLink" href="./Logout">Logout</div>
+<div id="helplink" ><a href="./SearchHelp" >Help!</a></div>
+<div id="start-header-right"></div>
 </div>
 
 <form method="get" id="fakeLogoutForm" action="./">

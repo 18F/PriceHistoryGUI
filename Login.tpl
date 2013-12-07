@@ -2,7 +2,7 @@
 <html>
     <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-       <title>Prices Paid v. 0.5 BETA - Login</title>
+       <title>Prices Paid v. 2.0 BETA - Login</title>
        <meta name="robots" content="NOINDEX, NOFOLLOW">
        <link href="/gui/theme/css/loginPage.css" rel="stylesheet" type="text/css" media="screen, projection">
     <link href="./theme/css/shared.css" rel="stylesheet" type="text/css" media="screen, projection">
@@ -31,7 +31,7 @@ ul.button-list a {
 </style>
     </head>
     <body>
-<img id="betastripe" src="theme/img/Beta0.5.png" alt="Beta 0.5">
+<img id="betastripe" src="theme/img/Beta2.0.png" alt="Beta 2.0">
 
 <div id="instructions">
 <p id="message">{{message}}</p>

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Portfolio v. 0.5 BETA Search</title>
+    <title>Portfolio v. 2.0 BETA Search</title>
     <meta name="robots" content="NOINDEX, NOFOLLOW">
     <link rel="stylesheet" type="text/css" 
 	  href="./theme/css/decoration_gui.css" >
@@ -18,7 +18,7 @@
     {{!goog_anal_script}}
 </head>
 <body>
-<img id="betastripe" src="theme/img/Beta0.5.png"  alt="Beta 0.5">
+<img id="betastripe" src="theme/img/Beta2.0.png"  alt="Beta 2.0">
 
 <div id="sidebar">
   <div id="sidebar_search">
@@ -28,33 +28,17 @@
   </div>
 
   <div id="sidebarpaginator">   <span id="paginationHolder2"> </div>
-<div id="portfolios">
-  <div>
-     <p>Portfolios For This Record</p>
-     <div>
-          <ul id="current_portfolio_list"></ul>
-     </div>
+  {{!portfolio_panel}}
   </div>
-  <div>
-      <div> 
-    	 <button type="button" class="btn btn-like" id="add_portfolio_button">Add Portfolio</button>
-    	 <input type="text" id="new_portfolio_name" placeholder="New Portfolio Name...">
-         <div  id="portfolios">
-                 <div id="portfolio_list"></div>
-</div>
-      </div>
-  </div>
-
-</div>
-</div>
 
     <!-- Start header -->
     <div id="header">
         <!-- Top part of header -->
         <!-- FACTOR OUT -->
-            <span id="pricespaid_logo"><img src="theme/img/pp_logo_beta.png" alt="PricesPaid"></span>
-<span id="logoutLink" href="./Logout">Logout</span>
 
+            <span id="pricespaid_logo"><img src="theme/img/pp_logo_beta.png" alt="PricesPaid"></span>
+            <div id="return_to_search">Main Search</div>
+            <span id="logoutLink" href="./Logout">Logout</span>
     </div>
 
     <!-- Content ... below the header -->
@@ -92,7 +76,7 @@
 
 <span id="exportButton">
 <a id="exportLink" href="./SimpleHTML?portfolio={{portfolio}}&antiCSRF={{acsrf}}&session_id={{session_id}}" target="_blank">Export</a>
-<img src="theme/img/icn_export.svg" alt="PricesPaid" height="20px;">
+<img src="theme/img/icn_export.png" alt="PricesPaid" height="20px;">
 </span>
          </div>
 
@@ -129,8 +113,6 @@ Clicking on a column header will sort both the grid and the detail area by that 
   <div id="myGrid" style="height:500px;"></div> 
 <p></p>
 
-
-
 <form id="fakeform" method="post" action="PortfolioPage">        
     <input type="hidden" name="antiCSRF" value="{{acsrf}}" />
     <input type="hidden" name="session_id" value="{{session_id}}" />
@@ -140,7 +122,7 @@ Clicking on a column header will sort both the grid and the detail area by that 
 
 <form method="get" id="fakeLogoutForm" action="./">
 </form>
-<form method="post" id="fakeReturnForm" action="./PricesPaid">
+<form method="post" id="fakeReturnForm" action="./StartPageReturned">
     <input type="hidden" name="antiCSRF" value="{{acsrf}}" />
     <input type="hidden" name="session_id" value="{{session_id}}" />
 </form>
@@ -209,10 +191,9 @@ $(HANDLER_NAMESPACE_OBJECT.decoration_add_dialog_id).dialog({
 $(document).ready(function(){
     $("#logoutLink").click(Logout);
 
-    $("#pricespaid_logo").click(function() { 
+    $("#return_to_search").click(function() { 
 	$('#fakeReturnForm').submit();
     });
-
 
     $("#hideShowGraph").click(function() { 
  		    $("#chartContainer").toggle();
@@ -222,10 +203,17 @@ $(document).ready(function(){
 
 
 // These should probably be parametrized
-var portfolio_url = "/gui/portfolio?antiCSRF={{acsrf}}&session_id={{session_id}}";
+var portfolio_url = "/gui/portfolio";
+var portfolio_url_addendum = "?antiCSRF={{acsrf}}&session_id={{session_id}}";
+var portfolio_post_data = { 
+             antiCSRF: '{{acsrf}}',
+             session_id: '{{session_id}}',
+};
 var tag_url = "/gui/tag";
 
 HANDLER_NAMESPACE_OBJECT.portfolio_url = portfolio_url;
+HANDLER_NAMESPACE_OBJECT.portfolio_url_addendum = portfolio_url_addendum;
+HANDLER_NAMESPACE_OBJECT.portfolio_post_data = portfolio_post_data;
 HANDLER_NAMESPACE_OBJECT.tag_url = tag_url;
 
 // BEGIN set up click handlers
@@ -281,10 +269,6 @@ var transactionData = [];
 var internalFieldLabel = [];
 internalFieldLabel["starred"] = "Favorite";
 internalFieldLabel["color"] = "Color";
-
-$("#hideShowPortfolios").click(function() { 
-    $("#portfolios").toggle();
-});
 
 $("#hideShowDetails").click(function() { 
     $("#detailArea").toggle();
