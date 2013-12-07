@@ -116,7 +116,7 @@ function renderResultLeft(dataRow) {
 function renderResultRight(dataRow,transactionId) {
    var html = "";
     html += '<div class="result-right">\n';
-    html += '<div class="droppablerecord" id="'+transactionId+'"><img  title="Drag and drop on a portfolio" class="draghandle" alt="Drag Handle" src="./theme/img/icn_list.svg"></div>';
+    html += '<div class="droppablerecord" id="'+transactionId+'"><img  title="Drag and drop on a portfolio" class="draghandle" alt="Drag Handle" src="./theme/img/icn_list.png"></div>';
     html += '<div class="result-cost"><span class="result-cost-glyph">$</span><span class="result-cost-number">'+numberWithCommas(dataRow.unitPrice) +"</span></div>";
     html += '<div class="result-units">'+numberWithCommas(dataRow.unitsOrdered)+' Units</div>';
     html += '</div>\n';

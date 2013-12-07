@@ -98,10 +98,9 @@
 }
 
 #betastripe {
-position: fixed;
-top: -45px;
-left: -35px;
-opacity: 0.5;
+position: absolute;
+top: 0px;
+opacity: 1.0;
 z-index: 15;
 }
 
