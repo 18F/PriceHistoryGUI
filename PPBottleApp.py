@@ -256,7 +256,7 @@ def apisolr():
     if (not auth.is_valid_acsrf(ses_id,acsrf)):
         dict = {0: {"status": "BadAuthentication"}}
         return dict;
-    auth.update_acsrf(ses_id)
+#    auth.update_acsrf(ses_id)
     portfolio = request.query['portfolio']
 
     print "portfolio = "+portfolio
