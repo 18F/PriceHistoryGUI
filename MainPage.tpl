@@ -45,6 +45,15 @@ To get more detailed help on searching, click the &quot;Help!&quot; link in the 
 
   <div id="sidebarpaginator">   <span id="paginationHolder2"> </div>
   {{!portfolio_panel}}
+<!--
+<video width="320" height="240" controls>
+  <source src="theme/movies/Porfolio_Tutorial.mov" type="video/quicktime">
+  <object data="theme/movies/Porfolio_Tutorial.mov" type="video/quicktime" width="320" height="240">
+    <embed src="theme/movies/Porfolio_Tutorial.mov" type="video/quicktime" width="320" height="240">
+  </object> 
+</video>
+-->
+
   </div>
 
     <!-- Start header -->
