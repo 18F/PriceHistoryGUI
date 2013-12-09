@@ -271,6 +271,9 @@ HANDLER_NAMESPACE_OBJECT.portfolio_post_data = portfolio_post_data;
 HANDLER_NAMESPACE_OBJECT.tag_url = tag_url;
 HANDLER_NAMESPACE_OBJECT.decoration_add_dialog_id = "#dialog";
 
+PAGE_CONTEXT = {};
+PAGE_CONTEXT.render_transaction_delete = false;
+
 DEFAULT_NUM_RESULTS = 100;
 
 // BEGIN set up click handlers
@@ -429,10 +432,6 @@ function performSearch() {
 
 
 function processAjaxSearch(dataFromSearch) {
-
-
-
-
 
     dataFromSearch = handleEmptyResults(dataFromSearch);
     $('#loading').hide();

@@ -26,7 +26,7 @@ function sortByColumn(transactionData,col,asc) {
 	    return -1*ret;
 	else 
 	    return ret;
-    }
+   }
     var numberSort = function(a,b) {
 	var ret;
 	if (parseFloat(a[currentSortCol]) < parseFloat(b[currentSortCol])) {
@@ -65,19 +65,28 @@ function refreshSort(grid,transactionData,col,ord,currentPage) {
 
 // Note that PAGESIZE and SCRATCH_NUMBER are globals here---very ugly!!!
 
-    function redrawDetailArea(transactionData,page) {
+    function redrawDetailArea(transactionData,page,render_delete) {
 	var detailAreaDiv = $("#"+'detailArea');
 	detailAreaDiv.empty();
 	var smallSlice = transactionData.slice(page*PAGESIZE,
 Math.min((page+1)*PAGESIZE,transactionData.length));
 	smallSlice.forEach(function (e,i,a) {
-            detailAreaDiv.append(renderStyledDetail(e,SCRATCH_NUMBER));
+            detailAreaDiv.append(renderStyledDetail(e,SCRATCH_NUMBER,render_delete));
 	    $(document).on( "click", "#scratch"+SCRATCH_NUMBER, detailItemHandler);
+	    $("img[delete_id='"+e.p3id+"']").click(function () {
+		var content_key = $(this).attr('delete_id');
+                var deco = HANDLER_NAMESPACE_OBJECT.portfolio_url;
+		var portfolio = PAGE_CONTEXT.portfolio_name;
+                 $.post(deco+"/delete_association/"+portfolio+"/"+content_key,
+			HANDLER_NAMESPACE_OBJECT.portfolio_post_data,
+			HANDLER_NAMESPACE_OBJECT.decoration_deleted_function
+                       ).fail(function() { alert("The addition of that record to the content_area portfolio failed."); });
+
+            });
 // Ugly....
 	    itemDetailAssociation[SCRATCH_NUMBER] = i+page*PAGESIZE;
 	    SCRATCH_NUMBER++;
 	});
-
 
 // Now we must make the drag/drop work.
        $( ".droppablerecord" ).droppable({
