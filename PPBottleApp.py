@@ -459,5 +459,17 @@ def delete_portfolio(portfolio):
     r = requests.post(URL_TO_MORRIS_PORTFOLIOS_API+"/delete_decoration/"+portfolio)
     return r.text
 
+@app.route('/portfolio/delete_association/<portfolio>/<transaction>',method='POST')
+def delete_association(portfolio,transaction):
+    acsrf = request.forms.get('antiCSRF')
+    ses_id = request.forms.get('session_id')
+
+    LogActivity.logDebugInfo("acsrf ses_d :"+repr(acsrf)+' '+repr(ses_id))
+    if (not auth.is_valid_acsrf(ses_id,acsrf)):
+        dict = {0: {"status": "BadAuthentication"}}
+        return dict;
+    r = requests.post(URL_TO_MORRIS_PORTFOLIOS_API+"/delete_association/"+portfolio+"/"+transaction)
+    return r.text
+
 # End Portfolio work
 

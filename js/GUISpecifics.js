@@ -119,6 +119,9 @@ function renderResultRight(dataRow,transactionId) {
     html += '<div class="droppablerecord" id="'+transactionId+'"><img  title="Drag and drop on a portfolio" class="draghandle" alt="Drag Handle" src="./theme/img/icn_list.png"></div>';
     html += '<div class="result-cost"><span class="result-cost-glyph">$</span><span class="result-cost-number">'+numberWithCommas(dataRow.unitPrice) +"</span></div>";
     html += '<div class="result-units">'+numberWithCommas(dataRow.unitsOrdered)+' Units</div>';
+    if (PAGE_CONTEXT.render_transaction_delete) {
+	html += '<img delete_id="'+transactionId+'" src="./theme/img/gnome_window_close.png" alt="delete" width="40px" height="40px">';
+    }
     html += '</div>\n';
     return html;
 }

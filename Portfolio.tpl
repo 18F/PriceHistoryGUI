@@ -128,8 +128,12 @@ Clicking on a column header will sort both the grid and the detail area by that 
 </form>
 </div>
 
-<div id="dialog">
+<div id="added_dialog">
 Transaction Added to Portfolio.
+</div>
+
+<div id="deleted_dialog">
+Transaction Deleted From to Portfolio.
 </div>
 
 {{!footer_html}}
@@ -176,14 +180,37 @@ Transaction Added to Portfolio.
 	<script  src="../gui/MorrisDataDecorator/js/handlers.js"></script>
 <script>
 
-HANDLER_NAMESPACE_OBJECT.decoration_add_dialog_id = "#dialog";
+HANDLER_NAMESPACE_OBJECT.decoration_add_dialog_id = "#added_dialog";
+HANDLER_NAMESPACE_OBJECT.decoration_deleted_dialog_id = "#deleted_dialog";
+
+HANDLER_NAMESPACE_OBJECT.decoration_deleted_function = 
+function () {
+  $(HANDLER_NAMESPACE_OBJECT.decoration_deleted_dialog_id).dialog({
+    autoOpen: false,
+    modal: false,
+    buttons: [],
+    open: function(event, ui){
+     setTimeout("$('#deleted_dialog').dialog('close')",1500);
+    }
+  });
+  performSearch();
+}
 
 $(HANDLER_NAMESPACE_OBJECT.decoration_add_dialog_id).dialog({
     autoOpen: false,
     modal: false,
     buttons: [],
     open: function(event, ui){
-     setTimeout("$('#dialog').dialog('close')",1500);
+     setTimeout("$('#added_dialog').dialog('close')",1500);
+    }
+});
+
+$(HANDLER_NAMESPACE_OBJECT.decoration_deleted_dialog_id).dialog({
+    autoOpen: false,
+    modal: false,
+    buttons: [],
+    open: function(event, ui){
+     setTimeout("$('#deleted_dialog').dialog('close')",1500);
     }
 });
 
@@ -215,6 +242,10 @@ HANDLER_NAMESPACE_OBJECT.portfolio_url = portfolio_url;
 HANDLER_NAMESPACE_OBJECT.portfolio_url_addendum = portfolio_url_addendum;
 HANDLER_NAMESPACE_OBJECT.portfolio_post_data = portfolio_post_data;
 HANDLER_NAMESPACE_OBJECT.tag_url = tag_url;
+
+PAGE_CONTEXT = {};
+PAGE_CONTEXT.portfolio_name = '{{portfolio}}';
+PAGE_CONTEXT.render_transaction_delete = true;
 
 // BEGIN set up click handlers
 $('#next_button').click(next_handler);
