@@ -27,7 +27,6 @@
     </div>
   </div>
 
-  <div id="sidebarpaginator">   <span id="paginationHolder2"> </div>
   {{!portfolio_panel}}
   </div>
 
