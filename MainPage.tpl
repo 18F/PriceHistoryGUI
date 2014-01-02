@@ -43,14 +43,14 @@ To get more detailed help on searching, click the &quot;Help!&quot; link in the 
   <input type="text" id="num_results_to_return" placeholder="100" title="Change number of results returned here. More results will slow your response time. If you find yourself paging through too many results, try adding terms to your search to increase the relevancy of your results, excluding terms by putting a minus sign (-) in front of a term you want to exclude.">
 
 
-  <div id="sidebarpaginator">   <span id="paginationHolder2"> </div>
   {{!portfolio_panel}}
 
-
-<video id="portfoliotutorial" width="320" height="240" preload controls>
+<div>
+<video id="portfoliotutorial" preload controls>
   <source src="./theme/movies/PortfolioTutorial.mp4" />
   <source src="./theme/movies/PortfolioTutorial.mov" />
 </video>
+</div>
 
   </div>
 
