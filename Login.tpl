@@ -7,7 +7,6 @@
        <link href="/gui/theme/css/loginPage.css" rel="stylesheet" type="text/css" media="screen, projection">
     <link href="./theme/css/shared.css" rel="stylesheet" type="text/css" media="screen, projection">
     <script src="../js/jquery-1.10.2.min.js"></script>
-    <script src="//oauthd.dev.gsa.io/download/latest/oauth.js"></script>
     {{!goog_anal_script}}
 <style>
 ul.button-list {
@@ -45,7 +44,7 @@ This is Beta software.  Please help us improve it by using the Feedback widget o
 </p>
 
 <p>
-If you have longer feedback, a technical question, or need technical support, please email Robert L. Read, Presidential Innovation Fellow, at &lt;robert.read@gsa.gov&gt;.
+If you have longer feedback, a technical question, or need technical support, please email  &lt;prices.paid@gsa.gov&gt;.
 </p>
 
 </div>
@@ -59,7 +58,7 @@ If you have longer feedback, a technical question, or need technical support, pl
     </div>
     <div  class="blockyLabelBox">
       <span>Password:</span>
-      <input type="text" name="password">
+      <input name="password" type="password">
      </div>
     <input class="loginButton" type="submit" value="Sign in with Password">
 </form>

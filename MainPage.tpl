@@ -45,14 +45,12 @@ To get more detailed help on searching, click the &quot;Help!&quot; link in the 
 
   <div id="sidebarpaginator">   <span id="paginationHolder2"> </div>
   {{!portfolio_panel}}
-<!--
-<video width="320" height="240" controls>
-  <source src="theme/movies/Porfolio_Tutorial.mov" type="video/quicktime">
-  <object data="theme/movies/Porfolio_Tutorial.mov" type="video/quicktime" width="320" height="240">
-    <embed src="theme/movies/Porfolio_Tutorial.mov" type="video/quicktime" width="320" height="240">
-  </object> 
+
+
+<video id="portfoliotutorial" width="320" height="240" preload controls>
+  <source src="./theme/movies/PortfolioTutorial.mp4" />
+  <source src="./theme/movies/PortfolioTutorial.mov" />
 </video>
--->
 
   </div>
 
@@ -65,7 +63,7 @@ To get more detailed help on searching, click the &quot;Help!&quot; link in the 
             <div id="return_to_search">Main Search</div>
         </div>
 <div id="logoutLink">Logout</div>
-
+<div id="helplink" ><a href="./SearchHelp" >Help!</a></div>
     </div>
 
     <!-- Content ... below the header -->
@@ -203,8 +201,8 @@ Transaction Added to Portfolio.
 	<link href="../js/feedback_me/css/jquery.feedback_me.css" rel="stylesheet" type="text/css" />
 	<script  src="../js/jquery-ui.min.js"></script>
 	<script  src="../js/feedback_me/js/jquery.feedback_me.js"></script>
-	<script  src="./js/StandardFunctions.js"></script>
 	<script  src="./js/Utility.js"></script>
+	<script  src="./js/StandardFunctions.js"></script>
 	<script  src="./js/result_rendering.js"></script>
 	<script  src="./js/plot_rendering.js"></script>
 	<script  src="./js/grid_rendering.js"></script>
@@ -359,7 +357,7 @@ internalFieldLabel["color"] = "Color";
 
 // Note: that search_string here is html-encoded by Bottle,
 // So presumably this does not represent a XSS vulnerability...
-$('#search_string_render').html('&ldquo;{{search_string}}&rdquo;');
+$('#search_string_render').html('&ldquo;'+htmlEscape('{{search_string}}')+'&rdquo;');
 
 $('#commodities li').first().addClass("selected");
 var currentlySelectedCommodityElement  = '{{commodity_id}}';
@@ -407,7 +405,7 @@ function performSearch() {
     if (search.length == 0) {
       processAjaxSearch([]);
      } else {
-      $('#search_string_render').html('&ldquo;'+search+'&rdquo;');
+      $('#search_string_render').html('&ldquo;'+htmlEscape(search)+'&rdquo;');
       $.post("search",
 	   { search_string: search,
              antiCSRF: '{{acsrf}}',

@@ -505,6 +505,7 @@ Note sure I really need them  */
 
 #logoutLink {
     position:absolute;
+    cursor: pointer;
     margin-top: 15px;
     right: 0px;
      margin-right: 500px;
