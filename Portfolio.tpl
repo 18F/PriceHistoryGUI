@@ -139,7 +139,9 @@ Transaction Deleted From to Portfolio.
 {{!footer_html}}
 
 </body>
-
+<!-- excanvas must be included first, maybe.  -->
+<!-- This bock is similar to MainPage.tpl, and should be abstracted. -->
+    <script  src="../js/excanvas/excanvas.js"></script>
      <script  src="../js/jquery.min.js"></script>
     <script src="../SlickGrid-master/lib/jquery.event.drag-2.2.js"></script>
 
@@ -148,8 +150,7 @@ Transaction Deleted From to Portfolio.
     <script src="../SlickGrid-master/slick.grid.js"></script>
 
     <!-- jqplot stuff -->
-    <!--[if lt IE 9]>
-    <![endif]-->
+
     <script  src="../js/excanvas/excanvas.js"></script>
     <script  src="../js/jquery.jqplot.min.js"></script>
     
