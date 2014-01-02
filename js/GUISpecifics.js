@@ -78,7 +78,7 @@ in percentages.
 function renderAgency(dataRow) {
     var html = "";
     html += '<div class="result-agency">';
-    html += '<div class="agency-name">' + dataRow.contractingAgency.substring(0,30) +"</div>";
+    html += '<div class="agency-name">' + ((dataRow.contractingAgency) ? dataRow.contractingAgency.substring(0,30) : "") +"</div>";
     html += '<div>' + dataRow.orderDate +"</div>";
     html += '</div>\n';
     return html;
@@ -90,7 +90,7 @@ function renderVehicle(dataRow) {
 }
 function renderVendor(dataRow) {
     var html = "";
-    html += '<div class="result-vendor">'+dataRow.vendor.substring(0,50)+'</div>\n';
+    html += '<div class="result-vendor">'+((dataRow.vendor) ? dataRow.vendor.substring(0,50) : "") +'</div>\n';
     return html;
 }
 
@@ -107,8 +107,8 @@ function renderResultBottom(dataRow) {
 function renderResultLeft(dataRow) {
    var html = "";
     html += '<div class="result-left">\n';
-    html += '<div class="result-short-desc">' + dataRow.productDescription.substring(0,60) +"</div>";
-    html += '<div class="result-long-desc">' + dataRow.longDescription.substring(0,160) +"</div>";
+    html += '<div class="result-short-desc">' + ((dataRow.productDescription) ? dataRow.productDescription.substring(0,60) : "") +"</div>";
+    html += '<div class="result-long-desc">' + ((dataRow.longDescription) ? dataRow.longDescription.substring(0,160) : "") +"</div>";
     html += '</div>\n';
     return html;
 }

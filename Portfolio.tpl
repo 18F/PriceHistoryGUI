@@ -169,8 +169,8 @@ Transaction Deleted From to Portfolio.
 	<link href="../js/feedback_me/css/jquery.feedback_me.css" rel="stylesheet" type="text/css" />
 	<script  src="../js/jquery-ui.min.js"></script>
 	<script  src="../js/feedback_me/js/jquery.feedback_me.js"></script>
-	<script  src="./js/StandardFunctions.js"></script>
 	<script  src="./js/Utility.js"></script>
+	<script  src="./js/StandardFunctions.js"></script>
 	<script  src="./js/result_rendering.js"></script>
 	<script  src="./js/plot_rendering.js"></script>
 	<script  src="./js/grid_rendering.js"></script>
@@ -276,7 +276,7 @@ function performSearch() {
     $('#loading').show();
     $('#results-header').hide();
     timeSearchBegan = new Date();
-      $('#search_string_render').html('&ldquo;{{portfolio}}&rdquo;');
+      $('#search_string_render').html('&ldquo;'+htmlEscape('{{portfolio}}')+'&rdquo;');
       $.post("returnPortfolio",
 	   { antiCSRF: '{{acsrf}}',
              session_id: '{{session_id}}',

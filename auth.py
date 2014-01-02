@@ -69,8 +69,15 @@ def create_session_id():
     GLOBAL_SESSION_DICT[session_id] = [acsrf,timestamp]
     return session_id;
 
-def update_acsrf(session_id):
+def update_acsrf_nonce_form(session_id):
     acsrf = get_rand_string(13);
+    return update_new_acsrf(session_id,acsrf)
+
+def update_acsrf(session_id):
+    acsrf = GLOBAL_SESSION_DICT[session_id][0];
+    return update_new_acsrf(session_id,acsrf)
+
+def update_new_acsrf(session_id,acsrf):
     timestamp = datetime.datetime.now();
     GLOBAL_SESSION_DICT[session_id] = [acsrf,timestamp]
     LogActivity.logDebugInfo("SETTING ACSRF session, acsrf "+session_id+"."+GLOBAL_SESSION_DICT[session_id][0])

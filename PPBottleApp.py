@@ -287,18 +287,28 @@ def apisolr():
 
 def produceHTML(valuesdict):
     html = ""
-    html = html + "<h3 style= 'display:inline'>"+"Product Description: "+"</h3>"+ "<p style='display:inline'>"+ valuesdict["productDescription"]+"</p>"+"<br />"
-    html = html + "<h3 style= 'display:inline'>"+"Unit Price: "+"</h3>"+ "<p style='display:inline'>"+"$"+ valuesdict["unitPrice"]+"</p>"+"<br />"
-    html = html + "<h3 style= 'display:inline'>"+"Description: "+"</h3>"+ "<p style='display:inline'>"+ valuesdict["longDescription"]+"</p>"+"<br />"
-    html = html + "<h3 style= 'display:inline'>"+"Units Ordered: "+"</h3>"+ "<p style='display:inline'>"+ valuesdict["unitsOrdered"]+"</p>"+"<br />"
-    html = html + "<h3 style= 'display:inline'>"+"Vendor: "+"</h3>"+ "<p style='display:inline'>"+ valuesdict["vendor"]+"</p>"+"<br />"
-    html = html + "<h3 style= 'display:inline'>"+"Date: "+"</h3>"+ "<p style='display:inline'>"+ valuesdict["orderDate"]+"</p>"+"<br />"
-    html = html + "<h3 style= 'display:inline'>"+"Vehicle/Schedule Bought From: "+"</h3>"+ "<p style='display:inline'>"+ valuesdict["awardIdIdv"]+"</p>"+"<br />"
-    html = html + "<h3 style= 'display:inline'>"+"PSC Code: "+"</h3>"+ "<p style='display:inline'>"+ valuesdict["psc"]+"</p>"+"<br />"
-    html = html + "<h3 style= 'display:inline'>"+"Contracting Agency: "+"</h3>"+ "<p style='display:inline'>"+ valuesdict["contractingAgency"]+"</p>"+"<br />"     
+
+    if "productDescription" in valuesdict:
+        html = html + "<h3 style= 'display:inline'>"+"Product Description: "+"</h3>"+ "<p style='display:inline'>"+ valuesdict["productDescription"]+"</p>"+"<br />"
+    if "unitPrice" in valuesdict:
+        html = html + "<h3 style= 'display:inline'>"+"Unit Price: "+"</h3>"+ "<p style='display:inline'>"+"$"+ valuesdict["unitPrice"]+"</p>"+"<br />"
+    if "longDescription" in valuesdict:
+        html = html + "<h3 style= 'display:inline'>"+"Description: "+"</h3>"+ "<p style='display:inline'>"+ valuesdict["longDescription"]+"</p>"+"<br />"
+    if "unitsOrdered" in valuesdict:
+        html = html + "<h3 style= 'display:inline'>"+"Units Ordered: "+"</h3>"+ "<p style='display:inline'>"+ valuesdict["unitsOrdered"]+"</p>"+"<br />"
+    if "vendor" in valuesdict:
+        html = html + "<h3 style= 'display:inline'>"+"Vendor: "+"</h3>"+ "<p style='display:inline'>"+ valuesdict["vendor"]+"</p>"+"<br />"
+    if "orderDate" in valuesdict:
+        html = html + "<h3 style= 'display:inline'>"+"Date: "+"</h3>"+ "<p style='display:inline'>"+ valuesdict["orderDate"]+"</p>"+"<br />"
+    if "awardIdv" in valuesdict:
+        html = html + "<h3 style= 'display:inline'>"+"Vehicle/Schedule Bought From: "+"</h3>"+ "<p style='display:inline'>"+ valuesdict["awardIdIdv"]+"</p>"+"<br />"
+    if "psc" in valuesdict:
+        html = html + "<h3 style= 'display:inline'>"+"PSC Code: "+"</h3>"+ "<p style='display:inline'>"+ valuesdict["psc"]+"</p>"+"<br />"
+    if "contractingAgency" in valuesdict:
+        html = html + "<h3 style= 'display:inline'>"+"Contracting Agency: "+"</h3>"+ "<p style='display:inline'>"+ valuesdict["contractingAgency"]+"</p>"+"<br />"     
     for k,v in valuesdict.iteritems():
-     if k not in ("unitPrice","longDescription" ,"productDescription" , "unitsOrdered" , "vendor", "score", "orderDate", "p3id", 'awardIdIdv', 'psc', "contractingAgency"): 
-        html = html + "<h3 style= 'display:inline'>" +k+ ":" +"</h3>"+ "<p style='display:inline'>"+str(v) + "</p>" +"<br />"+ "\n"
+        if k not in ("unitPrice","longDescription" ,"productDescription" , "unitsOrdered" , "vendor", "score", "orderDate", "p3id", 'awardIdIdv', 'psc', "contractingAgency"): 
+            html = html + "<h3 style= 'display:inline'>" +k+ ":" +"</h3>"+ "<p style='display:inline'>"+str(v) + "</p>" +"<br />"+ "\n"
     html = html + "<p></p>" + "\n"
     return html
 
