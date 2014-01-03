@@ -13,7 +13,9 @@
 
     <link rel="stylesheet" type="text/css" href="../js/jqPagination-master/css/jqpagination.css"> 
 
+<!--
     <link rel="stylesheet" type="text/css" href="../js/jquery.jqplot.css" >
+-->
 
     {{!goog_anal_script}}
 </head>
@@ -38,6 +40,7 @@
             <span id="pricespaid_logo"><img src="theme/img/pp_logo_beta.png" alt="PricesPaid"></span>
             <div id="return_to_search">Main Search</div>
             <span id="logoutLink" href="./Logout">Logout</span>
+<div id="helplink" ><a href="./SearchHelp" >Help!</a></div>
     </div>
 
     <!-- Content ... below the header -->
@@ -138,46 +141,22 @@ Transaction Deleted From to Portfolio.
 {{!footer_html}}
 
 </body>
-<!-- excanvas must be included first, maybe.  -->
-<!-- This bock is similar to MainPage.tpl, and should be abstracted. -->
     <script  src="../js/excanvas/excanvas.js"></script>
      <script  src="../js/jquery.min.js"></script>
-    <script src="../SlickGrid-master/lib/jquery.event.drag-2.2.js"></script>
 
-    <script src="../SlickGrid-master/slick.core.js"></script>
-    <script src="../SlickGrid-master/slick.editors.js"></script>
-    <script src="../SlickGrid-master/slick.grid.js"></script>
+<!--
+    <script src="../js/slickgrid.inclusions.js"></script>
+-->
 
-    <!-- jqplot stuff -->
+{{!slickgrid_includes}}
 
-    <script  src="../js/excanvas/excanvas.js"></script>
-    <script  src="../js/jquery.jqplot.min.js"></script>
-    
-    <script  src="../js/plugins/jqplot.canvasTextRenderer.min.js"></script>
-    <script  src="../js/plugins/jqplot.canvasAxisLabelRenderer.min.js"></script>
-    <script  src="../js/plugins/jqplot.highlighter.min.js"></script>
-    <script  src="../js/plugins/jqplot.cursor.min.js"></script>
-    <script  src="../js/plugins/jqplot.bubbleRenderer.min.js"></script>
-   <script  src="../js/plugins/jqplot.dateAxisRenderer.min.js"></script>
+{{!jqplot_includes}}
 
     <!-- Trying to get a bloody paginator to work! -->
     <script src="../js/jqPagination-master/js/jquery.jqpagination.js"></script>
 
-    <!-- I use Stuart Banerman's hashcode to map award names to colors reliably: https://github.com/stuartbannerman/hashcode -->
-    <script src="../js/hashcode-master/lib/hashcode.min.js"></script>
+{{!mainjs_includes}}
 
-	<link href="../js/feedback_me/css/jquery.feedback_me.css" rel="stylesheet" type="text/css" />
-	<script  src="../js/jquery-ui.min.js"></script>
-	<script  src="../js/feedback_me/js/jquery.feedback_me.js"></script>
-	<script  src="./js/Utility.js"></script>
-	<script  src="./js/StandardFunctions.js"></script>
-	<script  src="./js/result_rendering.js"></script>
-	<script  src="./js/plot_rendering.js"></script>
-	<script  src="./js/grid_rendering.js"></script>
-	<script  src="./js/header.js"></script>
-	<script  src="./js/GUISpecifics.js"></script>
-	<script  src="./js/pagination.js"></script>
-	<script  src="../gui/MorrisDataDecorator/js/handlers.js"></script>
 <script>
 
 HANDLER_NAMESPACE_OBJECT.decoration_add_dialog_id = "#added_dialog";
