@@ -8,13 +8,15 @@
 	  href="./theme/css/decoration_gui.css" >
     <link href="./theme/css/shared.css" rel="stylesheet" type="text/css" media="screen, projection">
     <link href="./theme/css/mainPage.css" rel="stylesheet" type="text/css" media="screen, projection">
+<!--
     <link rel="stylesheet" href="../SlickGrid-master/slick.grid.css" type="text/css">
+-->
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 
     <link rel="stylesheet" type="text/css" href="../js/jqPagination-master/css/jqpagination.css"> 
 
-    <link rel="stylesheet" type="text/css" href="../js/jquery.jqplot.css" >
+<!--    <link rel="stylesheet" type="text/css" href="../js/jquery.jqplot.css" > -->
     {{!goog_anal_script}}
 
 </head>
@@ -170,46 +172,19 @@ Transaction Added to Portfolio.
 
 {{!footer_html}}
 
+    <script  src="../js/excanvas/excanvas.js"></script>
      <script  src="../js/jquery.min.js"></script>
 
+<!--    <script src="../js/slickgrid.inclusions.js"></script> -->
 
-    <script src="../SlickGrid-master/lib/jquery.event.drag-2.2.js"></script>
+{{!slickgrid_includes}}
 
-    <script src="../SlickGrid-master/slick.core.js"></script>
-    <script src="../SlickGrid-master/slick.editors.js"></script>
-    <script src="../SlickGrid-master/slick.grid.js"></script>
-    <!-- jqplot stuff -->
-    
-    <!--[if lt IE 9]>
-    <![endif]-->
-    <script  src="../js/excanvas/excanvas.js"></script>
-    <script  src="../js/jquery.jqplot.min.js"></script>
-    
-    <script  src="../js/plugins/jqplot.canvasTextRenderer.min.js"></script>
-    <script  src="../js/plugins/jqplot.canvasAxisLabelRenderer.min.js"></script>
-    <script  src="../js/plugins/jqplot.highlighter.min.js"></script>
-    <script  src="../js/plugins/jqplot.cursor.min.js"></script>
-    <script  src="../js/plugins/jqplot.bubbleRenderer.min.js"></script>
-   <script  src="../js/plugins/jqplot.dateAxisRenderer.min.js"></script>
+{{!jqplot_includes}}
 
     <!-- Trying to get a bloody paginator to work! -->
     <script src="../js/jqPagination-master/js/jquery.jqpagination.js"></script>
 
-    <!-- I use Stuart Banerman's hashcode to map award names to colors reliably: https://github.com/stuartbannerman/hashcode -->
-    <script src="../js/hashcode-master/lib/hashcode.min.js"></script>
-
-	<link href="../js/feedback_me/css/jquery.feedback_me.css" rel="stylesheet" type="text/css" />
-	<script  src="../js/jquery-ui.min.js"></script>
-	<script  src="../js/feedback_me/js/jquery.feedback_me.js"></script>
-	<script  src="./js/Utility.js"></script>
-	<script  src="./js/StandardFunctions.js"></script>
-	<script  src="./js/result_rendering.js"></script>
-	<script  src="./js/plot_rendering.js"></script>
-	<script  src="./js/grid_rendering.js"></script>
-	<script  src="./js/header.js"></script>
-	<script  src="./js/GUISpecifics.js"></script>
-	<script  src="./js/pagination.js"></script>
-	<script  src="../gui/MorrisDataDecorator/js/handlers.js"></script>
+{{!mainjs_includes}}
 
  <script>
 

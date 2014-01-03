@@ -24,6 +24,7 @@ from cStringIO import StringIO
 import morris_config
 
 URL_TO_MORRIS_PORTFOLIOS_API = "http://localhost:" + str(morris_config.BOTTLE_DEORATOR_PORTFOLIOS_API_PORT)
+
 URL_TO_MORRIS_TAGS_API = "http://localhost:" + str(morris_config.BOTTLE_DEORATOR_TAGS_API_PORT)
 
 
@@ -40,6 +41,9 @@ FOOTER_HTML = template('Footer')
 COLUMN_DROPDOWN_HTML = template('ColumnDropdown')
 EXTRA_LOGIN_METHODS = template('ExtraLoginMethods')
 PORTFOLIO_PANEL = template('PortfolioPanel')
+MAINJS_INCLUDES = template('MainJSIncludes')
+SLICKGRID_INCLUDES = template('SlickGridIncludes')
+JQPLOT_INCLUDES = template('JQPlotIncludes')
 
 # End Common Template Strings
 
@@ -184,6 +188,9 @@ goog_anal_script=GoogleAnalyticsInclusionScript)
                     footer_html=FOOTER_HTML,\
                     portfolio_panel=PORTFOLIO_PANEL,\
                     column_dropdown=COLUMN_DROPDOWN_HTML,\
+                    mainjs_includes=MAINJS_INCLUDES,\
+                    slickgrid_includes=SLICKGRID_INCLUDES,\
+                    jqplot_includes=JQPLOT_INCLUDES,\
                     commodity_id=commodity_id,goog_anal_script=GoogleAnalyticsInclusionScript)
 
 @app.route('/PortfolioPage',method='POST')
@@ -209,6 +216,9 @@ def render_portfolio():
                     footer_html=FOOTER_HTML,\
                     portfolio_panel=PORTFOLIO_PANEL,\
                     column_dropdown=COLUMN_DROPDOWN_HTML,\
+                    mainjs_includes=MAINJS_INCLUDES,\
+                    slickgrid_includes=SLICKGRID_INCLUDES,\
+                    jqplot_includes=JQPLOT_INCLUDES,\
                         goog_anal_script=GoogleAnalyticsInclusionScript)
 
 
