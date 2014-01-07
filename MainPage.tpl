@@ -51,7 +51,23 @@ To get more detailed help on searching, click the &quot;Help!&quot; link in the 
 <video id="portfoliotutorial" preload controls>
   <source src="./theme/movies/PortfolioTutorial.mp4" />
   <source src="./theme/movies/PortfolioTutorial.mov" />
-</video>
+<!-- This is in theory the IE8 fallback -->
+<object  width="320" height="240"
+type="video/x-ms-asf" url="./theme/movies/PortfolioTutorial.wmv"
+ data="./theme/movies/PortfolioTutorial.wmv">
+  <param name="url" value="./theme/movies/PortfolioTutorial.wmv">
+  <param name="filename" value="./theme/movies/PortfolioTutorial.wmv">
+  <param name="uiMode" value="full">
+<param name="autostart" value="0">
+<param name="autoplay" value="0">
+  <param name="autosize" value="1">
+  <param name="playcount" value="1"> 
+  <embed type="application/x-mplayer2" src="./theme/movies/PortfolioTutorial.wmv" showcontrols="true" 
+autoplay="false" autostart="false"
+pluginspage="http://www.microsoft.com/Windows/MediaPlayer/"></embed>
+</object>
+ </video>
+<p>Portfolio Tutorial Video</p>
 </div>
 
   </div>
