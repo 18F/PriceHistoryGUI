@@ -1,22 +1,20 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>PricesPaid v. 2.0 BETA </title>
     <meta name="robots" content="NOINDEX, NOFOLLOW">
-    <link rel="stylesheet" type="text/css" 
-	  href="./theme/css/decoration_gui.css" >
+    <link rel="stylesheet" type="text/css"
+    href="./theme/css/decoration_gui.css" >
     <link href="./theme/css/shared.css" rel="stylesheet" type="text/css" media="screen, projection">
     <link href="./theme/css/mainPage.css" rel="stylesheet" type="text/css" media="screen, projection">
-<!--
     <link rel="stylesheet" href="../SlickGrid-master/slick.grid.css" type="text/css">
--->
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 
-    <link rel="stylesheet" type="text/css" href="../js/jqPagination-master/css/jqpagination.css"> 
+    <link rel="stylesheet" type="text/css" href="../js/jqPagination-master/css/jqpagination.css">
 
-<!--    <link rel="stylesheet" type="text/css" href="../js/jquery.jqplot.css" > -->
+    <link rel="stylesheet" type="text/css" href="../js/jquery.jqplot.css" >
     {{!goog_anal_script}}
 
 </head>
@@ -27,7 +25,6 @@
   <div id="sidebar_search">
         <!-- Start search -->
         <span id="smallSearch">
-       <input id="searchButton" name="submit" value="Search" class="input_submit" title="Click here to search the database" type="submit" onclick="performSearch();">
                 <input type="text" name="small_search_string" id="small_search_string" placeholder="Search ..." value="{{search_string}}" title=
 "
 Enter any number of search terms to get a list of results ranked by relevance to those terms. To limit a search to those only containing a certain terms, separate terms by the upper case AND, like &quot;laptop AND rugged&quot;.  To exclude results containing a term, put upper case NOT or - in front of it, like &quot;laptop AND NOT rugged&quot;
@@ -38,40 +35,30 @@ To get more detailed help on searching, click the &quot;Help!&quot; link in the 
 "
 >
 
+       <input id="searchButton" name="submit" value="Search" class="input_submit" title="Click here to search the database" type="submit" onclick="performSearch();">
+
         </span>
    </div>
 
-  <span>Limit results to: </span>
-  <input type="text" id="num_results_to_return" placeholder="100" title="Change number of results returned here. More results will slow your response time. If you find yourself paging through too many results, try adding terms to your search to increase the relevancy of your results, excluding terms by putting a minus sign (-) in front of a term you want to exclude.">
+  <div id='sidebar-manage-results'>
+    <span>Limit results to: </span>
+    <input type="text" id="num_results_to_return" placeholder="100" title="Change number of results returned here. More results will slow your response time. If you find yourself paging through too many results, try adding terms to your search to increase the relevancy of your results, excluding terms by putting a minus sign (-) in front of a term you want to exclude.">
 
 
+  <div id="sidebarpaginator">   <span id="paginationHolder2"></span> </div>
   {{!portfolio_panel}}
 
-<div>
-<video id="portfoliotutorial" preload controls>
-  <source src="./theme/movies/PortfolioTutorial.mp4" />
-  <source src="./theme/movies/PortfolioTutorial.mov" />
-<!-- This is in theory the IE8 fallback -->
-<object  width="320" height="240"
-type="video/x-ms-asf" url="./theme/movies/PortfolioTutorial.wmv"
- data="./theme/movies/PortfolioTutorial.wmv">
-  <param name="url" value="./theme/movies/PortfolioTutorial.wmv">
-  <param name="filename" value="./theme/movies/PortfolioTutorial.wmv">
-  <param name="uiMode" value="full">
-<param name="autostart" value="0">
-<param name="autoplay" value="0">
-  <param name="autosize" value="1">
-  <param name="playcount" value="1"> 
-  <embed type="application/x-mplayer2" src="./theme/movies/PortfolioTutorial.wmv" showcontrols="true" 
-autoplay="false" autostart="false"
-pluginspage="http://www.microsoft.com/Windows/MediaPlayer/"></embed>
-</object>
- </video>
-<p>Portfolio Tutorial Video</p>
-</div>
+<!--
+<video id="portfoliotutorial" width="320" height="240" preload controls>
+  <source src="./theme/movies/PorfolioTutorial.mp4" type="video/mp4" />
+</video>
+-->
+
+<a href="./theme/movies/PortfolioTutorial.mp4" target="_blank">Watch a tutorial on portfolios</a>
 
   </div>
 
+  </div>
     <!-- Start header -->
     <div id="header">
         <!-- Top part of header -->
@@ -81,7 +68,7 @@ pluginspage="http://www.microsoft.com/Windows/MediaPlayer/"></embed>
             <div id="return_to_search">Main Search</div>
         </div>
 <div id="logoutLink">Logout</div>
-<div id="helplink" ><a href="./SearchHelp" >Help!</a></div>
+
     </div>
 
     <!-- Content ... below the header -->
@@ -93,11 +80,11 @@ pluginspage="http://www.microsoft.com/Windows/MediaPlayer/"></embed>
 
 
    <div id="results-header">
-    <span class="majorlabel" id="optionalPrefix">First &nbsp;</span> 
-    <span class="majorlabel" id="placeForNumberReturned"></span> 
+    <span class="majorlabel" id="optionalPrefix">First &nbsp;</span>
+    <span class="majorlabel" id="placeForNumberReturned"></span>
     <span class="majorlabel">&nbsp;Results </span>
     <span class="joininglabel">for </span>
-    <span class="majorlabel" id="search_string_render"></span> 
+    <span class="majorlabel" id="search_string_render"></span>
 
 </div>
 
@@ -126,7 +113,7 @@ pluginspage="http://www.microsoft.com/Windows/MediaPlayer/"></embed>
   </span>
 
 </div>
-   
+
 <div style="clear:both;"></div>
 
 <div id="detailArea"></div>
@@ -147,13 +134,13 @@ with javascript
 <p>
 Clicking on a column header will sort both the grid and the detail area by that column.  Clicking on the header again will reverse the order of the sort.
 </p>
-  <div id="myGrid" style="height:500px;"></div> 
+  <div id="myGrid" style="height:500px;"></div>
 <p></p>
 
 <div style="clear:both"></div>
 
 <div class="hideShowToggle">
-<button id="hideShowGraph" >Hide/Show Graph</button>  
+<button id="hideShowGraph" >Hide/Show Graph</button>
 </div>
 
 <div id="chartContainer">
@@ -163,11 +150,11 @@ Clicking on a column header will sort both the grid and the detail area by that 
 </div>
 
 <!-- end of "content" -->
-</div> 
+</div>
 
 
 
-<form id="fakeform" method="post" action="PortfolioPage">        
+<form id="fakeform" method="post" action="PortfolioPage">
     <input type="hidden" name="antiCSRF" value="{{acsrf}}" />
     <input type="hidden" name="session_id" value="{{session_id}}" />
     <input id="portfolioinput" type="hidden" name="portfolio" value="" />
@@ -188,19 +175,46 @@ Transaction Added to Portfolio.
 
 {{!footer_html}}
 
-    <script  src="../js/excanvas/excanvas.js"></script>
      <script  src="../js/jquery.min.js"></script>
 
-<!--    <script src="../js/slickgrid.inclusions.js"></script> -->
 
-{{!slickgrid_includes}}
+    <script src="../SlickGrid-master/lib/jquery.event.drag-2.2.js"></script>
 
-{{!jqplot_includes}}
+    <script src="../SlickGrid-master/slick.core.js"></script>
+    <script src="../SlickGrid-master/slick.editors.js"></script>
+    <script src="../SlickGrid-master/slick.grid.js"></script>
+    <!-- jqplot stuff -->
+
+    <!--[if lt IE 9]>
+    <![endif]-->
+    <script  src="../js/excanvas/excanvas.js"></script>
+    <script  src="../js/jquery.jqplot.min.js"></script>
+
+    <script  src="../js/plugins/jqplot.canvasTextRenderer.min.js"></script>
+    <script  src="../js/plugins/jqplot.canvasAxisLabelRenderer.min.js"></script>
+    <script  src="../js/plugins/jqplot.highlighter.min.js"></script>
+    <script  src="../js/plugins/jqplot.cursor.min.js"></script>
+    <script  src="../js/plugins/jqplot.bubbleRenderer.min.js"></script>
+   <script  src="../js/plugins/jqplot.dateAxisRenderer.min.js"></script>
 
     <!-- Trying to get a bloody paginator to work! -->
     <script src="../js/jqPagination-master/js/jquery.jqpagination.js"></script>
 
-{{!mainjs_includes}}
+    <!-- I use Stuart Banerman's hashcode to map award names to colors reliably: https://github.com/stuartbannerman/hashcode -->
+    <script src="../js/hashcode-master/lib/hashcode.min.js"></script>
+
+  <link href="../js/feedback_me/css/jquery.feedback_me.css" rel="stylesheet" type="text/css" />
+  <script  src="../js/jquery-ui.min.js"></script>
+  <script  src="../js/feedback_me/js/jquery.feedback_me.js"></script>
+  <script  src="./js/StandardFunctions.js"></script>
+  <script  src="./js/Utility.js"></script>
+  <script  src="./js/result_rendering.js"></script>
+  <script  src="./js/plot_rendering.js"></script>
+  <script  src="./js/grid_rendering.js"></script>
+  <script  src="./js/header.js"></script>
+  <script  src="./js/GUISpecifics.js"></script>
+  <script  src="./js/pagination.js"></script>
+  <script  src="../gui/MorrisDataDecorator/js/handlers.js"></script>
 
  <script>
 
@@ -235,12 +249,12 @@ $(function() {
 $(document).ready(function(){
     $("#logoutLink").click(Logout);
 
-    $("#return_to_search").click(function() { 
-	$('#fakeReturnForm').submit();
+    $("#return_to_search").click(function() {
+  $('#fakeReturnForm').submit();
     });
 
-    $("#pricespaid_logo").click(function() { 
-	$('#fakeReturnForm').submit();
+    $("#pricespaid_logo").click(function() {
+  $('#fakeReturnForm').submit();
     });
 });
 
@@ -248,7 +262,7 @@ $(document).ready(function(){
 // These should probably be parametrized
 var portfolio_url = "/gui/portfolio";
 var portfolio_url_addendum = "?antiCSRF={{acsrf}}&session_id={{session_id}}";
-var portfolio_post_data = { 
+var portfolio_post_data = {
              antiCSRF: '{{acsrf}}',
              session_id: '{{session_id}}',
 };
@@ -291,54 +305,54 @@ HANDLER_NAMESPACE_OBJECT.refresh_droppables = refreshDroppablesPortfolios;
 $(document).ready(function(){
         get_portfolio_list();
 //        get_tag_list(refreshDroppablesPortfolios);
-	//set up some minimal options for the feedback_me plugin
-	fm_options = {
+  //set up some minimal options for the feedback_me plugin
+  fm_options = {
                 custom_params: {
                    session_id: '{{session_id}}',
                    antiCSRF: '{{acsrf}}'
                 },
-		name_required : false,
+    name_required : false,
                 name_label : "(Optional) tell us who you are",
                 message_label : "How can we do better?",
-		message_placeholder:"Go ahead, type your feedback here ...",
-		message_required : false,
-		show_asterisk_for_required : true,
+    message_placeholder:"Go ahead, type your feedback here ...",
+    message_required : false,
+    show_asterisk_for_required : true,
                 close_on_click_outside: false,
-		feedback_url : '{{feedback_url}}',
+    feedback_url : '{{feedback_url}}',
                 show_radio_button_list : true,
-                position: 'left-bottom',
+                position: 'right-bottom',
                 radio_button_list_required : false,
                 radio_button_list_title: "How likely are you to recommend Prices Paid to a colleague (1 means not likely, 5 means very likely)?"
         };
 
-	//init feedback_me plugin
-	fm.init(fm_options);
-        $("#hideShowGrid").click(function() { 
-		    $("#myGrid").toggle();
-		 });
+  //init feedback_me plugin
+  fm.init(fm_options);
+        $("#hideShowGrid").click(function() {
+        $("#myGrid").toggle();
+     });
 
-         $("#hideShowPortfolios").click(function() { 
-		    $("#portfolios").toggle();
-		 });
+         $("#hideShowPortfolios").click(function() {
+        $("#portfolios").toggle();
+     });
 
-	 $("#hideShowDetails").click(function() { 
-		    $("#detailArea").toggle();
-		 });
+   $("#hideShowDetails").click(function() {
+        $("#detailArea").toggle();
+     });
 
-	 $("#hideShowGraph").click(function() { 
-		    $("#chartContainer").toggle();
-	 });
+   $("#hideShowGraph").click(function() {
+        $("#chartContainer").toggle();
+   });
 
 
     }
 );
 
-// This is an ugly global variable hack that seems to be 
+// This is an ugly global variable hack that seems to be
 // needed to events properly bound to dynamically created elements!
 var SCRATCH_NUMBER = 0;
 var itemDetailAssociation = [];
 
-// The current desire is that 
+// The current desire is that
 
 var data = [];
 var transactionData = [];
@@ -360,7 +374,7 @@ $('input[id=small_search_string]').on('keyup', function(e) {
 
 // This is my basic page math...
 var PAGESIZE = 5;
-var currentPage = 0; 
+var currentPage = 0;
 
 
 var timeSearchBegan;
@@ -398,25 +412,25 @@ function performSearch() {
      } else {
       $('#search_string_render').html('&ldquo;'+htmlEscape(search)+'&rdquo;');
       $.post("search",
-	   { search_string: search,
+     { search_string: search,
              antiCSRF: '{{acsrf}}',
              session_id: '{{session_id}}',
              psc_pattern: standard,
              numRows: max_results_num
-	   },
-	   processAjaxSearch
-	  ).fail(function() { alert("The search failed in some way; please try something else."); });
+     },
+     processAjaxSearch
+    ).fail(function() { alert("The search failed in some way; please try something else."); });
     }
 };
 
     var comclickcount = 0;
     $("#comDropdownWrapper").click(function(){
-	if ((comclickcount % 2) == 1) {
-	    var com = $("#commodityChoice").val();
-	    currentCommodityId = com;
+  if ((comclickcount % 2) == 1) {
+      var com = $("#commodityChoice").val();
+      currentCommodityId = com;
             performSearch();
-	}
-	comclickcount++;
+  }
+  comclickcount++;
     });
 
 
@@ -447,16 +461,16 @@ recreatePagination();
 
 // Note: This counts the Page from 1, not zero!
 // $(document).ready(function() {
-	$('.pagination').jqPagination({
-//		link_string	: '/?page={page_number}',
-		link_string	: '',
-		max_page	:  Math.ceil(totalNumber/PAGESIZE),
+  $('.pagination').jqPagination({
+//    link_string : '/?page={page_number}',
+    link_string : '',
+    max_page  :  Math.ceil(totalNumber/PAGESIZE),
                 currentPage     : 1,
-		paged		: function(page) {
+    paged   : function(page) {
                 currentPage = page - 1;
                 redrawDetailArea(transactionData,currentPage);
-		}
-	});
+    }
+  });
 
 // });
 
