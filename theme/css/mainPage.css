@@ -9,8 +9,8 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
 	margin: 0;
@@ -21,7 +21,7 @@ time, mark, audio, video {
 	vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
+article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
@@ -211,13 +211,16 @@ body {
 	background-color:#fff;
 	margin-bottom:45px;
 	margin-top:15px;
+  padding: 10px;
 	cursor: pointer;
+  float: left;
+  width: 100%;
 }
 
 .result:hover
 {
         color: green;
-} 
+}
 
 .result .result-image {
 	float:left;
@@ -434,6 +437,10 @@ Note sure I really need them  */
     height: 60px;
 }
 
+#sidebar-manage-results {
+  padding: 10px 20px;
+}
+
 #small_search_string {
     width: 200px;
 }
@@ -442,13 +449,7 @@ Note sure I really need them  */
 }
 
 #portfolio_list {
-    margin: 10px;
-    max-height: 500px;
-    overflow:scroll;
-}
-#portfoliotutorial {
-    width: 320px;
-    height: 240px;
+    overflow:auto;
 }
 
 #portfolio_title {
@@ -486,7 +487,7 @@ Note sure I really need them  */
         margin-right: 300px;
 	left: 0%;
 	margin-top: 25px;
-	margin-left: 25px;
+	padding-left: 25px;
 }
 #header #pricespaid_logo {
 	float:left;
@@ -511,7 +512,6 @@ Note sure I really need them  */
 
 #logoutLink {
     position:absolute;
-    cursor: pointer;
     margin-top: 15px;
     right: 0px;
      margin-right: 500px;
@@ -581,7 +581,7 @@ Note sure I really need them  */
     background: #fbfbfb;
     height: 40px;
     max-height: 40px;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 .result-right {
     float: right;
@@ -619,14 +619,14 @@ Note sure I really need them  */
     font-weight: bold;
     padding: 3px;
     height: 20px;
-} 
+}
 .result-cost-number {
     background: #3fd33f;
     color: white;
     font-weight: bold;
     padding: 3px;
     height: 20px;
-} 
+}
 .result-units {
     font-weight: bold;
     padding: 5px;
@@ -689,3 +689,13 @@ Note sure I really need them  */
     height: 60px;
     background: #c9defb;
     }
+
+/* Feedback me customizations */
+#feedback_trigger, .fm_clean#feedback_trigger:hover {
+  background-color: #ef6f00 !important;
+  padding: 5px;
+}
+
+.feedback_trigger_text {
+  color: white;
+}
