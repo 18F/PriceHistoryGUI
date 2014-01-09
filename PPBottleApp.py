@@ -8,10 +8,9 @@ import sys
 import LogFeedback
 import LogActivity
 import requests
+import os
  
 from ppGuiConfig import URLToPPSearchApiSolr,GoogleAnalyticsInclusionScript,\
-     PricesPaidAPIUsername,PricesPaidAPIPassword,\
-     PricesPaidAPIBasicAuthUsername,PricesPaidAPIBasicAuthPassword,\
      LocalURLToRecordFeedback
 
 import auth
@@ -35,6 +34,27 @@ PathToExternalFiles = "../"
 PathToCSSFiles=PathToExternalFiles+"css/"
 
 app = Bottle()
+
+PricesPaidAPIUsername=None
+PricesPaidAPIPassword=None
+PricesPaidAPIBasicAuthUsername=None
+PricesPaidAPIBasicAuthPassword=None
+P3APISALT = None
+
+
+def readCredentials():
+    if (PricesPaidAPIUsername is None):
+        global PricesPaidAPIUsername
+        global PricesPaidAPIPassword
+        global PricesPaidAPIBasicAuthUsername
+        global PricesPaidAPIBasicAuthPassword
+        global P3APISALT
+        PricesPaidAPIUsername=os.environ.get("PricesPaidAPIUsername")
+        PricesPaidAPIPassword=os.environ.get("PricesPaidAPIPassword")
+        PricesPaidAPIBasicAuthUsername=os.environ.get("PricesPaidAPIBasicAuthUsername")
+        PricesPaidAPIBasicAuthPassword=os.environ.get("PricesPaidAPIBasicAuthPassword")
+        P3APISALT=os.environ.get("P3APISALT")
+
 
 # Begin Common Template Strings
 FOOTER_HTML = template('Footer')
@@ -114,7 +134,10 @@ def pptriv():
     password = request.forms.get('password')
     # just a little throttle to slow down any denial of service attack..
     time.sleep(1.0);
-    if (not auth.does_authenticate(username,password)):
+
+    readCredentials()
+
+    if (not auth.does_authenticate(username,password,P3APISALT)):
         LogActivity.logBadCredentials(username)
         return template('Login',message='Improper Credentials.',
                     footer_html=FOOTER_HTML,
@@ -239,10 +262,14 @@ def apisolr():
     d = ast.literal_eval(r.text)
     p3ids = d['data']
 
+    readCredentials()
+
     payload = { 'username' : PricesPaidAPIUsername,\
                                 'password' : PricesPaidAPIPassword,\
                                 'p3ids' : pickle.dumps(p3ids)
                 }
+
+    readCredentials()
 
     r = requests.post(URLToPPSearchApiSolr+"/fromIds", data=payload, \
                           auth=(PricesPaidAPIBasicAuthUsername, PricesPaidAPIBasicAuthPassword), verify=False)
@@ -266,7 +293,7 @@ def apisolr():
     if (not auth.is_valid_acsrf(ses_id,acsrf)):
         dict = {0: {"status": "BadAuthentication"}}
         return dict;
-#    auth.update_acsrf(ses_id)
+
     portfolio = request.query['portfolio']
 
     print "portfolio = "+portfolio
@@ -274,6 +301,8 @@ def apisolr():
     content = r.text
     d = ast.literal_eval(r.text)
     p3ids = d['data']
+
+    readCredentials()
 
     payload = { 'username' : PricesPaidAPIUsername,\
                                 'password' : PricesPaidAPIPassword,\
@@ -331,7 +360,9 @@ def apisolr():
         dict = {0: {"status": "BadAuthentication"}}
         return dict;
 
-#    auth.update_acsrf(ses_id)
+    readCredentials()
+
+    LogActivity.logDebugInfo("Kill me: "+PricesPaidAPIBasicAuthUsername+PricesPaidAPIBasicAuthPassword)
 
     search_string = request.forms.get('search_string')
     psc_pattern = request.forms.get('psc_pattern')
