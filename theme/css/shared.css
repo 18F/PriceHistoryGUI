@@ -41,7 +41,6 @@
     right: 0px;
     width: 300px;
     height: 60px;
-    background: #c9defb;
     }
 
 
@@ -100,7 +99,8 @@
 #betastripe {
 position: absolute;
 top: 0px;
-opacity: 1.0;
+left: 0px;
+line-height: 1.0;
 z-index: 15;
 }
 

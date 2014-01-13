@@ -4,6 +4,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>PricesPaid v. 2.0 BETA </title>
     <meta name="robots" content="NOINDEX, NOFOLLOW">
+
+    <link rel="stylesheet" type="text/css" href="theme/css/bootstrap.css">
     <link rel="stylesheet" type="text/css"
     href="./theme/css/decoration_gui.css" >
     <link href="./theme/css/shared.css" rel="stylesheet" type="text/css" media="screen, projection">
@@ -19,64 +21,75 @@
 
 </head>
 <body>
-<img id="betastripe" src="theme/img/Beta2.0.png"  alt="Beta 2.0">
 
-<div id="sidebar">
-  <div id="sidebar_search">
-        <!-- Start search -->
+
+  <div id="header">
+    <div class="col-md-3 col-xs-5 logo">
+      <span id="pricespaid_logo"><img src="theme/img/pp_logo_beta.png" alt="PricesPaid"></span>
+    </div>
+    <div class="col-md-9 col-xs-7">
+      <nav class="navbar" role="navigation">
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div>
+          <ul class="nav navbar-nav">
+            <li id="return_to_search" class="active"><a href="#">Search</a></li>
+            <li id="logoutLink"><a href="#">Logout</a></li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </nav>
+    </div>
+
+
+    <div id="sidebar" class="col-xs-3">
+      <div id="sidebar_search">
         <span id="smallSearch">
-                <input type="text" name="small_search_string" id="small_search_string" placeholder="Search ..." value="{{search_string}}" title=
-"
-Enter any number of search terms to get a list of results ranked by relevance to those terms. To limit a search to those only containing a certain terms, separate terms by the upper case AND, like &quot;laptop AND rugged&quot;.  To exclude results containing a term, put upper case NOT or - in front of it, like &quot;laptop AND NOT rugged&quot;
+          <input type="text" name="small_search_string" id="small_search_string" placeholder="Search ..." value="{{search_string}}" title=
+          "
+          Enter any number of search terms to get a list of results ranked by relevance to those terms. To limit a search to those only containing a certain terms, separate terms by the upper case AND, like &quot;laptop AND rugged&quot;.  To exclude results containing a term, put upper case NOT or - in front of it, like &quot;laptop AND NOT rugged&quot;
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-To get more detailed help on searching, click the &quot;Help!&quot; link in the upper right of this page.
-"
->
 
-       <input id="searchButton" name="submit" value="Search" class="input_submit" title="Click here to search the database" type="submit" onclick="performSearch();">
+          To get more detailed help on searching, click the &quot;Help!&quot; link in the upper right of this page.
+          "
+          >
+
+          <input id="searchButton" name="submit" value="Search" class="input_submit" title="Click here to search the database" type="submit" onclick="performSearch();">
 
         </span>
-   </div>
+      </div>
 
-  <div id='sidebar-manage-results'>
-    <span>Limit results to: </span>
-    <input type="text" id="num_results_to_return" placeholder="100" title="Change number of results returned here. More results will slow your response time. If you find yourself paging through too many results, try adding terms to your search to increase the relevancy of your results, excluding terms by putting a minus sign (-) in front of a term you want to exclude.">
+      <div id='sidebar-manage-results'>
+        <span>Limit results to: </span>
+        <input type="text" id="num_results_to_return" placeholder="100" title="Change number of results returned here. More results will slow your response time. If you find yourself paging through too many results, try adding terms to your search to increase the relevancy of your results, excluding terms by putting a minus sign (-) in front of a term you want to exclude.">
 
 
-  <div id="sidebarpaginator">   <span id="paginationHolder2"></span> </div>
-  {{!portfolio_panel}}
+        <div id="sidebarpaginator">   <span id="paginationHolder2"></span> </div>
+        {{!portfolio_panel}}
 
-<!--
-<video id="portfoliotutorial" width="320" height="240" preload controls>
-  <source src="./theme/movies/PorfolioTutorial.mp4" type="video/mp4" />
-</video>
--->
 
-<a href="./theme/movies/PortfolioTutorial.mp4" target="_blank">Watch a tutorial on portfolios</a>
+        <a href="./theme/movies/PortfolioTutorial.mp4" target="_blank">Watch a tutorial on portfolios</a>
 
-  </div>
-
-  </div>
-    <!-- Start header -->
-    <div id="header">
-        <!-- Top part of header -->
-        <div>
-        <!-- FACTOR OUT -->
-            <span id="pricespaid_logo"><img src="theme/img/pp_logo_beta.png" alt="PricesPaid"></span>
-            <div id="return_to_search">Main Search</div>
-        </div>
-<div id="logoutLink">Logout</div>
-
+      </div>
     </div>
+  </div>
+
+
+  <div class="container">
+    <div class='row'>
+      <div class='col-12-xs'>
+        <img id="betastripe" src="theme/img/Beta2.0.png"  alt="Beta 2.0">
+      </div>
+    </div>
+
+
 
     <!-- Content ... below the header -->
     <div id="content">
 
-<div id="loading">
-<h1>    Searching, Please Wait... </h1>
-</div>
+      <div id="loading">
+        <h1>    Searching, Please Wait... </h1>
+      </div>
 
 
    <div id="results-header">
@@ -171,10 +184,10 @@ Clicking on a column header will sort both the grid and the detail area by that 
 Transaction Added to Portfolio.
 </div>
 
-</body>
-
 {{!footer_html}}
 
+</div>
+</body>
      <script  src="../js/jquery.min.js"></script>
 
 
@@ -229,11 +242,13 @@ $(HANDLER_NAMESPACE_OBJECT.decoration_add_dialog_id).dialog({
     }
 });
 
+// TODO: Update tooltip styles
 $(function() {
    $( document ).tooltip({
        position: {
        my: "center bottom-20",
        at: "center top",
+       tooltipClass: "p3-tooltip",
        using: function( position, feedback ) {
        $( this ).css( position );
        $( "<div>" )
@@ -256,6 +271,24 @@ $(document).ready(function(){
     $("#pricespaid_logo").click(function() {
   $('#fakeReturnForm').submit();
     });
+
+   $( document ).tooltip({
+       position: {
+       my: "center bottom-20",
+       at: "center top",
+       tooltipClass: "p3-tooltip",
+       using: function( position, feedback ) {
+       $( this ).css( position );
+       $( "<div>" )
+           .addClass( "arrow" )
+           .addClass( feedback.vertical )
+           .addClass( feedback.horizontal )
+         .appendTo( this );
+     }
+    }
+});
+
+
 });
 
 
