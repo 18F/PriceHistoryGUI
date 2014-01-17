@@ -188,7 +188,7 @@ def pptriv():
                     footer_html=FOOTER_HTML,
                     extra_login_methods=EXTRA_LOGIN_METHODS,
                         goog_anal_script=GoogleAnalyticsInclusionScript)
-    doStartPageAuthenticated(username)
+    return doStartPageAuthenticated(username)
 
 def doStartPageAuthenticated(username):
     search_string = request.forms.get('search_string')
