@@ -1,4 +1,4 @@
-from bottle import Bottle, run, template,request,TEMPLATE_PATH,static_file,HeaderDict,BaseResponse
+from bottle import Bottle, run, template,request,TEMPLATE_PATH,static_file,HeaderDict,BaseResponse,response,redirect
 
 import time
 import urllib
@@ -11,7 +11,7 @@ import requests
 import os
  
 from ppGuiConfig import URLToPPSearchApiSolr,GoogleAnalyticsInclusionScript,\
-     LocalURLToRecordFeedback
+     LocalURLToRecordFeedback,CAS_SERVER,CAS_RETURN_SERVICE_URL
 
 import auth
 
@@ -21,6 +21,14 @@ from cStringIO import StringIO
 # I am duplicating this because I don't really know how t organize python 
 # classes.  Probably it should be removed.
 import morris_config
+
+import pycas
+import os
+import cgi
+import md5
+import time
+import urllib
+import urlparse
 
 URL_TO_MORRIS_PORTFOLIOS_API = "http://localhost:" + str(morris_config.BOTTLE_DEORATOR_PORTFOLIOS_API_PORT)
 
@@ -43,8 +51,8 @@ P3APISALT = None
 
 
 def readCredentials():
+    global PricesPaidAPIUsername
     if (PricesPaidAPIUsername is None):
-        global PricesPaidAPIUsername
         global PricesPaidAPIPassword
         global PricesPaidAPIBasicAuthUsername
         global PricesPaidAPIBasicAuthPassword
@@ -128,6 +136,43 @@ def login():
                     extra_login_methods=EXTRA_LOGIN_METHODS,
                     goog_anal_script=GoogleAnalyticsInclusionScript)
 
+
+@app.route('/LoginViaMax')
+def loginViaMax():
+    LogActivity.logPageTurn("nosession","MaxLoginPage")
+    response.status = 303 
+    domain,path = urlparse.urlparse(CAS_RETURN_SERVICE_URL)[1:3]
+    secure=1
+    setCookieCommand = pycas.make_pycas_cookie("gateway",domain,path,secure)
+    strip = setCookieCommand[12:]
+    response.set_header('Set-Cookie', strip)
+    opt=""
+    location = pycas.get_url_redirect_as_string(CAS_SERVER,CAS_RETURN_SERVICE_URL,opt,secure)
+    response.set_header('Location',location)
+    return "You will be redirected."+strip+location
+
+@app.route('/ReturnLoginViaMax')
+def loginViaMax():
+    LogActivity.logPageTurn("nosession","ReturnMaxLoginPage")
+
+    ticket = request.query['ticket']
+    LogActivity.logDebugInfo("MAX AUTHENTICATED ticket :"+ticket)
+    status, id, cookie = pycas.check_authenticated_p(ticket,CAS_SERVER, CAS_RETURN_SERVICE_URL, lifetime=None, secure=1, protocol=2, path="/", opt="")
+    maxAuthenticatedProperly = (status == pycas.CAS_OK);
+
+    LogActivity.logDebugInfo("MAX AUTHENTICATED WITH ID:"+id)
+
+    username = "billybob"
+    if (maxAuthenticatedProperly):
+        return doStartPageAuthenticated(username)
+    else:
+        LogActivity.logBadCredentials(username+":failed to Authenticate with Max")
+        return template('Login',message='Improper Credentials.',
+                    footer_html=FOOTER_HTML,
+                    extra_login_methods=EXTRA_LOGIN_METHODS,
+                        goog_anal_script=GoogleAnalyticsInclusionScript)
+        
+
 @app.route('/StartPage',method='POST')
 def pptriv():
     username = request.forms.get('username')
@@ -143,6 +188,9 @@ def pptriv():
                     footer_html=FOOTER_HTML,
                     extra_login_methods=EXTRA_LOGIN_METHODS,
                         goog_anal_script=GoogleAnalyticsInclusionScript)
+    doStartPageAuthenticated(username)
+
+def doStartPageAuthenticated(username):
     search_string = request.forms.get('search_string')
     search_string = search_string if search_string is not None else ""
     psc_pattern = request.forms.get('psc_pattern')

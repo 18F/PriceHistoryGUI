@@ -66,6 +66,9 @@ If you have longer feedback, a technical question, or need technical support, pl
 
 {{!extra_login_methods}}
 
+  <form id="fakeLoginViaMaxForm" action="/gui/LoginViaMax" method="get">
+  </form>
+
 </div>
 
 {{!footer_html}}
@@ -106,6 +109,12 @@ OAuth.popup('github',
   });
 });
 
+$("#max").click(function () {
+
+  $('#fakeLoginViaMaxForm').submit();
+
+//  alert("Here is where you would log in to MAX, if I had it done!");
+});
 </script>
 
 </body>
