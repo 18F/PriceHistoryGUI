@@ -418,7 +418,7 @@ Note sure I really need them  */
 
 #bigsearchbutton {width:100px; height:78px; background:#5ab162 url(../img2/btn_search.png) no-repeat center center; border:1px solid #5ab162; text-indent:-5000px; }
 
-#searchButton {width:60px; height:60px; background: #c9defb url(../img/icn_search.psv) no-repeat center; border:1px solid #c9defb; text-indent:-5000px; }
+#searchButton {width:60px; height:60px; background: #c9defb url(../img/icn_search.png) no-repeat center; border:1px solid #c9defb; text-indent:-5000px; }
 
 #bigsearchform {padding: 50px;}
 

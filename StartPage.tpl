@@ -10,28 +10,29 @@
     <link href="./theme/css/mainPage.css" rel="stylesheet" type="text/css" media="screen, projection">
     {{!goog_anal_script}}
 </head>
-<img id="betastripe" src="theme/img/Beta2.0.png"  alt="Beta 2.0">
 
 <body id="start">
+<img id="betastripe" src="theme/img/Beta2.0.png"  alt="Beta 2.0">
 
-    <div id="header">
+<div id="header">
 
-        <div class="col-md-3 col-xs-5 logo">
-          <span id="pricespaid_logo"><img src="theme/img/pp_logo_beta.png" alt="PricesPaid"></span>
+  <div class="col-md-3 col-xs-5 logo">
+    <span id="pricespaid_logo"><img src="theme/img/pp_logo_beta.png" alt="PricesPaid"></span>
+  </div>
+
+  <div class="col-md-9 col-xs-7">
+    <nav class="navbar" role="navigation">
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div>
+        <ul class="nav navbar-nav">
+          <li id="return_to_search" class="active"><a href="#">Search</a></li>
+          <li id="logoutLink"><a href="#">Logout</a></li>
+          <li id="helplink" ><a href="./SearchHelp" >Help!</a></li>
+        </ul>
       </div>
-      <div class="col-md-9 col-xs-7">
-          <nav class="navbar" role="navigation">
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div>
-              <ul class="nav navbar-nav">
-                <li id="return_to_search" class="active"><a href="#">Search</a></li>
-                <li id="logoutLink"><a href="#">Logout</a></li>
-                <li id="helplink" ><a href="./SearchHelp" >Help!</a></li>
-            </ul>
-        </div><!-- /.navbar-collapse -->
     </nav>
-</div>
+  </div>
 </div>
 
 <form method="get" id="fakeLogoutForm" action="./">

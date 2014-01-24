@@ -1,25 +1,19 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Portfolio v. 2.0 BETA Search</title>
     <meta name="robots" content="NOINDEX, NOFOLLOW">
-    <link rel="stylesheet" type="text/css" 
+    <link rel="stylesheet" type="text/css"
 	  href="./theme/css/decoration_gui.css" >
+    <link rel="stylesheet" type="text/css" href="theme/css/bootstrap.css">
     <link href="./theme/css/shared.css" rel="stylesheet" type="text/css" media="screen, projection">
     <link href="./theme/css/mainPage.css" rel="stylesheet" type="text/css" media="screen, projection">
- 
-<!--
-   <link rel="stylesheet" href="../SlickGrid-master/slick.grid.css" type="text/css">
--->
+
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 
-    <link rel="stylesheet" type="text/css" href="../js/jqPagination-master/css/jqpagination.css"> 
-
-<!--
-    <link rel="stylesheet" type="text/css" href="../js/jquery.jqplot.css" >
--->
+    <link rel="stylesheet" type="text/css" href="../js/jqPagination-master/css/jqpagination.css">
 
     {{!goog_anal_script}}
 </head>
@@ -33,19 +27,32 @@
     </div>
   </div>
 
-  {{!portfolio_panel}}
+  <div id='sidebar-manage-results'>
+    {{!portfolio_panel}}
+  </div>
+
   </div>
 
     <!-- Start header -->
-    <div id="header">
-        <!-- Top part of header -->
-        <!-- FACTOR OUT -->
+<div id="header">
 
-            <span id="pricespaid_logo"><img src="theme/img/pp_logo_beta.png" alt="PricesPaid"></span>
-            <div id="return_to_search">Main Search</div>
-            <span id="logoutLink" href="./Logout">Logout</span>
-<div id="helplink" ><a href="./SearchHelp" >Help!</a></div>
-    </div>
+    <div class="col-md-3 col-xs-5 logo">
+      <span id="pricespaid_logo"><img src="theme/img/pp_logo_beta.png" alt="PricesPaid"></span>
+  </div>
+  <div class="col-md-9 col-xs-7">
+      <nav class="navbar" role="navigation">
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div>
+          <ul class="nav navbar-nav">
+            <li id="return_to_search" class="active"><a href="#">Search</a></li>
+            <li id="logoutLink"><a href="#">Logout</a></li>
+            <li id="helplink" ><a href="./SearchHelp" >Help!</a></li>
+        </ul>
+    </div><!-- /.navbar-collapse -->
+</nav>
+</div>
+</div>
 
     <!-- Content ... below the header -->
     <div id="content" class="inner">
@@ -54,10 +61,10 @@
 </div>
 
    <div id="results-header">
-    <span class="majorlabel" id="placeForNumberReturned"></span> 
+    <span class="majorlabel" id="placeForNumberReturned"></span>
     <span class="majorlabel">&nbsp;Transactions </span>
     <span class="joininglabel">in portfolio</span>
-    <span class="majorlabel" id="search_string_render"></span> 
+    <span class="majorlabel" id="search_string_render"></span>
 
 
 </div>
@@ -91,7 +98,7 @@
   </span>
 
 </div>
-   
+
 <div style="clear:both;"></div>
 
 <div id="detailArea"></div>
@@ -99,7 +106,7 @@
 <div style="clear:both"></div>
 
 <div class="hideShowToggle">
-<button id="hideShowGraph" >Hide/Show Graph</button>  
+<button id="hideShowGraph" >Hide/Show Graph</button>
 </div>
 
 <div id="chartContainer">
@@ -116,10 +123,10 @@
 <p>
 Clicking on a column header will sort both the grid and the detail area by that column.  Clicking on the header again will reverse the order of the sort.
 </p>
-  <div id="myGrid" style="height:500px;"></div> 
+  <div id="myGrid" style="height:500px;"></div>
 <p></p>
 
-<form id="fakeform" method="post" action="PortfolioPage">        
+<form id="fakeform" method="post" action="PortfolioPage">
     <input type="hidden" name="antiCSRF" value="{{acsrf}}" />
     <input type="hidden" name="session_id" value="{{session_id}}" />
     <input id="portfolioinput" type="hidden" name="portfolio" value="" />
@@ -166,7 +173,7 @@ Transaction Deleted From to Portfolio.
 HANDLER_NAMESPACE_OBJECT.decoration_add_dialog_id = "#added_dialog";
 HANDLER_NAMESPACE_OBJECT.decoration_deleted_dialog_id = "#deleted_dialog";
 
-HANDLER_NAMESPACE_OBJECT.decoration_deleted_function = 
+HANDLER_NAMESPACE_OBJECT.decoration_deleted_function =
 function () {
   $(HANDLER_NAMESPACE_OBJECT.decoration_deleted_dialog_id).dialog({
     autoOpen: false,
@@ -201,11 +208,11 @@ $(HANDLER_NAMESPACE_OBJECT.decoration_deleted_dialog_id).dialog({
 $(document).ready(function(){
     $("#logoutLink").click(Logout);
 
-    $("#return_to_search").click(function() { 
+    $("#return_to_search").click(function() {
 	$('#fakeReturnForm').submit();
     });
 
-    $("#hideShowGraph").click(function() { 
+    $("#hideShowGraph").click(function() {
  		    $("#chartContainer").toggle();
     });
 
@@ -215,7 +222,7 @@ $(document).ready(function(){
 // These should probably be parametrized
 var portfolio_url = "/gui/portfolio";
 var portfolio_url_addendum = "?antiCSRF={{acsrf}}&session_id={{session_id}}";
-var portfolio_post_data = { 
+var portfolio_post_data = {
              antiCSRF: '{{acsrf}}',
              session_id: '{{session_id}}',
 };
@@ -271,12 +278,12 @@ function performSearch() {
 
 
 
-// This is an ugly global variable hack that seems to be 
+// This is an ugly global variable hack that seems to be
 // needed to events properly bound to dynamically created elements!
 var SCRATCH_NUMBER = 0;
 var itemDetailAssociation = [];
 
-// The current desire is that 
+// The current desire is that
 
 var data = [];
 var transactionData = [];
@@ -284,11 +291,11 @@ var internalFieldLabel = [];
 internalFieldLabel["starred"] = "Favorite";
 internalFieldLabel["color"] = "Color";
 
-$("#hideShowDetails").click(function() { 
+$("#hideShowDetails").click(function() {
     $("#detailArea").toggle();
 });
 
-$("#hideShowGrid").click(function() { 
+$("#hideShowGrid").click(function() {
 		    $("#myGrid").toggle();
 });
 
@@ -297,7 +304,7 @@ $("#hideShowGrid").click(function() {
 
 // This is my basic page math...
 var PAGESIZE = 5;
-var currentPage = 0; 
+var currentPage = 0;
 
 var timeSearchBegan;
 
