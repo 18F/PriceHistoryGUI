@@ -27,8 +27,8 @@ function renderDetailArea(dataRow,i) {
     html += renderCustomField('Vendor',fieldseparator, dataRow.vendor || "No Vendor.");
     html += renderCustomField('Contracting Agency/Office',fieldseparator, dataRow.contractingAgency || "No Agency.");
 
-    // Note this could be done more efficiently, and 
-    // we will someday want a list of custom fields for other purposes, but 
+    // Note this could be done more efficiently, and
+    // we will someday want a list of custom fields for other purposes, but
     // this is good enough for now...
     for (var k in dataRow) {
         if (!((k in standardFieldDescriptor) || (k in internalFieldLabel))) {
@@ -116,7 +116,7 @@ function renderResultLeft(dataRow) {
 function renderResultRight(dataRow,transactionId) {
    var html = "";
     html += '<div class="result-right">\n';
-    html += '<div class="droppablerecord" id="'+transactionId+'"><img  title="Drag and drop on a portfolio" class="draghandle" alt="Drag Handle" src="./theme/img/icn_list.png"></div>';
+    html += '<div class="droppablerecord" id="'+transactionId+'"><img  title="Drag and drop on a portfolio" class="draghandle" alt="Drag Handle" src="./theme/img/icn_list.svg"></div>';
     html += '<div class="result-cost"><span class="result-cost-glyph">$</span><span class="result-cost-number">'+numberWithCommas(dataRow.unitPrice) +"</span></div>";
     html += '<div class="result-units">'+numberWithCommas(dataRow.unitsOrdered)+' Units</div>';
     if (PAGE_CONTEXT.render_transaction_delete) {
