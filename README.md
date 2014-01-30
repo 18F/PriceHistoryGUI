@@ -80,15 +80,15 @@ Although in general configuration files allow flexibility in how to organize the
 
 Here are some recommended steps:
 
-*) Install the MorrisDataDecorator following the instructions found there.  This project has automated unit tests. It implements a website, which you might wish to briefly bring up in bottle to be assured that it works, but really we are using it of the API definition and some back-end implementation.
-*) Create a "logs" directory parallel to MorrisDataDecorator, PricesPaidAPI, and PricesPaidGUI.
-*) Install the PricesPaidAPI following the instructions found there.
-*) Install the PricesPaidGUI following the instructions found here.
-*) Copy the the file in PricesPaidGUI/docs/Example.ppGuiConfig.py into PricesPaidGUI/ppGuiConfig.py and edit it appropriately.
-*) Copy the file morris_config.py into 
-*) create your own "cookedData" directory with my example or your own.
-*) Carefully adjust ppGuiConfig.py to match your installation instructions.
-*) Install SOLR.
-*) In the PricesPaidAPI directory, execute "python SolrLodr.py" to load the data in your cookedData directory into SOLR.  Use the Solr administrative interface to make sure the documents are correctly inject.  SolrLodr produces a log file of errors.
-*) Start up Apache (or bottle) and try to get it working.
+* Install the MorrisDataDecorator following the instructions found there.  This project has automated unit tests. It implements a website, which you might wish to briefly bring up in bottle to be assured that it works, but really we are using it of the API definition and some back-end implementation.
+* Create a "logs" directory parallel to MorrisDataDecorator, PricesPaidAPI, and PricesPaidGUI.
+* Install the PricesPaidAPI following the instructions found there.
+* Install the PricesPaidGUI following the instructions found here.
+* Copy the the file in PricesPaidGUI/docs/Example.ppGuiConfig.py into PricesPaidGUI/ppGuiConfig.py and edit it appropriately.
+* Copy the file morris_config.py into 
+* create your own "cookedData" directory with my example or your own.
+* Carefully adjust ppGuiConfig.py to match your installation instructions.
+* Install SOLR.
+* In the PricesPaidAPI directory, execute "python SolrLodr.py" to load the data in your cookedData directory into SOLR.  Use the Solr administrative interface to make sure the documents are correctly inject.  SolrLodr produces a log file of errors.
+* Start up Apache (or bottle) and try to get it working.
 
