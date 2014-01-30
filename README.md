@@ -9,7 +9,7 @@ price the Federal Government pays for goods and services. It was initiated by a 
 Presidentail Innovation Fellows (Round 2), consisting of Robert L. Read, Martin Ringlein, 
 Gregory Godbout, and Aaron Snow.
 
-THE SHAPE OF THE CODE
+# THE SHAPE OF THE CODE
 
 This project is a website with just a few pages that uses the sister project PricesPaidAPI
 to search a database of transactions of actual prices paid.  Most of the code is messy
@@ -18,12 +18,12 @@ list of visual paragraphs not unlike Amazon, and as a grid. The purpose is to al
 buyers to get the best possible prices by being armed with good market research.
 
 
-STATUS
+# STATUS
 
 This code was initially checked in on August 25th, and is quite rough and hard to install.
 The dependencies are not clear yet and there are no installation instructions.
 
-BASIC PRINCIPLES
+# BASIC PRINCIPLES
 
 This is really a visualization tool for .csv files.  However, right now, it is tied specifically
 to the idea of "Prices Paid" for the government and it is logoed for that.  We hope to evenutally 
@@ -35,18 +35,18 @@ The code at present calls the PricesPaidAPI to search a SOLR database with what 
 We are aiming for transparency and relying on the intelligence of contracting officers to deal 
 with the fact that the data returned is likely highly imperfect.
 
-HOW YOU CAN HELP
+# HOW YOU CAN HELP
 
 We need help with this, even though it is premature to ask for it, because the code is so rough. 
 Here is a preliminary TODO list:
 
-* ) Factor out the PricesPaid specific GUI elements and fields in order to make the project both  
+*  Factor out the PricesPaid specific GUI elements and fields in order to make the project both  
 cleaner and potentially applicable to other forms of data.
-* ) Clean up my not very good javascript, primarily by factoring it into separate files that can be loaded.
-* ) Help make the GUI much better than it is today.  We are activley working on this, so there is
+*  Clean up my not very good javascript, primarily by factoring it into separate files that can be loaded.
+*  Help make the GUI much better than it is today.  We are activley working on this, so there is
 of course the danger of some duplication of effort---but so be it.
-* ) help us implement "portfolios" of selected transactions.
-* ) We need an export mechanism of portfolios (or the page) into Word, Excel, and PDF.
+*  help us implement "portfolios" of selected transactions.
+*  We need an export mechanism of portfolios (or the page) into Word, Excel, and PDF.
 
 Our goal is to save the government a lot of money in 2014.  Although ambitious, if we need 
 only make government buyers a few perecentage points more efficient to accomplish this.
@@ -54,7 +54,7 @@ Your help may make all the difference in the world---and may easily exceed our o
 
 Please direct questions to Robert L. Read at <read.robert@gmail.com>.
 
-INSTALLATION
+# INSTALLATION
 
 Thanks to John Hardy for attempting to work through some of this.  
 
@@ -65,14 +65,14 @@ The PricesPaidGUI project is separated from its sister, PricesPaidAPI, to keep a
 I've been told I should be able to get all of this working with PyPi, but until I do, here is an attempt at installation instructions.
 
 You will need to have installed:
-*) Python
-*) easy_install
-*) bottle
-*) requests
-*) SOLR
-*) solrpy-0.9.5
+* Python
+* easy_install
+* bottle
+* requests
+* SOLR
+* solrpy-0.9.5
 
-I use Apache, mod_wsgi, and mod_ssl, but technically those things are not necessary.  Bottle can cat as a webserver quite nicely for a demonstration project.
+I use Apache, mod_wsgi, and mod_ssl, but mod_ssl is optional.
 
 You will also need some data.  I have provided an example data file in the "cookedData" directory in PricesPaidAPI, but it only contains a few transactions and is not interesting.  I am working with the government to get a proper file released, but have so far not been able to get around security and privacy concerns.  However, there is a documented process for building an adapter to your own Prices Paid data file which you can follow.
 
