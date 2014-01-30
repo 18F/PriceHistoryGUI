@@ -1,0 +1,16 @@
+August 4, 2013
+
+* Need to fix bug which is keeping detail area from working.
+Basically now need to focus efforts on making detail area useful.
+
+Priorities:
+
+* Fix fact that detials don't work
+* Add custom fields into detail (retrieved by Ajax query)
+*) Load up more custom fields
+*) Allow template scrolling
+*) Improve login
+*) Publish for upcoming demos
+
+... then I can go ont to the big bits of work, which are creating 
+a persistent store and using full-text indexing.

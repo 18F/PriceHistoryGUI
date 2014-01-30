@@ -1,0 +1,117 @@
+@charset "UTF-8";
+/* CSS Document */
+/*
+body {background-color: #f4f4f4; font:normal 12px Helvetica, Arial, sans-serif; color:#222;}
+.container {width:960px; margin:0 auto; padding:0 15px; display:block;}
+.container .skip {position:absolute; top:-5000px; left:-5000px; display:block;}
+.container a {color:#0b94eb; text-decoration:underline;}
+.container a:hover {text-decoration:none;}
+
+#header {width:100%; height:80px; background-color:#3a3a3a; border-bottom:2px solid #5ab162; margin:0px 0px 50px 0px; top:0;}
+#header .container {position:relative;}
+#header h1 a {display:block; font-size:20px; color:#fff; padding-top:30px; font-weight:bold; text-decoration:none; background:transparent url(../img/pp_logo_beta.png) no-repeat 0 0; position:absolute; top:18px; left:0; width:180px; height:47px; text-indent:-5000px;}
+#header h1 a:hover {text-decoration:underline;}
+#header h1 a em {font-style:normal; font-weight:normal;}
+#header ul {text-align:right;}
+#header ul li.profile {position:absolute; top:25px; right:80px; border-right:1px solid #666; padding-right:20px;}
+#header ul li.logout {position:absolute; top:25px; right:0; width:50px;
+color: white; cursor: pointer; text-decoration:underline}
+#header ul li span {font-size:12px; color:#fff; font-weight:bold; display:block; padding:10px; color: white; cursor: pointer; text-decoration:underline}
+#header ul li a:hover {text-decoration:underline;}
+#header form {position:absolute; top:25px; left:220px;}
+#header form.search input {border:1px solid #aaa; padding:6px; width:200px; font-size:11px; font-weight:bold; display:inline-block;}
+#header form.search input.input_submit {width:60px; padding:8px 5px 7px 5px; background-color:#5ab162; font-size:10px; color:#fff; border:none; margin-top:-1px;}
+#header form select {background-color:#ededed; padding:10px; font-size:11px; color:#0b94eb; border:1px solid #e2e2e2;}
+
+#content {margin-top:40px;}
+#content .container {width:900px;}
+#content strong {font-weight:bold;}
+#content em {font-style:italic; color:#555;}
+
+#content #query {position:relative; margin:20px 0; padding:20px 0; border-top:1px solid #e2e2e2; border-bottom:1px solid #e2e2e2;}
+#content #query h4 {font-size:20px; font-weight:bold; color:#222;}
+#content #query h4 em {font-weight:normal; font-style:italic; font-size:14px; color:#666;}
+#content #query form {position:absolute; top:15px; right:0; font-size:14px; color:#666;}
+#content #query form select {background-color:#ededed; padding:10px; font-size:14px; color:#0b94eb; border:1px solid #e2e2e2;}
+
+#content #display {margin:30px 0; font-size:14px; color:#222;}
+#content #display em {color:#999; font-style:normal;}
+#content #display a {color:#0b94eb;}
+
+#content #results {}
+#content #results .item {clear:both; background-color:#fff; padding:20px 20px 5px 20px; position:relative; margin-bottom:15px;}
+#content #results .item .side {width:660px; padding-right:20px; border-right:1px solid #f4f4f4;}
+#content #results h2 {}
+#content #results h2 a {font-weight:bold; font-size:20px; color:#222; text-decoration:none;}
+#content #results h2 a:hover {text-decoration:underline; color:#0b94eb;}
+#content #results h3 {font-weight:normal; font-size:16px; margin-top:5px; color:#555; line-height:18px;}
+#content #results ul {list-style:circle; margin:15px 0px 0px 20px; font-size:12px;}
+#content #results ul.details {list-style:none; width:150px; position:absolute; top:0px; right:0px; margin-left:10px; padding:20px;}
+#content #results ul.details li {color:#666;}
+#content #results ul li {margin:5px 0;}
+#content #results ul li.price {font-size:20px; color:#5ab162; font-weight:bold;}
+#content #results ul li.agency {font-weight:bold;}
+#content #results .permalink {margin-top:10px;border-top:1px solid #f4f4f4;}
+#content #results .permalink a {clear:both; display:block; padding:10px 0; color:#3399cc; font-size:11px; font-weight:bold; text-decoration:none;}
+#content #results .permalink a:hover {text-decoration:underline; background-color:#f2f9ff;}
+#content #results .permalink a strong {color:#222; text-decoration:none;}
+
+#content #dataset tr {text-align:left; border-bottom:1px solid #e2e2e2;}
+#content #dataset thead {background-color:#e2e2e2;}
+#content #dataset thead tr th {text-align:left; padding:12px 10px 6px 10px; font-weight:bold; border-top:2px solid #e2e2e2; border-bottom:4px solid #e2e2e2;}
+#content #dataset thead tr th.on {border-top:2px solid #5ab162; border-bottom:4px solid #5ab162;}
+#content #dataset tbody tr td.on {font-weight:bold; background-color:#e2ffe5;}
+#content #dataset tbody {background-color:#fff;}
+#content #dataset tbody tr.zebra {background-color:#f9f9f9;}
+#content #dataset tbody tr td {padding:15px 10px 15px 10px;}
+#content #dataset tr .numeric {text-align:center;}
+#content #dataset tr:hover td {background-color:#f2f9ff;}
+
+#footer {margin:60px 0 20px 0; padding:20px; border-top:1px solid #e2e2e2; clear:both;}
+#footer p {color:#666; text-align:center; line-height:20px;}
+
+body#start #header form {display:none;}
+body#start #content #query, body#start #content #results, body#start #content #dataset, body#start #content #display, body#start #content #pagination {display:none;}
+body#start #commodities {}
+body#start #commodities h2 {font-size:24px;}
+body#start #commodities h3 {font-size:14px; font-weight:normal; color:#555;}
+body#start #commodities ul {font-size:14px; margin-top:40px;}
+
+
+body#start #commodities ol {margin-top:40px;}
+body#start #commodities ol li {display:inline;}
+body#start #commodities ol li span {text-decoration:none; display:block; width:325px; margin:0 20px 20px 0; padding:10px 0 20px 75px; float:left; background:transparent url(../img2/icn_commodity_all.png) no-repeat 5px 5px;}
+body#start #commodities ol li span:hover {background-color:#fdfdfd;}
+body#start #commodities ol li span:hover h4 {color:#39c;}
+body#start #commodities ol li span h4 {font-size:20px; color:#5ab162;}
+body#start #commodities ol li span p {font-size:12px; color:#555;}
+body#start #commoditylist ol li.active span p {font-weight: bold; color:#555; background-color: red;}
+body#start #commodities ol li.component span {background-image:url(../img2/icn_commodity_component.png);}
+body#start #commodities ol li.cpu s {background-image:url(../img2/icn_commodity_cpu.png);}
+body#start #commodities ol li.configuration span {background-image:url(../img2/icn_commodity_configuration.png);}
+body#start #commodities ol li.minimicro span {background-image:url(../img2/icn_commodity_minimicro.png);}
+body#start #commodities ol li.punchcards span {background-image:url(../img2/icn_commodity_punchcards.png);}
+body#start #commodities ol li.software span {background-image:url(../img2/icn_commodity_software.png);}
+body#start #commodities ol li.supplies span {background-image:url(../img2/icn_commodity_supplies.png);}
+body#start #commodities form {margin:50px 0; padding:50px 0; border-top:1px solid #e2e2e2; clear:both;}
+body#start #commodities form h3 {margin-bottom:30px;}
+body#start #commodities form div {position:relative;}
+body#start #commodities form input.input_text {width:700px; font-size:30px; font-weight:bold; padding:20px; border:1px solid #aaa;}
+body#start #commodities form input.input_submit {width:100px; height:78px; background:#5ab162 url(../img2/btn_search.png) no-repeat center center; border:1px solid #5ab162; text-indent:-5000px; position:absolute; top:1px; left:750px;}
+body#start #commodities form input.input_submit:hover {background-color:#39c;}
+
+body#start #article {width:600px; margin:0 auto;}
+body#start #article h2 {font-size:24px;}
+body#start #article h3 {font-size:14px; font-weight:normal; color:#555;}
+body#start #article h4 {margin-top:20px; font-size:14px;}
+body#start #article p {margin:10px 0; line-height:16px;}
+body#start #article p a.confirm {display:block; margin:30px 0; padding:10px 20px; width:100px; text-align:center; background-color:#5ab162; color:#fff; text-decoration:none; font-size:16px; font-weight:bold;}
+body#start #article p a.confirm:hover {background-color:#39c;}
+body#start #article h3.legal {padding:10px; background-color:#fff8d9; font-size:12px; font-weight:bold; margin-top:10px; border-bottom:1px solid #f7e596;}
+
+
+.selected span {text-decoration:underline; font-size: 25px; font-weight: bolder; color:red; background-color:#fdfdfd;}
+.selected h4 {text-decoration:underline; font-size: 25px; font-weight: bolder; color:red; background-color:#fdfdfd;}
+.selected p {text-decoration:underline; font-size: 25px; font-weight: bolder; color:red; background-color:#fdfdfd;}
+*/
+

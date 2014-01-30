@@ -1,0 +1,671 @@
+/* CSS Meyer Reset ----- */
+html, body, div, span, applet, object, iframe,
+/* h1, h2, h3, h4, h5, h6, p, */
+blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+/*
+ol, ul {
+	list-style: none;
+}
+*/
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* Overrides */
+container {
+  margin-left: 0;
+}
+
+ul.navbar-nav li a {
+  font-size: 1.2em;
+  color: #fff;
+  height: 60px;
+}
+
+ul.navbar-nav li a:hover {
+  color: #5188cd;
+}
+
+ul.navbar-nav > li {
+  display: inline-block;
+}
+
+/***/
+
+/* Misc ----- */
+body {
+    background-color: rgb(229, 229, 229);
+	font-size:15px;
+	line-height:130%;
+	font-family:'Helvetica Neue', Helvetica, arial, sans-serif;
+}
+.inner {
+	width:750px;
+	margin:0 auto;
+	position: relative;
+        padding: 20px;
+}
+
+
+
+.hideShowToggle {
+}
+
+/* Search ------- */
+#search {
+    margin-top: 10px;
+    padding:60px;
+}
+
+
+#startpagesearch {
+    margin-top: 0px;
+    padding:30px;
+}
+
+#search_form {
+        position: relative;
+}
+
+#search_string {
+	font-size:24px;
+        width: 70%;
+        height: 50px;
+}
+
+#small_search {
+	font-size:18px;
+}
+
+#searchButton:hover {
+	background-color:#bcd3f2;
+}
+
+#searchButton:active {
+	position:relative;
+	top:1px;
+}
+
+#small_search_string {
+        margin-left: 20px;
+        width: 50%;
+        height: 30px;
+}
+
+#search_icon {
+        top: 10px;
+        position: absolute;
+        float: right;
+        margin: 40px;
+}
+
+#loading {
+    font-size: 36px;
+}
+
+/* Header ----- */
+#commodityChoice {
+}
+
+/* Graph ----- */
+#graph {
+	margin-bottom:70px;
+}
+
+#sortcontrols {
+    padding: 3px;
+    border-top-style:solid;
+    border-bottom-style:solid;
+    border-width:2px;
+    border-color:LightGray;
+}
+
+/* Results ----- */
+#results-header {
+	padding:10px;
+	margin-bottom:10px;
+	margin-top:20px;
+}
+
+#detail-header {
+	font-size: 40px;
+        padding: 7px;
+	margin-left: 20%
+}
+
+/* These can probably be replaced by classes */
+
+#results-sortby {
+	font-size: 20px;
+        margin-left: 40px;
+}
+
+#results-sortby label {
+	font-size: 20px;
+	color:#666;
+}
+
+#results-sortdir {
+        margin-left: 40px;
+        font-size: 20px;
+	color:#666;
+}
+
+#results-sortdir label {
+	font-size: 20px;
+	color:#666;
+}
+#results-sortby label {
+	font-size: 20px;
+	color:#666;
+}
+#results-sortby select {
+        color: #538eda;
+}
+
+#orderDropdownWrapper select {
+        color: #538eda;
+}
+
+#sortOrder {
+    font-size: 20px;
+}
+
+#sortColumn {
+    font-size: 20px;
+}
+
+/* Result ------- */
+.result {
+	background-color:#fff;
+	margin-bottom:45px;
+	margin-top:15px;
+  padding: 10px;
+	cursor: pointer;
+  float: left;
+  width: 100%;
+}
+
+.result:hover
+{
+        color: green;
+}
+
+.result .result-image {
+	float:left;
+}
+
+.result .result-details {
+	float:left;
+	border-left:2px solid #eee;
+	font-size:18px;
+	width:730px;
+	padding:25px 0 0 25px;
+	min-height:95px;
+	color:#333;
+}
+.result .result-details strong {
+	font-weight:bold;
+	font-size:21px;
+	display:block;
+	margin-bottom:15px;
+}
+.result .result-meta {
+	float:right;
+	width:180px;
+	padding:20px;
+	border-left:2px solid #eee;
+	min-height:70px;
+	text-align:right;
+	font-size:13px;
+	color:#555;
+}
+.result .result-meta .result-unitscost {
+	margin-bottom:15px;
+	font-size:14px;
+}
+.result .result-meta .result-unitscost strong {
+	font-size:21px;
+	display:block;
+	font-weight:bold;
+	color:#5ab162;
+}
+.result .result-meta .result-whenwho {
+	font-style:italic;
+	font-size:12px;
+	line-height:120%;
+}
+.result .result-meta .result-whenwho strong {
+	display:block;
+	font-weight:bold;
+	font-style:normal;
+}
+.result .result-smallprint {
+	font-size:13px;
+	color:#777;
+	background-color:#ececec;
+}
+.result .result-smallprint .indicator {
+	display:block;
+	float:left;
+	width:35px;
+	height:35px;
+}
+.indicator.red {
+	background-color:#f7aaaa;
+}
+.indicator.orange {
+	background-color:#f7d4aa;
+}
+.indicator.purple {
+	background-color:#aab5f7;
+}
+.indicator.green {
+	background-color:#aecabc;
+}
+.result .result-smallprint p {
+	padding:8px 0 0 50px;
+}
+.result .result-smallprint p strong {
+	font-weight:bold;
+	color:#333;
+}
+.result .result-smallprint .result-more {
+        font-size: 13px;
+	color:#0b94eb;
+	font-weight:bold;
+	float:right;
+	padding-right:40px;
+	text-decoration:none;
+	vertical-align:middle;
+	text-align:right;
+}
+.result .result-smallprint .result-more img {
+	margin-left:2px;
+	vertical-align:middle;
+	margin-top:-5px;
+}
+
+.itemDetailArea {
+        font-size: 15px;
+        color: black;
+	background-color: white;
+        text-align: left;
+        padding: 10px 10px 10px 10px;
+	margin: 10px 10px 10px 10px;
+}
+
+.fieldName {
+        font-size: 20px;
+        color: black;
+	font-weight:bold;
+        text-align: left
+}
+
+.fieldValue {
+        font-size: 15px;
+        color: black;
+	font-weight:normal;
+	background-color: white;
+        text-align: left
+}
+
+/* Loading more ------- */
+#loading-more {
+	padding:50px;
+	font-weight:bold;
+	color:#b8b8b7;
+	text-align:center;
+	vertical-align:middle;
+	text-transform:uppercase;
+}
+#loading-more img {
+	margin:-5px 10px 0;
+	vertical-align:middle;
+}
+
+/* This may be irrelevant, I think they are for jqPlot...
+Note sure I really need them  */
+.contact-card-cell {
+        border-color: transparent !important;
+}
+
+.note {
+        font-size: 0.8em;
+}
+
+.majorlabel {
+        font-size: 25px;
+	font-weight: bolder;
+}
+
+.joininglabel {
+        font-size: 22px;
+	font-style: italic;
+	margin-left: 15px;
+	margin-right: 15px;
+}
+
+#ui-tooltip {
+    border: 1px solid red;
+}
+
+#tooltip1b {
+        font-size: 12px;
+        color: rgb(15%, 15%, 15%);
+        padding:2px;
+        background-color: rgba(95%, 95%, 95%, 0.8);
+}
+
+#chartcontainer {
+       position: relative;
+       width: 100%;
+       height: 300px;
+}
+
+/* Here I add a new pagination style, a little smaller than gigantic. */
+.large.pagination {
+}
+
+.large.pagination a {
+	height: 25px;
+	width: 45px;
+	font-size: 20px;
+	line-height: 25px;
+}
+
+.large.pagination input {
+	width: 150px;
+	height: 25px;
+	font-size: 17px;
+}
+
+
+#bigsearchbutton {width:100px; height:78px; background:#5ab162 url(../img2/btn_search.png) no-repeat center center; border:1px solid #5ab162; text-indent:-5000px; }
+
+#searchButton {width:60px; height:60px; background: #c9defb url(../img/icn_search.png) no-repeat center; border:1px solid #c9defb; text-indent:-5000px; }
+
+#bigsearchform {padding: 50px;}
+
+#introtextblock {margin-left: 100px; }
+
+
+/* Basic design parameters include:
+- Sidebar width (content Margin needs to be the same)
+- Header height (must match sidebar-search height)
+*/
+#sidebar {
+    position: fixed;
+    top: 0px;
+    right: 0%;
+    width: 25%;
+    min-width: 200px;
+    background: white;
+    z-index: 1200;
+    margin-top: 25px;
+    padding: 0;
+}
+
+#sidebar_search {
+    background: #c9defb;
+    height: 60px;
+}
+
+#sidebar-manage-results {
+  padding: 10px 20px;
+  color: #666;
+}
+
+#portfolio_list {
+    overflow:auto;
+}
+
+#portfolio_title {
+    position: absolute;
+    font-size: 24px;
+    margin-left: 15px;
+    margin-top: 18px;
+}
+
+#content {
+    left: 0%;
+    margin-left:25px;
+    margin-right:25px;
+    min-width:500px;
+    width: 70%;
+}
+
+#header {
+  width: 100%;
+  -webkit-background-size:cover;
+  -ms-background-size:cover;
+  -moz-background-size:cover;
+  -o-background-size:cover;
+  -khtml-background-size:cover;
+  background-size:cover;
+  background: #5e9ded;
+
+  color:#fff;
+  height: 60px;
+  left: 0%;
+  margin-top: 25px;
+  padding-left: 25px;
+}
+
+#header .logo {
+  display: block;
+  text-align: center;
+  background-color: #29466a;
+  height: 100%;
+}
+
+#header #pricespaid_logo {
+    background-color: black;
+	float:left;
+    margin-right: 30px;
+	background: #294668;
+	width: 250px;
+    height: 100%;
+	padding: 10px;
+    vertical-align: middle;
+}
+#header #pricespaid_logo img {
+    vertical-align: -20px;
+	height: 30px;
+}
+
+#header #gsa_logo {
+	color:#777777;
+	font-size:12px;
+	float:right;
+}
+
+/* This are all computed against the sidebar thickness */
+
+.result-agency, .result-vehicle, .result-vendor {
+    float: left;
+    width: 31%;
+    min-height: 40px;
+    margin-right: 10px;
+    font-size: .80em;
+}
+
+.result-agency {
+    padding: 1%;
+    border:solid;
+    border-width:1px;
+    border-color:LightGray;
+    background: #fbfbfb;
+}
+.agency-name {
+    font-weight: bolder;
+}
+.result-vehicle {
+    padding: 1%;
+    border:solid;
+    border-width:1px;
+    border-color:LightGray;
+    background: #fbfbfb;
+}
+.result-vendor {
+    padding: 1%;
+    border:solid;
+    border-width:1px;
+    border-color:LightGray;
+    background: #fbfbfb;
+}
+.result-bottom {
+    background: #fbfbfb;
+    margin-top: 10px;
+}
+.result-right {
+    float: right;
+    width: 33%;
+    background: white;
+    text-align: right;
+}
+.result-left {
+    float: left;
+    width: 66%;
+    background: white;
+}
+.result-short-desc {
+    font-weight: bolder;
+    font-size: 24px;
+    color: #538eda;
+    margin-bottom: 10px;
+}
+.result-long-desc {
+}
+.result-top {
+    background: white;
+    padding: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.result-cost {
+    font-weight: bold;
+    padding: 3px;
+    height: 20px;
+}
+.result-cost-glyph {
+    background: #009900;
+    color: #f1f8f0;
+    font-weight: bold;
+    padding: 3px;
+    height: 20px;
+}
+.result-cost-number {
+    background: #3fd33f;
+    color: white;
+    font-weight: bold;
+    padding: 3px;
+    height: 20px;
+}
+.result-units {
+    font-weight: bold;
+    padding: 5px;
+}
+/* This relates to the MorrisDataDecorator */
+.draggable-name {
+    cursor: pointer;
+}
+
+.draggable-handle  {
+    cursor: move;
+}
+
+.draggable-close  {
+    cursor: pointer;
+}
+
+#exportButton {
+    float: right;
+    background-color: DarkBlue;
+    height: 32px;
+    margin-left: 3%;
+    border-radius: 5px;
+    margin-right: 2%;
+    padding: 2px;
+}
+
+#exportButton img {
+    height: 28px;
+    padding: 3px;
+    vertical-align: middle;
+}
+
+#exportLink {
+    font-size: 16px;
+    text-decoration:underline;
+    color: white;
+    padding: 3px;
+}
+
+.draghandle {
+    background: LightBlue;
+    cursor: move;
+    padding: 5px;
+    color: gray;
+    font-size: 12px;
+    position: absolute;
+    right: -32px;
+    top: -16px;
+    z-index: 1300;
+    height: 30px;
+    width: 30px;
+}
+
+#start-header-right {
+    position: absolute;
+    top: 25px;
+    right: 0px;
+    width: 300px;
+    height: 60px;
+    background: #c9defb;
+    }
+
+/* Feedback me customizations */
+#feedback_trigger, .fm_clean#feedback_trigger:hover {
+  background-color: #ef6f00 !important;
+  padding: 5px;
+}
+
+.feedback_trigger_text {
+  color: white;
+}
