@@ -38,6 +38,17 @@ MYUSA_DISPLAY_VALUE = 'F'
 MAX_DISPLAY_VALUE = 'T'
 
 CAS_SERVER = 'http://127.0.0.1:8099'
+
+# This should be in the form of a python "requests" proxies dictionary
+# CAS_SERVER_PROXY =  {
+#  "http": "http://10.10.1.10:3128",
+#   "https": "http://10.10.1.10:1080",
+# }
+
+CAS_PROXY =  {
+}
+
+
 CAS_RETURN_SERVICE_URL = 'http://127.0.0.1/gui/ReturnLoginViaMax'
 
 CAS_LEVEL_OF_ASSURANCE = "assurancelevel3"

@@ -13,7 +13,7 @@ import P3Auth.LogActivity
 import P3Auth.pycas
  
 from ppGuiConfig import URLToPPSearchApiSolr,GoogleAnalyticsInclusionScript,\
-     LocalURLToRecordFeedback,CAS_SERVER,CAS_RETURN_SERVICE_URL,CAS_LEVEL_OF_ASSURANCE,CAS_LEVEL_OF_ASSURANCE_PREDICATE
+     LocalURLToRecordFeedback,CAS_SERVER,CAS_PROXY,CAS_RETURN_SERVICE_URL,CAS_LEVEL_OF_ASSURANCE,CAS_LEVEL_OF_ASSURANCE_PREDICATE
 
 import P3Auth.auth
 
@@ -58,12 +58,13 @@ def readCredentials():
         global PricesPaidAPIBasicAuthUsername
         global PricesPaidAPIBasicAuthPassword
         global P3APISALT
+        global PYCAS_SECRET
         PricesPaidAPIUsername=os.environ.get("PricesPaidAPIUsername")
         PricesPaidAPIPassword=os.environ.get("PricesPaidAPIPassword")
         PricesPaidAPIBasicAuthUsername=os.environ.get("PricesPaidAPIBasicAuthUsername")
         PricesPaidAPIBasicAuthPassword=os.environ.get("PricesPaidAPIBasicAuthPassword")
         P3APISALT=os.environ.get("P3APISALT")
-
+        PYCAS_SECRET=os.environ.get("PYCAS_SECRET")
 
 # Begin Common Template Strings
 FOOTER_HTML = template('Footer')
@@ -157,7 +158,8 @@ def returnLoginViaMax():
 
     ticket = request.query['ticket']
     P3Auth.LogActivity.logDebugInfo("MAX AUTHENTICATED ticket :"+ticket)
-    status, id, cookie = P3Auth.pycas.check_authenticated_p(CAS_LEVEL_OF_ASSURANCE_PREDICATE,ticket,CAS_SERVER, CAS_RETURN_SERVICE_URL, lifetime=None, secure=1, protocol=2, path="/", opt="")
+    status, id, cookie = P3Auth.pycas.check_authenticated_p(CAS_LEVEL_OF_ASSURANCE_PREDICATE,ticket,CAS_SERVER,CAS_PROXY, 
+        CAS_SECRET, CAS_RETURN_SERVICE_URL, lifetime=None, secure=1, protocol=2, path="/", opt="")
     maxAuthenticatedProperly = (status == P3Auth.pycas.CAS_OK);
 
     P3Auth.LogActivity.logDebugInfo("MAX AUTHENTICATED WITH ID:"+id)

@@ -6,22 +6,34 @@ PricesPaidGUI
 PricesPaidGUI, in conjunction with its sister project also available at github, PricesPaidAPI,
 is a system to allow government buyers to research actual prices paid in order to lower the 
 price the Federal Government pays for goods and services. It was initiated by a team of 
-Presidentail Innovation Fellows (Round 2), consisting of Robert L. Read, Martin Ringlein, 
-Gregory Godbout, and Aaron Snow.
+Presidential Innovation Fellows (Round 2), consisting of Robert L. Read, Martin Ringlein, 
+Gregory Godbout, and Aaron Snow. 
+
+It is intended in part to address a mandate of Congress, Title 41 U.S. CODE § 3312 - 
+DATABASE ON PRICE TRENDS OF ITEMS AND SERVICES UNDER FEDERAL CONTRACTS.
+
+The main purpose of this code is for a buyer to perform market research of the specific transactions
+that are related to what you are buying.  Individual transactions can be selected by "drag 'n drop" 
+into portfolios which can then be exported to very simple HTML which can imported into a text editor
+to document market research.
+
+Within the Federal government, this software uses data which is consider sensitive and not 
+available for public usage.  However, the code is in the public domain.
+
+This code could be reused by a State or municipality that had transactional pricing data that 
+it wanted to present in a searchable form.  It provides a very simple method for importing CSV
+files in any format and mapping fields to standard, semi-standard and completely customized fields,
+all of which are automatically searchable once they have been imported into SOLR.
 
 # THE SHAPE OF THE CODE
 
-This project is a website with just a few pages that uses the sister project PricesPaidAPI
-to search a database of transactions of actual prices paid.  Most of the code is messy
-javascript to present a page that renders transactions in three forms: graphically, as a 
-list of visual paragraphs not unlike Amazon, and as a grid. The purpose is to allow government
-buyers to get the best possible prices by being armed with good market research.
+This repo is a Python/Javascript/CSS front-end that ties together 2 other repos : https://github.com/presidential-innovation-fellows/PricesPaidAPI
+and https://github.com/presidential-innovation-fellows/MorrisDataDecorator.git .
+Fundamentally API is a a simple Python interface to the SOLR full-text search engine.  The MorrisDataDecorator is a system for
+making assocations between records in SOLR.  In this case, it implements a "Portfolio" concept.  The PricesPaid system does not 
+use a relational database, and has no notion of user identitiy---all portfolios are shared at present.
 
 
-# STATUS
-
-This code was initially checked in on August 25th, and is quite rough and hard to install.
-The dependencies are not clear yet and there are no installation instructions.
 
 # BASIC PRINCIPLES
 
@@ -45,7 +57,6 @@ cleaner and potentially applicable to other forms of data.
 *  Clean up my not very good javascript, primarily by factoring it into separate files that can be loaded.
 *  Help make the GUI much better than it is today.  We are activley working on this, so there is
 of course the danger of some duplication of effort---but so be it.
-*  help us implement "portfolios" of selected transactions.
 *  We need an export mechanism of portfolios (or the page) into Word, Excel, and PDF.
 
 Our goal is to save the government a lot of money in 2014.  Although ambitious, if we need 
@@ -82,6 +93,7 @@ Here are some recommended steps:
 
 * Install the MorrisDataDecorator following the instructions found there.  This project has automated unit tests. It implements a website, which you might wish to briefly bring up in bottle to be assured that it works, but really we are using it of the API definition and some back-end implementation.
 * Create a "logs" directory parallel to MorrisDataDecorator, PricesPaidAPI, and PricesPaidGUI.
+* Create an empty __init__.py file parallel to MorrisDataDecorator, PricesPaidAPI, and PricesPaidGUI.
 * Install the PricesPaidAPI following the instructions found there.
 * Install the PricesPaidGUI following the instructions found here.
 * Copy the the file in PricesPaidGUI/docs/Example.ppGuiConfig.py into PricesPaidGUI/ppGuiConfig.py and edit it appropriately.
@@ -90,5 +102,5 @@ Here are some recommended steps:
 * Carefully adjust ppGuiConfig.py to match your installation instructions.
 * Install SOLR.
 * In the PricesPaidAPI directory, execute "python SolrLodr.py" to load the data in your cookedData directory into SOLR.  Use the Solr administrative interface to make sure the documents are correctly inject.  SolrLodr produces a log file of errors.
-* Start up Apache (or bottle) and try to get it working.
+* Start up Apache and try to get it working.
 
