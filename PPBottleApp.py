@@ -49,6 +49,7 @@ PricesPaidAPIPassword=None
 PricesPaidAPIBasicAuthUsername=None
 PricesPaidAPIBasicAuthPassword=None
 P3APISALT = None
+PYCAS_SECRET = None
 
 
 def readCredentials():
@@ -156,10 +157,13 @@ def loginViaMax():
 def returnLoginViaMax():
     P3Auth.LogActivity.logPageTurn("nosession","ReturnMaxLoginPage")
 
+    PYCAS_SECRET=os.environ.get("PYCAS_SECRET")
+
+    P3Auth.LogActivity.logDebugInfo("PYCAS_SECRET:"+PYCAS_SECRET)
     ticket = request.query['ticket']
     P3Auth.LogActivity.logDebugInfo("MAX AUTHENTICATED ticket :"+ticket)
     status, id, cookie = P3Auth.pycas.check_authenticated_p(CAS_LEVEL_OF_ASSURANCE_PREDICATE,ticket,CAS_SERVER,CAS_PROXY, 
-        CAS_SECRET, CAS_RETURN_SERVICE_URL, lifetime=None, secure=1, protocol=2, path="/", opt="")
+        PYCAS_SECRET, CAS_RETURN_SERVICE_URL, lifetime=None, secure=1, protocol=2, path="/", opt="")
     maxAuthenticatedProperly = (status == P3Auth.pycas.CAS_OK);
 
     P3Auth.LogActivity.logDebugInfo("MAX AUTHENTICATED WITH ID:"+id)

@@ -14,6 +14,7 @@ def application(environ, start_response):
   os.environ['PricesPaidAPIBasicAuthUsername']  = environ['PricesPaidAPIBasicAuthUsername']
   os.environ['PricesPaidAPIBasicAuthPassword']  = environ['PricesPaidAPIBasicAuthPassword']
   os.environ['P3APISALT']  = environ['P3APISALT']
+  os.environ['PYCAS_SECRET']  = environ['PYCAS_SECRET']
   return PPBottleApp.app(environ, start_response)
 
 
