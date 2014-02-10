@@ -73,7 +73,10 @@ with the fact that the data returned is likely highly imperfect.
 
 # HOW YOU CAN HELP
 
-We need help with this, even though it is premature to ask for it, because the code is so rough. 
+We desperately need a data set which can be made publicly available in order to stand up a demo instance of this site.  If you have real, actual transactional data where some organization actual bought specific quantities of specific things at a specific date in time that you don't mind the whole world seeing, then please contact me: <read.robert@gmail.com> and I will owe you deep gratitude.
+
+Secondarily, we would like coding and design volunteers, not so much because we need the labor, but because I want this to become a living project outside of the Federal government that the government can draw upon for code, inspiration, and know-how.
+
 Here is a preliminary TODO list:
 
 *  Factor out the PricesPaid specific GUI elements and fields in order to make the project both  
@@ -121,6 +124,9 @@ Here are some recommended steps:
 * Create an empty __init__.py file parallel to MorrisDataDecorator, PricesPaidAPI, and PricesPaidGUI.
 * Install the PricesPaidAPI following the instructions found there.
 * Install the PricesPaidGUI following the instructions found here.
+* Install P3Auth.
+* Install the MorridDataDecorator.
+* Create a directory called "logs" parallel to all of those.
 * Copy the the file in PricesPaidGUI/docs/Example.ppGuiConfig.py into PricesPaidGUI/ppGuiConfig.py and edit it appropriately.
 * Copy the file morris_config.py into 
 * create your own "cookedData" directory with my example or your own.
@@ -128,4 +134,51 @@ Here are some recommended steps:
 * Install SOLR.
 * In the PricesPaidAPI directory, execute "python SolrLodr.py" to load the data in your cookedData directory into SOLR.  Use the Solr administrative interface to make sure the documents are correctly inject.  SolrLodr produces a log file of errors.
 * Start up Apache and try to get it working.
+* Set Environment variables similar to the following, possible in the profile for the user that runs apache or in the apache httpd.conf:
+** SetEnv P3APISALT CHANGEME
+** SetEnv PricesPaidAPIUsername  CHANGEME
+** SetEnv PricesPaidAPIPassword  CHANGEME
+** SetEnv PYCAS_SECRET PutANiceLongSecretHere
+* In the MorrisDataDecorator, execute "run_all.bash" to start up Botlle processes listening on certain ports,
+* Restart Apache and browse to the website.
+
+At this point, probably after some configuration troubleshooting described below, you will have an empty site.  To load data into the site,  you need to load the SOLR index.  This requires three steps:
+
+* Copying the exampe scehma.xml into the correct position, and 
+* Creating a directory, by default called "cookedData" that is parallel to your other directoris, which contain comma-separated value files obeying the documented file naming convention, and 
+* Execute in PricesPaidAPI "python SolrLodr.py", which inserts the transactions in the "cookedData" directory into the SOLR index.  It runs in chunks of a 1000 at a rate of about one million transactions per hour.
+
+In PricesPaidAPI you will find a directory called "cookedData" which contains a file containing exactly 2 fake records.  We hope to get some better data soon, but that is enough for you to exercise the system.  This entire directory needs to be copied up to be parallel to PricesPaidGUI.
+
+We use a fresh, out-of-the-box instal of SOLR.  In recent releases, the location of the schema.xml file is:
+
+solr-4.4.0/solr/example/solr/collection1/conf/schema.xml
+
+Copy the file "schema.xml.example" in PricesPaidAPI into this location and restart SOLR.
+
+When you have done that and set up your cookedData directory, you are ready to execute "python SolrLodr.py".
+
+# TROUBLESHOOTING
+
+A lot can go wrong in the installation of P3.  There are three basic log files that will be invaluable to you:
+* The apache error and access log files,
+* The SOLR output logs, which you will be responsible for, depending on how you start solr (I just pipe the out put of "java -jar start.jar" into a known location and tail that), and
+* The P3 application log file which is by default in the logs directory and named Activity.log.
+
+Generally you will use those files in that order.
+
+In practice to do some debugging I have had to:
+
+* Replace app.wsgi with a "hello world" version,
+* Print out enviornment variables in app.wsgi,
+* Generally do all the things you have to do to get Apache to correctly render a wsgi app,
+* Look for coding mistakes that show up in the Apache error log,
+* Look for misconfiguration that show up in the Apache error log,
+* Look at the SOLR log to tryin to understand what is going on,
+* Use the Activity.log file, sometimes with additional debugging statements, to understand what is going wrong there, and 
+* Use the "*.out" files in the MorrisDataDecorator directory on occation.
+
+
+
+
 
