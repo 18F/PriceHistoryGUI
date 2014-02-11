@@ -115,9 +115,18 @@ I use Apache, mod_wsgi, and mod_ssl, but mod_ssl is optional.
 
 You will also need some data.  I have provided an example data file in the "cookedData" directory in PricesPaidAPI, but it only contains a few transactions and is not interesting.  I am working with the government to get a proper file released, but have so far not been able to get around security and privacy concerns.  However, there is a documented process for building an adapter to your own Prices Paid data file which you can follow.
 
+Additionally, this project takes advantage of the excellent javascript projects gifted to the world:
+* jquery
+* jquery-ui
+* [jqplot](http://www.jqplot.com)
+* [SlickGrid](https://github.com/mleibman/SlickGrid) (Huge thanks to Michael Leibman!)
+* [feedback_me](https://github.com/vedmack/feedback_me) (Thanks, Daniel!)
+* [jqPagination](https://github.com/beneverard/jqPagination) (Thanks, Ben Everard!)
+
+
 Although in general configuration files allow flexibility in how to organize the system, I'm currently using a single directory for the install of the MorrisDataDecorator, the PricesPaidAPI, and the PricesPaidGUI.
 
-Here are some recommended steps:
+Here are the recommended steps:
 
 * Install the MorrisDataDecorator following the instructions found there.  This project has automated unit tests. It implements a website, which you might wish to briefly bring up in bottle to be assured that it works, but really we are using it of the API definition and some back-end implementation.
 * Create a "logs" directory parallel to MorrisDataDecorator, PricesPaidAPI, and PricesPaidGUI.
@@ -128,14 +137,19 @@ Here are some recommended steps:
 * Create a "configuration" directory parallel to P3Auth.
 * In P3Auth, edit "AuthBuilder"  to set your own salt in P3APISALT. This will be a secret that you keep private and will also set in your apache environment variables.  Then edit this line : "        username = "changeme"+str(i) " in order to set your own username (possibly you will want to complete change this mechanism.)
 Then execute authbuilder to generate randome passwords and the hashes for them in the configuration directory.  You will need to use at least one of these for accessing the API.
-* Install the MorridDataDecorator.
+* Install the MorridDataDecorator in a directory parallel to PricesPaidGUI and PricesPaidAPI.
 * Running the tests in the MorrisDataDecorator might be enlightening.
 * Create a directory called "logs" parallel to all of those.
 * In the logs directory, execute the "bash ../P3Auth/CreateLogFiles.bash"
+* Create a directory called "js" which will be parallel to all of these
+previous directories.  Configure Apache to allow files to be read from this directory freely---nothing secure will go here.
+* In js, install jquery, jquery-ui, feedback-me, excanvas.js, jqplot, and jqPaginate.  These are all third-party projects that I have been unwilling to duplicate into these repositories.  I know this makes it very difficult to install---I am seeking a solution to this problem.
+* Now, parallel to "js" install the project "SlickGrid-master" from SlickGrid.  Also make this freely readable by anone hitting your site.  The SlickGrid project is truly excellent.
 * Copy the the file in PricesPaidGUI/docs/Example.ppGuiConfig.py into PricesPaidGUI/ppGuiConfig.py and edit it appropriately.
 * Copy the file morris_config.py into 
 * create your own "cookedData" directory with my example or your own.
 * Carefully adjust ppGuiConfig.py to match your installation instructions.
+* 
 * Install SOLR.
 * In the PricesPaidAPI directory, execute "python SolrLodr.py" to load the data in your cookedData directory into SOLR.  Use the Solr administrative interface to make sure the documents are correctly inject.  SolrLodr produces a log file of errors.
 * Start up Apache and try to get it working.
