@@ -419,8 +419,6 @@ def apisolr():
 
     readCredentials()
 
-    P3Auth.LogActivity.logDebugInfo("Kill me: "+PricesPaidAPIBasicAuthUsername+PricesPaidAPIBasicAuthPassword)
-
     search_string = request.forms.get('search_string')
     psc_pattern = request.forms.get('psc_pattern')
 
