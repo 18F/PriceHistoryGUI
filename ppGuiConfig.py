@@ -74,7 +74,8 @@ CAS_PIV_CARD = lambda loa,piv: {
    ("urn:max:fips-201-pivcard" == piv)
 }
 CAS_PASSWORD_OR_PIV = lambda loa, piv: {
-    CAS_PIV_CARD(loa,piv) or
+   ("urn:max:fips-201-pivcard" == piv)
+   or
    ("urn:oasis:names:tc:SAML:1.0:am:password" == piv)
 }
 CAS_LEVEL_3 = lambda loa, piv: {
