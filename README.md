@@ -147,7 +147,9 @@ previous directories.  Configure Apache to allow files to be read from this dire
 * Now, parallel to "js" install the project "SlickGrid-master" from SlickGrid.  Also make this freely readable by anone hitting your site.  The SlickGrid project is truly excellent.
 * Copy the the file in PricesPaidGUI/docs/Example.ppGuiConfig.py into PricesPaidGUI/ppGuiConfig.py and edit it appropriately.
 * Copy the file morris_config.py into 
-* create your own "cookedData" directory with my example or your own.
+* Create your own "cookedData" directory with my example or your own with your own adapter.  Before you create your own data, you may wish to use the file FY14TX-pppifver-USASpending-5-0-0-0-1.csv.  This file 
+is simply a renamed (and unchanged) export from the site USASpending.gov, in this case for 
+fiscal year 2014 and the state of Texas. You will find it in the PricesPaidAPI project in the example cookedData directory there.
 * Carefully adjust ppGuiConfig.py to match your installation instructions.
 * 
 * Install SOLR.
