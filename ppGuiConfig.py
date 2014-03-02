@@ -35,7 +35,7 @@ GITHUB_APPLICATION__PUBLIC_KEY = 'R8uvWsUFvbGR6dKowJMHo4ozcnM'
 # directly in templates, and so it easier to use strings
 GITHUB_DISPLAY_VALUE = 'F'
 MYUSA_DISPLAY_VALUE = 'F'
-MAX_DISPLAY_VALUE = 'T'
+MAX_DISPLAY_VALUE = 'F'
 
 CAS_SERVER = 'http://127.0.0.1:8099'
 

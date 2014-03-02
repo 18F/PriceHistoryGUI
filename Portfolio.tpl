@@ -11,7 +11,7 @@
     <link href="./theme/css/mainPage.css" rel="stylesheet" type="text/css" media="screen, projection">
 
 
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+    <script src="../js/jquery.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="../js/jqPagination-master/css/jqpagination.css">
 

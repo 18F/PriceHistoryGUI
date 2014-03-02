@@ -6,7 +6,7 @@
        <meta name="robots" content="NOINDEX, NOFOLLOW">
        <link href="/gui/theme/css/loginPage.css" rel="stylesheet" type="text/css" media="screen, projection">
     <link href="./theme/css/shared.css" rel="stylesheet" type="text/css" media="screen, projection">
-    <script src="../js/jquery-1.10.2.min.js"></script>
+    <script src="../js/jquery.min.js"></script>
     {{!goog_anal_script}}
 <style>
 ul.button-list {
@@ -76,17 +76,17 @@ If you have longer feedback, a technical question, or need technical support, pl
 <script>
 % import ppGuiConfig
 
-if ('{{!ppGuiConfig.GITHUB_DISPLAY_VALUE}}' == 'T') {
+if ('{{ppGuiConfig.GITHUB_DISPLAY_VALUE}}' == 'T') {
   $("#github").show();
 } else {
   $("#github").hide();
 }
-if ('{{!ppGuiConfig.MYUSA_DISPLAY_VALUE}}' == 'T') {
+if ('{{ppGuiConfig.MYUSA_DISPLAY_VALUE}}' == 'T') {
   $("#myUSA").show();
 } else {
   $("#myUSA").hide();
 }
-if ('{{!ppGuiConfig.MAX_DISPLAY_VALUE}}' == 'T') {
+if ('{{ppGuiConfig.MAX_DISPLAY_VALUE}}' == 'T') {
   $("#max").show();
 } else {
   $("#max").hide();
@@ -94,20 +94,26 @@ if ('{{!ppGuiConfig.MAX_DISPLAY_VALUE}}' == 'T') {
 
 $("#github").click(function () {
 
-var res = OAuth.initialize('{{!ppGuiConfig.GITHUB_APPLICATION__PUBLIC_KEY}}');
 
-OAuth.popup('github', 
-  function(err, result) {
-    if (err) {
-       alert("Sorry, authentication failed: "+err);
-    } else {
-// Here we could actually use the access_token to the get the user name, which is 
-// whhat we really need to do.
-    var obj = result.get(result.access_token); 
-    alert("result.access_token ="+ result.access_token);
-   }
-  });
+// NOTE: This is a valuable example of how to use OAuth.  However, 
+// it is not currently used by P3.
+// var res = OAuth.initialize('{{!ppGuiConfig.GITHUB_APPLICATION__PUBLIC_KEY}}');
+
+// OAuth.popup('github', 
+//   function(err, result) {
+//    if (err) {
+//       alert("Sorry, authentication failed: "+err);
+//    } else {
+// // Here we could actually use the access_token to the get the user name, which is 
+// // whhat we really need to do.
+//    var obj = result.get(result.access_token); 
+//    alert("result.access_token ="+ result.access_token);
+//   }
+//  });
+
+
 });
+
 
 $("#max").click(function () {
   $('#fakeLoginViaMaxForm').submit();
