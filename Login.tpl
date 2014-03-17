@@ -49,33 +49,21 @@ If you have longer feedback, a technical question, or need technical support, pl
 
 </div>
 
-
-<div id="credentials">
-  <form action="/gui/StartPage" method="post">
-    <div class="blockyLabelBox">
-      <span>Username:</span>
-     <input type="text" name="username">
-    </div>
-    <div  class="blockyLabelBox">
-      <span>Password:</span>
-      <input name="password" type="password">
-     </div>
-    <input class="loginButton" type="submit" value="Sign in with Password">
-</form>
-<p></p>
-
 {{!extra_login_methods}}
 
   <form id="fakeLoginViaMaxForm" action="/gui/LoginViaMax" method="get">
   </form>
-
-</div>
 
 {{!footer_html}}
 
 <script>
 % import ppGuiConfig
 
+if ('{{ppGuiConfig.BASIC_DISPLAY_VALUE}}' == 'T') {
+  $("#basic").show();
+} else {
+  $("#basic").hide();
+}
 if ('{{ppGuiConfig.GITHUB_DISPLAY_VALUE}}' == 'T') {
   $("#github").show();
 } else {
