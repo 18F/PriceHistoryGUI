@@ -73,7 +73,7 @@ with the fact that the data returned is likely highly imperfect.
 
 # HOW YOU CAN HELP
 
-We desperately need a data set which can be made publicly available in order to stand up a demo instance of this site.  If you have real, actual transactional data where some organization actual bought specific quantities of specific things at a specific date in time that you don't mind the whole world seeing, then please contact me: <read.robert@gmail.com> and I will owe you deep gratitude.
+We need a data set which can be made publicly available in order to stand up a demo instance of this site.  If you have real, actual transactional data where some organization actual bought specific quantities of specific things at a specific date in time that you don't mind the whole world seeing, then please contact me: <robert.read@gsa.com> and I will owe you deep gratitude.
 
 Secondarily, we would like coding and design volunteers, not so much because we need the labor, but because I want this to become a living project outside of the Federal government that the government can draw upon for code, inspiration, and know-how.
 
@@ -91,7 +91,7 @@ Our goal is to save the government a lot of money in 2014.  Although ambitious, 
 only make government buyers a few perecentage points more efficient to accomplish this.
 Your help may make all the difference in the world---and may easily exceed our own efforts.
 
-Please direct questions to Robert L. Read at <read.robert@gmail.com>.
+Please direct questions to Robert L. Read at <robert.read@gsa.gov>.
 
 # INSTALLATION
 
@@ -186,7 +186,7 @@ When you have done that and set up your cookedData directory, you are ready to e
 
 # TROUBLESHOOTING
 
-A lot can go wrong in the installation of P3.  The best thing to do is to email me (<read.robert@gmail.com>) immediately.  I will guide you through using the log files to figure out what is wrong.  There are three basic log files that will be invaluable to you:
+A lot can go wrong in the installation of P3.  The best thing to do is to email me (<robert.read@gsa.gov>) immediately.  I will guide you through using the log files to figure out what is wrong.  There are three basic log files that will be invaluable to you:
 * The apache error and access log files,
 * The SOLR output logs, which you will be responsible for, depending on how you start solr (I just pipe the out put of "java -jar start.jar" into a known location and tail that), and
 * The P3 application log file which is by default in the logs directory and named Activity.log.
