@@ -109,7 +109,7 @@ You will need to have installed:
 * bottle
 * requests
 * SOLR
-* solrpy-0.9.5 [Note: this does not insall with PIP.  I found "sudo python setup.py install" worked.]
+* solrpy-0.9.5 [Note: this does not insall with PIP.  I found "sudo python setup.py install" worked.] [Additional Note: Recently (in December of 2013) a new version of solrpy (0.9.6) was released.  I am in the process of testing this module.  It DOES install easily from PyPI.]
 
 I use Apache, mod_wsgi, and mod_ssl, but mod_ssl is optional.
 
