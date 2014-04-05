@@ -130,7 +130,7 @@ Here are the recommended steps:
 
 * Install the MorrisDataDecorator following the instructions found there.  This project has automated unit tests. It implements a website, which you might wish to briefly bring up in bottle to be assured that it works, but really we are using it of the API definition and some back-end implementation.
 * Create a "logs" directory parallel to MorrisDataDecorator, PricesPaidAPI, and PricesPaidGUI.
-* Create an empty __init__.py file parallel to MorrisDataDecorator, PricesPaidAPI, and PricesPaidGUI.
+* Create an empty \_\_init\_\_.py file parallel to MorrisDataDecorator, PricesPaidAPI, and PricesPaidGUI.
 * Install the PricesPaidAPI following the instructions found there.
 * Install the PricesPaidGUI following the instructions found here.
 * Install P3Auth.
