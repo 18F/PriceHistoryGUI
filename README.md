@@ -180,6 +180,8 @@ We use a fresh, out-of-the-box instal of SOLR.  In recent releases, the location
 
 solr-4.4.0/solr/example/solr/collection1/conf/schema.xml
 
+However, SOLR is a fast evolving project and there are different distributions that install in defferent ways.  The most important thing is to add the definitions of fields in the file "schema.SECTION.xml" must exist in the schema.xml file.  I like to put these after the definition of the "id" field, but I am not an SOLR expert.
+
 Copy the file "schema.xml.example" in PricesPaidAPI into this location and restart SOLR.
 
 When you have done that and set up your cookedData directory, you are ready to execute "python SolrLodr.py".
