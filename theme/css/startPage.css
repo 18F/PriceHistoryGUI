@@ -74,11 +74,6 @@ body {
 #header #pricespaid_logo {
 	float:left;
 }
-#header #gsa_logo {
-	color:#777777;
-	font-size:12px;
-	float:right;
-}
 
 /* Comm nav -------- */
 #header #nav {

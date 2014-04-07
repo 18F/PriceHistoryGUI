@@ -1,6 +1,6 @@
 <div id="footer">
   <div id="footer-logo">
-    <img src="theme/img/gsa_logo.png" alt="GSA Logo">
+    <img src="theme/img/footer_logo.png" alt="Footer Logo">
     <div id="footer-text">
       Please provide feedback to &lt;{{feedback_email}}&gt;.
     </div>

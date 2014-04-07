@@ -509,12 +509,6 @@ Note sure I really need them  */
 	height: 30px;
 }
 
-#header #gsa_logo {
-	color:#777777;
-	font-size:12px;
-	float:right;
-}
-
 /* This are all computed against the sidebar thickness */
 
 .result-agency, .result-vehicle, .result-vendor {
