@@ -68,6 +68,7 @@ def readCredentials():
         PYCAS_SECRET=os.environ.get("PYCAS_SECRET")
 
 # Begin Common Template Strings
+DATASET_DESCRIPTION = template('DataSetDescriptionPreamble')
 FOOTER_HTML = template('Footer',feedback_email=FEEDBACK_EMAIL)
 COLUMN_DROPDOWN_HTML = template('ColumnDropdown')
 EXTRA_LOGIN_METHODS = template('ExtraLoginMethods')
@@ -136,6 +137,7 @@ def login():
     P3Auth.LogActivity.logPageTurn("nosession","LoginPage")
     return template('Login',message='',
                     footer_html=FOOTER_HTML,
+                    feedback_email=FEEDBACK_EMAIL,
                     extra_login_methods=EXTRA_LOGIN_METHODS,
                     goog_anal_script=GoogleAnalyticsInclusionScript)
 
@@ -177,6 +179,7 @@ def returnLoginViaMax():
 # But that is for another day.
         return template('Login',message='Improper Credentials returned by MAX.  Possibly you authenticated without using a physical PIV/CAC card, or MAX did not return a high enough Level of Assurance.  Trying logging out of MAX at http://max.omb.gov and re-authenticating here.',
                     footer_html=FOOTER_HTML,
+                    feedback_email=FEEDBACK_EMAIL,
                     extra_login_methods=EXTRA_LOGIN_METHODS,
                         goog_anal_script=GoogleAnalyticsInclusionScript)
 
@@ -195,6 +198,7 @@ def pptriv():
         P3Auth.LogActivity.logBadCredentials(username)
         return template('Login',message='Improper Credentials.',
                     footer_html=FOOTER_HTML,
+                    feedback_email=FEEDBACK_EMAIL,
                     extra_login_methods=EXTRA_LOGIN_METHODS,
                         goog_anal_script=GoogleAnalyticsInclusionScript)
     return doStartPageAuthenticated(username)
@@ -211,6 +215,7 @@ def doStartPageAuthenticated(username):
                     username=username, \
                     session_id=ses_id,\
                     footer_html=FOOTER_HTML,\
+                    dataset_description_preamble=DATASET_DESCRIPTION,\
                     psc_pattern=psc_pattern,goog_anal_script=GoogleAnalyticsInclusionScript)
 
 @app.route('/StartPageReturned',method='POST')
@@ -220,6 +225,7 @@ def StartPageReturned():
     if (not P3Auth.auth.is_valid_acsrf(ses_id,acsrf)):
         return template('Login',message='Improper Credentials or Timeout.',
                     extra_login_methods=EXTRA_LOGIN_METHODS,
+                    feedback_email=FEEDBACK_EMAIL,
                     footer_html=FOOTER_HTML,
                     goog_anal_script=GoogleAnalyticsInclusionScript)
 
@@ -232,6 +238,7 @@ def StartPageReturned():
                     acsrf=P3Auth.auth.get_acsrf(ses_id),\
                     session_id=ses_id,\
                     footer_html=FOOTER_HTML,\
+                    dataset_description_preamble=DATASET_DESCRIPTION,\
                     psc_pattern=psc_pattern,goog_anal_script=GoogleAnalyticsInclusionScript)
 
 @app.route('/PricesPaid',method='GET')
@@ -251,6 +258,7 @@ def render_main_page(acsrf,ses_id):
     if (not P3Auth.auth.is_valid_acsrf(ses_id,acsrf)):
         return template('Login',message='Improper Credentials or Timeout.',
                     extra_login_methods=EXTRA_LOGIN_METHODS,
+                        feedback_email=FEEDBACK_EMAIL,
                     footer_html=FOOTER_HTML,
 goog_anal_script=GoogleAnalyticsInclusionScript)
     
@@ -280,6 +288,7 @@ def render_portfolio():
     if (not P3Auth.auth.is_valid_acsrf(ses_id,acsrf)):
         return template('Login',message='Improper Credentials or Timeout.',
                     extra_login_methods=EXTRA_LOGIN_METHODS,
+                        feedback_email=FEEDBACK_EMAIL,
                     footer_html=FOOTER_HTML,
                     goog_anal_script=GoogleAnalyticsInclusionScript)
 

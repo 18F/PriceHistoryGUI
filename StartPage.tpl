@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -48,12 +49,9 @@
 	  <h3>Welcome to the Prices Paid (P3) website!</h3>
 	  <h3>The database currently contains these datasets:</h3>
 	  <h3>Begin by entering the term you want to search for.</h3>
-    <ul>
-    	<li>OS2 -- Office Supply data from the Strategic Sourcing Initiative (FSSI).</li>
-       <li>GSA Advantage -- One calendar quarter of data.</li>
-       <li>Reverse Auction -- IT equipment purchased via reverse auction.</li>
 
-    </ul>
+{{!dataset_description_preamble}}
+
 </div>
             <form id="bigsearchform" method="post" action="PricesPaid">
 		<input type="hidden" name="antiCSRF" value="{{acsrf}}" />

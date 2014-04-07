@@ -2,7 +2,7 @@
 <html>
     <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-       <title>Prices Paid v. 2.0 BETA - Login</title>
+       <title>Prices Paid - Login</title>
        <meta name="robots" content="NOINDEX, NOFOLLOW">
        <link href="/gui/theme/css/loginPage.css" rel="stylesheet" type="text/css" media="screen, projection">
     <link href="./theme/css/shared.css" rel="stylesheet" type="text/css" media="screen, projection">
@@ -36,7 +36,7 @@ ul.button-list a {
 <p id="message">{{message}}</p>
 
 <h2>
-LOG OFF IMMEDIATELY if you are not a Federal employee.
+Welcome to an instance of PricesPaid
 </h2>
 
 <p>
@@ -44,7 +44,7 @@ This is Beta software.  Please help us improve it by using the Feedback widget o
 </p>
 
 <p>
-If you have longer feedback, a technical question, or need technical support, please email  &lt;prices.paid@gsa.gov&gt;.
+If you have longer feedback, a technical question, or need technical support, please email  &lt;{{feedback_email}}v&gt;.
 </p>
 
 </div>
