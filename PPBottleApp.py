@@ -12,7 +12,7 @@ import os
 import P3Auth.LogActivity
 import P3Auth.pycas
  
-from ppGuiConfig import URLToPPSearchApiSolr,GoogleAnalyticsInclusionScript,\
+from ppGuiConfig import URLToPPSearchApiSolr,GoogleAnalyticsInclusionScript,FEEDBACK_EMAIL,\
      LocalURLToRecordFeedback,CAS_SERVER,CAS_PROXY,CAS_RETURN_SERVICE_URL,CAS_LEVEL_OF_ASSURANCE,CAS_LEVEL_OF_ASSURANCE_PREDICATE
 
 import P3Auth.auth
@@ -68,7 +68,7 @@ def readCredentials():
         PYCAS_SECRET=os.environ.get("PYCAS_SECRET")
 
 # Begin Common Template Strings
-FOOTER_HTML = template('Footer')
+FOOTER_HTML = template('Footer',feedback_email=FEEDBACK_EMAIL)
 COLUMN_DROPDOWN_HTML = template('ColumnDropdown')
 EXTRA_LOGIN_METHODS = template('ExtraLoginMethods')
 PORTFOLIO_PANEL = template('PortfolioPanel')

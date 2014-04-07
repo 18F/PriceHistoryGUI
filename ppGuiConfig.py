@@ -19,6 +19,8 @@ GoogleAnalyticsInclusionScript = """   <script>
 
    </script>"""
 
+FEEDBACK_EMAIL = "robert.read@gsa.gov"
+
 RelativePathToHashesFile = "../configuration/p3api.hashes.txt"
 
 # I'm going to use a 10-minute timeout
