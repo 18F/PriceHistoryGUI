@@ -7,7 +7,7 @@ This is part of the PricesPaid (P3) Project
 The PricesPaid (P3) project is market research tool to allow search of purchase transactions.  It is modularized into 4 github repositories:
 
 1. [PricesPaidGUI](https://github.com/XGov/PricesPaidGUI), 
-2. [PricesPaidAPI](https://github.com/presidential-innovation-fellows), 
+2. [PricesPaidAPI](https://github.com/presidential-innovation-fellows/PricesPaidAPI), 
 3. [MorrisDataDecorator](https://github.com/presidential-innovation-fellows/MorrisDataDecorator), 
 4. [P3Auth](https://github.com/XGov/P3Auth).  
 
@@ -109,7 +109,7 @@ You will need to have installed:
 * bottle
 * requests
 * SOLR
-* solrpy-0.9.5 [Note: this does not insall with PIP.  I found "sudo python setup.py install" worked.]
+* solrpy-0.9.5 [Note: this does not insall with PIP.  I found "sudo python setup.py install" worked.] [Additional Note: Recently (in December of 2013) a new version of solrpy (0.9.6) was released.  I am in the process of testing this module.  It DOES install easily from PyPI.]
 
 I use Apache, mod_wsgi, and mod_ssl, but mod_ssl is optional.
 
@@ -130,7 +130,7 @@ Here are the recommended steps:
 
 * Install the MorrisDataDecorator following the instructions found there.  This project has automated unit tests. It implements a website, which you might wish to briefly bring up in bottle to be assured that it works, but really we are using it of the API definition and some back-end implementation.
 * Create a "logs" directory parallel to MorrisDataDecorator, PricesPaidAPI, and PricesPaidGUI.
-* Create an empty __init__.py file parallel to MorrisDataDecorator, PricesPaidAPI, and PricesPaidGUI.
+* Create an empty \_\_init\_\_.py file parallel to MorrisDataDecorator, PricesPaidAPI, and PricesPaidGUI.
 * Install the PricesPaidAPI following the instructions found there.
 * Install the PricesPaidGUI following the instructions found here.
 * Install P3Auth.
