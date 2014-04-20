@@ -9,13 +9,13 @@ import LogFeedback
 import LogActivity
 import requests
 import os
-import P3Auth.LogActivity
-import P3Auth.pycas
+import PriceHistoryAuth.LogActivity
+import PriceHistoryAuth.pycas
  
 from ppGuiConfig import URLToPPSearchApiSolr,GoogleAnalyticsInclusionScript,FEEDBACK_EMAIL,\
      LocalURLToRecordFeedback,CAS_SERVER,CAS_PROXY,CAS_RETURN_SERVICE_URL,CAS_LEVEL_OF_ASSURANCE,CAS_LEVEL_OF_ASSURANCE_PREDICATE
 
-import P3Auth.auth
+import PriceHistoryAuth.auth
 
 import cPickle as pickle
 from cStringIO import StringIO
@@ -106,35 +106,35 @@ from bottle import template
 
 @app.route('/')
 def legalNotice():
-    P3Auth.LogActivity.logPageTurn("nosession","LegalNotice")
+    PriceHistoryAuth.LogActivity.logPageTurn("nosession","LegalNotice")
     return template('LegalNotice',goog_anal_script=GoogleAnalyticsInclusionScript)
 
 @app.route('/SearchHelp')
 def searchHelp():
-    P3Auth.LogActivity.logPageTurn("nosession","SearchHelp")
+    PriceHistoryAuth.LogActivity.logPageTurn("nosession","SearchHelp")
     return template('SearchHelp',goog_anal_script=GoogleAnalyticsInclusionScript)
 
 @app.route('/Logout',method='POST')
 def logoutViaPost():
-    P3Auth.LogActivity.logPageTurn("nosession","Logout")
+    PriceHistoryAuth.LogActivity.logPageTurn("nosession","Logout")
 
     acsrf = request.forms.get('antiCSRF')
     ses_id = request.forms.get('session_id')
-    P3Auth.auth.del_session(ses_id)
+    PriceHistoryAuth.auth.del_session(ses_id)
     return template('Logout',goog_anal_script=GoogleAnalyticsInclusionScript)
 
 @app.route('/Logout',method='GET')
 def logoutViaGet():
-    P3Auth.LogActivity.logPageTurn("nosession","Logout")
+    PriceHistoryAuth.LogActivity.logPageTurn("nosession","Logout")
 
     acsrf = request.forms.get('antiCSRF')
     ses_id = request.forms.get('session_id')
-    P3Auth.auth.del_session(ses_id)
+    PriceHistoryAuth.auth.del_session(ses_id)
     return template('Logout',goog_anal_script=GoogleAnalyticsInclusionScript)
 
 @app.route('/Login')
 def login():
-    P3Auth.LogActivity.logPageTurn("nosession","LoginPage")
+    PriceHistoryAuth.LogActivity.logPageTurn("nosession","LoginPage")
     return template('Login',message='',
                     footer_html=FOOTER_HTML,
                     feedback_email=FEEDBACK_EMAIL,
@@ -143,38 +143,38 @@ def login():
 
 @app.route('/LoginViaMax')
 def loginViaMax():
-    P3Auth.LogActivity.logPageTurn("nosession","MaxLoginPage")
+    PriceHistoryAuth.LogActivity.logPageTurn("nosession","MaxLoginPage")
     response.status = 303 
     domain,path = urlparse.urlparse(CAS_RETURN_SERVICE_URL)[1:3]
     secure=1
-    setCookieCommand = P3Auth.pycas.make_pycas_cookie("gateway",domain,path,secure)
+    setCookieCommand = PriceHistoryAuth.pycas.make_pycas_cookie("gateway",domain,path,secure)
     strip = setCookieCommand[12:]
     response.set_header('Set-Cookie', strip)
     opt=""
-    location = P3Auth.pycas.get_url_redirect_as_string(CAS_SERVER,CAS_RETURN_SERVICE_URL,opt,secure)
+    location = PriceHistoryAuth.pycas.get_url_redirect_as_string(CAS_SERVER,CAS_RETURN_SERVICE_URL,opt,secure)
     response.set_header('Location',location)
     return "You will be redirected."+strip+location
 
 @app.route('/ReturnLoginViaMax')
 def returnLoginViaMax():
-    P3Auth.LogActivity.logPageTurn("nosession","ReturnMaxLoginPage")
+    PriceHistoryAuth.LogActivity.logPageTurn("nosession","ReturnMaxLoginPage")
 
     PYCAS_SECRET=os.environ.get("PYCAS_SECRET")
 
-    P3Auth.LogActivity.logDebugInfo("PYCAS_SECRET:"+PYCAS_SECRET)
+    PriceHistoryAuth.LogActivity.logDebugInfo("PYCAS_SECRET:"+PYCAS_SECRET)
     ticket = request.query['ticket']
-    P3Auth.LogActivity.logDebugInfo("MAX AUTHENTICATED ticket :"+ticket)
-    status, id, cookie = P3Auth.pycas.check_authenticated_p(CAS_LEVEL_OF_ASSURANCE_PREDICATE,ticket,CAS_SERVER,CAS_PROXY, 
+    PriceHistoryAuth.LogActivity.logDebugInfo("MAX AUTHENTICATED ticket :"+ticket)
+    status, id, cookie = PriceHistoryAuth.pycas.check_authenticated_p(CAS_LEVEL_OF_ASSURANCE_PREDICATE,ticket,CAS_SERVER,CAS_PROXY, 
         PYCAS_SECRET, CAS_RETURN_SERVICE_URL, lifetime=None, secure=1, protocol=2, path="/", opt="")
-    maxAuthenticatedProperly = (status == P3Auth.pycas.CAS_OK);
+    maxAuthenticatedProperly = (status == PriceHistoryAuth.pycas.CAS_OK);
 
-    P3Auth.LogActivity.logDebugInfo("MAX AUTHENTICATED WITH ID:"+id)
+    PriceHistoryAuth.LogActivity.logDebugInfo("MAX AUTHENTICATED WITH ID:"+id)
 
     username = "billybob"
     if (maxAuthenticatedProperly):
         return doStartPageAuthenticated(username)
     else:
-        P3Auth.LogActivity.logBadCredentials(username+":failed to Authenticate with Max")
+        PriceHistoryAuth.LogActivity.logBadCredentials(username+":failed to Authenticate with Max")
 # It would be better to make this message configuration in the same way that CAS_LEVEL_OF_ASSURANCE_PREDICATE is...
 # But that is for another day.
         return template('Login',message='Improper Credentials returned by MAX.  Possibly you authenticated without using a physical PIV/CAC card, or MAX did not return a high enough Level of Assurance.  Trying logging out of MAX at http://max.omb.gov and re-authenticating here.',
@@ -194,8 +194,8 @@ def pptriv():
     readCredentials()
 
 
-    if (not P3Auth.auth.does_authenticate(username,password,P3APISALT)):
-        P3Auth.LogActivity.logBadCredentials(username)
+    if (not PriceHistoryAuth.auth.does_authenticate(username,password,P3APISALT)):
+        PriceHistoryAuth.LogActivity.logBadCredentials(username)
         return template('Login',message='Improper Credentials.',
                     footer_html=FOOTER_HTML,
                     feedback_email=FEEDBACK_EMAIL,
@@ -207,11 +207,11 @@ def doStartPageAuthenticated(username):
     search_string = request.forms.get('search_string')
     search_string = search_string if search_string is not None else ""
     psc_pattern = request.forms.get('psc_pattern')
-    ses_id = P3Auth.auth.create_session_id()
-    P3Auth.LogActivity.logSessionBegin(username,ses_id)
-    P3Auth.LogActivity.logPageTurn(ses_id,"StartPage")
+    ses_id = PriceHistoryAuth.auth.create_session_id()
+    PriceHistoryAuth.LogActivity.logSessionBegin(username,ses_id)
+    PriceHistoryAuth.LogActivity.logPageTurn(ses_id,"StartPage")
     return template('StartPage',search_string=search_string,\
-                    acsrf=P3Auth.auth.get_acsrf(ses_id),\
+                    acsrf=PriceHistoryAuth.auth.get_acsrf(ses_id),\
                     username=username, \
                     session_id=ses_id,\
                     footer_html=FOOTER_HTML,\
@@ -222,7 +222,7 @@ def doStartPageAuthenticated(username):
 def StartPageReturned():
     acsrf = request.forms.get('antiCSRF')
     ses_id = request.forms.get('session_id')
-    if (not P3Auth.auth.is_valid_acsrf(ses_id,acsrf)):
+    if (not PriceHistoryAuth.auth.is_valid_acsrf(ses_id,acsrf)):
         return template('Login',message='Improper Credentials or Timeout.',
                     extra_login_methods=EXTRA_LOGIN_METHODS,
                     feedback_email=FEEDBACK_EMAIL,
@@ -232,10 +232,10 @@ def StartPageReturned():
     search_string = request.forms.get('search_string')
     search_string = search_string if search_string is not None else ""
     psc_pattern = request.forms.get('psc_pattern')
-    ses_id = P3Auth.auth.create_session_id()
-    P3Auth.LogActivity.logPageTurn(ses_id,"StartPageReturned")
+    ses_id = PriceHistoryAuth.auth.create_session_id()
+    PriceHistoryAuth.LogActivity.logPageTurn(ses_id,"StartPageReturned")
     return template('StartPage',search_string=search_string,\
-                    acsrf=P3Auth.auth.get_acsrf(ses_id),\
+                    acsrf=PriceHistoryAuth.auth.get_acsrf(ses_id),\
                     session_id=ses_id,\
                     footer_html=FOOTER_HTML,\
                     dataset_description_preamble=DATASET_DESCRIPTION,\
@@ -255,22 +255,22 @@ def pptriv():
     return render_main_page(acsrf,ses_id)
 
 def render_main_page(acsrf,ses_id):
-    if (not P3Auth.auth.is_valid_acsrf(ses_id,acsrf)):
+    if (not PriceHistoryAuth.auth.is_valid_acsrf(ses_id,acsrf)):
         return template('Login',message='Improper Credentials or Timeout.',
                     extra_login_methods=EXTRA_LOGIN_METHODS,
                         feedback_email=FEEDBACK_EMAIL,
                     footer_html=FOOTER_HTML,
 goog_anal_script=GoogleAnalyticsInclusionScript)
     
-    P3Auth.auth.update_acsrf(ses_id)
+    PriceHistoryAuth.auth.update_acsrf(ses_id)
 
     search_string = request.forms.get('search_string')
     search_string = search_string if search_string is not None else ""
     commodity_id = request.forms.get('commodity_id')
 
-    P3Auth.LogActivity.logPageTurn(ses_id,"MainPage")
+    PriceHistoryAuth.LogActivity.logPageTurn(ses_id,"MainPage")
     return template('MainPage',search_string=search_string,\
-                    acsrf=P3Auth.auth.get_acsrf(ses_id),\
+                    acsrf=PriceHistoryAuth.auth.get_acsrf(ses_id),\
                     session_id=ses_id,\
                     feedback_url=LocalURLToRecordFeedback,\
                     footer_html=FOOTER_HTML,\
@@ -285,20 +285,20 @@ goog_anal_script=GoogleAnalyticsInclusionScript)
 def render_portfolio():
     acsrf = request.forms.get('antiCSRF')
     ses_id = request.forms.get('session_id')
-    if (not P3Auth.auth.is_valid_acsrf(ses_id,acsrf)):
+    if (not PriceHistoryAuth.auth.is_valid_acsrf(ses_id,acsrf)):
         return template('Login',message='Improper Credentials or Timeout.',
                     extra_login_methods=EXTRA_LOGIN_METHODS,
                         feedback_email=FEEDBACK_EMAIL,
                     footer_html=FOOTER_HTML,
                     goog_anal_script=GoogleAnalyticsInclusionScript)
 
-    P3Auth.auth.update_acsrf(ses_id)
+    PriceHistoryAuth.auth.update_acsrf(ses_id)
 
-    P3Auth.LogActivity.logPageTurn(ses_id,"Portfolio")
+    PriceHistoryAuth.LogActivity.logPageTurn(ses_id,"Portfolio")
 
     portfolio = request.forms.get('portfolio')
 
-    return template('Portfolio',acsrf=P3Auth.auth.get_acsrf(ses_id),\
+    return template('Portfolio',acsrf=PriceHistoryAuth.auth.get_acsrf(ses_id),\
                     session_id=ses_id,\
                     portfolio=portfolio,\
                     feedback_url=LocalURLToRecordFeedback,\
@@ -316,7 +316,7 @@ def apisolr():
     acsrf = request.forms.get('antiCSRF')
     ses_id = request.forms.get('session_id')
 
-    if (not P3Auth.auth.is_valid_acsrf(ses_id,acsrf)):
+    if (not PriceHistoryAuth.auth.is_valid_acsrf(ses_id,acsrf)):
         dict = {0: {"status": "BadAuthentication"}}
         return dict;
 
@@ -340,7 +340,7 @@ def apisolr():
     r = requests.post(URLToPPSearchApiSolr+"/fromIds", data=payload, \
                           auth=(PricesPaidAPIBasicAuthUsername, PricesPaidAPIBasicAuthPassword), verify=False)
 
-    P3Auth.LogActivity.logDebugInfo("Got Past Post to :"+URLToPPSearchApiSolr)
+    PriceHistoryAuth.LogActivity.logDebugInfo("Got Past Post to :"+URLToPPSearchApiSolr)
 
     content = r.text
 
@@ -356,7 +356,7 @@ def apisolr():
     acsrf = request.query['antiCSRF']
     ses_id = request.query['session_id']
 
-    if (not P3Auth.auth.is_valid_acsrf(ses_id,acsrf)):
+    if (not PriceHistoryAuth.auth.is_valid_acsrf(ses_id,acsrf)):
         dict = {0: {"status": "BadAuthentication"}}
         return dict;
 
@@ -378,7 +378,7 @@ def apisolr():
     r = requests.post(URLToPPSearchApiSolr+"/fromIds", data=payload, \
                           auth=(PricesPaidAPIBasicAuthUsername, PricesPaidAPIBasicAuthPassword), verify=False)
 
-    P3Auth.LogActivity.logDebugInfo("Got Past Post to :"+URLToPPSearchApiSolr)
+    PriceHistoryAuth.LogActivity.logDebugInfo("Got Past Post to :"+URLToPPSearchApiSolr)
 
     content = r.text
 
@@ -422,7 +422,7 @@ def apisolr():
     acsrf = request.forms.get('antiCSRF')
     ses_id = request.forms.get('session_id')
 
-    if (not P3Auth.auth.is_valid_acsrf(ses_id,acsrf)):
+    if (not PriceHistoryAuth.auth.is_valid_acsrf(ses_id,acsrf)):
         dict = {0: {"status": "BadAuthentication"}}
         return dict;
 
@@ -433,7 +433,7 @@ def apisolr():
 
     max_results = request.forms.get('numRows')
 
-    P3Auth.LogActivity.logSearchBegun(ses_id,psc_pattern,search_string)
+    PriceHistoryAuth.LogActivity.logSearchBegun(ses_id,psc_pattern,search_string)
 
 
     payload = { 'username' : PricesPaidAPIUsername,\
@@ -445,7 +445,7 @@ def apisolr():
     r = requests.post(URLToPPSearchApiSolr, data=payload, \
                           auth=(PricesPaidAPIBasicAuthUsername, PricesPaidAPIBasicAuthPassword), verify=False)
 
-    P3Auth.LogActivity.logDebugInfo("Got Past Post to :"+URLToPPSearchApiSolr)
+    PriceHistoryAuth.LogActivity.logDebugInfo("Got Past Post to :"+URLToPPSearchApiSolr)
 
     content = r.text
 
@@ -455,7 +455,7 @@ def apisolr():
     # with Python or confusion in Bottle.
     d = ast.literal_eval(content)
 
-    P3Auth.LogActivity.logSearchDone(ses_id,psc_pattern,search_string)
+    PriceHistoryAuth.LogActivity.logSearchDone(ses_id,psc_pattern,search_string)
     return d
 
 @app.route('/record_feedback',method='POST')
@@ -463,13 +463,13 @@ def feedback():
     acsrf = request.forms.get('antiCSRF')
     ses_id = request.forms.get('session_id')
 
-    P3Auth.LogActivity.logDebugInfo("acsrf ses_d :"+acsrf+ses_id)
-    if (not P3Auth.auth.is_valid_acsrf(ses_id,acsrf)):
+    PriceHistoryAuth.LogActivity.logDebugInfo("acsrf ses_d :"+acsrf+ses_id)
+    if (not PriceHistoryAuth.auth.is_valid_acsrf(ses_id,acsrf)):
         dict = {0: {"status": "BadAuthentication"}}
         return dict;
 
-    P3Auth.LogActivity.logDebugInfo("authenticated !")
-    P3Auth.LogActivity.logFeedback(ses_id)
+    PriceHistoryAuth.LogActivity.logDebugInfo("authenticated !")
+    PriceHistoryAuth.LogActivity.logFeedback(ses_id)
     message = request.forms.get('message')
     name = request.forms.get('name')
     radio_list_value = request.forms.get('radio_list_value')
@@ -484,13 +484,13 @@ def feedback():
 # BEGIN SERVER-SIDE CALLS TO MORRIS PORTFOLIO API
 @app.route('/portfolio', method='GET')
 def get_portfolios():
-    P3Auth.LogActivity.logDebugInfo("Begin Get Portfolios")
+    PriceHistoryAuth.LogActivity.logDebugInfo("Begin Get Portfolios")
     acsrf = request.query['antiCSRF']
     ses_id = request.query['session_id']
-    P3Auth.LogActivity.logDebugInfo("Gotten on Portfolio: acsrf ses_id :"+acsrf+","+ses_id)
-    if (not P3Auth.auth.is_valid_acsrf(ses_id,acsrf)):
+    PriceHistoryAuth.LogActivity.logDebugInfo("Gotten on Portfolio: acsrf ses_id :"+acsrf+","+ses_id)
+    if (not PriceHistoryAuth.auth.is_valid_acsrf(ses_id,acsrf)):
         dict = {0: {"status": "BadAuthentication"}}
-        P3Auth.LogActivity.logDebugInfo(" BadAuthentication :"+acsrf+","+ses_id)
+        PriceHistoryAuth.LogActivity.logDebugInfo(" BadAuthentication :"+acsrf+","+ses_id)
         return dict;
     r = requests.get(URL_TO_MORRIS_PORTFOLIOS_API+"/decoration")
     d = ast.literal_eval(r.text)
@@ -500,7 +500,7 @@ def get_portfolios():
 def get_specific_tags(name):
     acsrf = request.query['antiCSRF']
     ses_id = request.query['session_id']
-    if (not P3Auth.auth.is_valid_acsrf(ses_id,acsrf)):
+    if (not PriceHistoryAuth.auth.is_valid_acsrf(ses_id,acsrf)):
         dict = {0: {"status": "BadAuthentication"}}
         return dict;
     r = requests.get(URL_TO_MORRIS_PORTFOLIOS_API+"/content/"+name)
@@ -511,8 +511,8 @@ def get_create_portfolio(name):
     acsrf = request.forms.get('antiCSRF')
     ses_id = request.forms.get('session_id')
 
-    P3Auth.LogActivity.logDebugInfo("acsrf ses_d :"+acsrf+ses_id)
-    if (not P3Auth.auth.is_valid_acsrf(ses_id,acsrf)):
+    PriceHistoryAuth.LogActivity.logDebugInfo("acsrf ses_d :"+acsrf+ses_id)
+    if (not PriceHistoryAuth.auth.is_valid_acsrf(ses_id,acsrf)):
         dict = {0: {"status": "BadAuthentication"}}
         return dict;
     r = requests.post(URL_TO_MORRIS_PORTFOLIOS_API+"/decoration/"+name)
@@ -522,7 +522,7 @@ def get_create_portfolio(name):
 def get_export_portfolio():
     acsrf = request.query['antiCSRF']
     ses_id = request.query['session_id']
-    if (not P3Auth.auth.is_valid_acsrf(ses_id,acsrf)):
+    if (not PriceHistoryAuth.auth.is_valid_acsrf(ses_id,acsrf)):
         dict = {0: {"status": "BadAuthentication"}}
         return dict;
     r = requests.get(URL_TO_MORRIS_PORTFOLIOS_API+"/decoration_export")
@@ -533,7 +533,7 @@ def get_records():
     acsrf = request.query['antiCSRF']
     ses_id = request.query['session_id']
 
-    if (not P3Auth.auth.is_valid_acsrf(ses_id,acsrf)):
+    if (not PriceHistoryAuth.auth.is_valid_acsrf(ses_id,acsrf)):
         dict = {0: {"status": "BadAuthentication"}}
         return dict;
     r = requests.get(URL_TO_MORRIS_PORTFOLIOS_API+"/decoration_records")
@@ -544,7 +544,7 @@ def get_records(columns):
     acsrf = request.query['antiCSRF']
     ses_id = request.query['session_id']
 
-    if (not P3Auth.auth.is_valid_acsrf(ses_id,acsrf)):
+    if (not PriceHistoryAuth.auth.is_valid_acsrf(ses_id,acsrf)):
         dict = {0: {"status": "BadAuthentication"}}
         return dict;
     r = requests.get(URL_TO_MORRIS_PORTFOLIOS_API+"/content_records_with_client_data/"+columns)
@@ -555,8 +555,8 @@ def add_record_to_portfolio(key,portfolio):
     acsrf = request.forms.get('antiCSRF')
     ses_id = request.forms.get('session_id')
 
-    P3Auth.LogActivity.logDebugInfo("acsrf ses_d :"+acsrf+ses_id)
-    if (not P3Auth.auth.is_valid_acsrf(ses_id,acsrf)):
+    PriceHistoryAuth.LogActivity.logDebugInfo("acsrf ses_d :"+acsrf+ses_id)
+    if (not PriceHistoryAuth.auth.is_valid_acsrf(ses_id,acsrf)):
         dict = {0: {"status": "BadAuthentication"}}
         return dict;
     r = requests.post(URL_TO_MORRIS_PORTFOLIOS_API+"/decoration/add_record/"+portfolio+"/"+key)
@@ -567,8 +567,8 @@ def delete_portfolio(portfolio):
     acsrf = request.forms.get('antiCSRF')
     ses_id = request.forms.get('session_id')
 
-    P3Auth.LogActivity.logDebugInfo("acsrf ses_d :"+acsrf+ses_id)
-    if (not P3Auth.auth.is_valid_acsrf(ses_id,acsrf)):
+    PriceHistoryAuth.LogActivity.logDebugInfo("acsrf ses_d :"+acsrf+ses_id)
+    if (not PriceHistoryAuth.auth.is_valid_acsrf(ses_id,acsrf)):
         dict = {0: {"status": "BadAuthentication"}}
         return dict;
     r = requests.post(URL_TO_MORRIS_PORTFOLIOS_API+"/delete_decoration/"+portfolio)
@@ -579,8 +579,8 @@ def delete_association(portfolio,transaction):
     acsrf = request.forms.get('antiCSRF')
     ses_id = request.forms.get('session_id')
 
-    P3Auth.LogActivity.logDebugInfo("acsrf ses_d :"+repr(acsrf)+' '+repr(ses_id))
-    if (not P3Auth.auth.is_valid_acsrf(ses_id,acsrf)):
+    PriceHistoryAuth.LogActivity.logDebugInfo("acsrf ses_d :"+repr(acsrf)+' '+repr(ses_id))
+    if (not PriceHistoryAuth.auth.is_valid_acsrf(ses_id,acsrf)):
         dict = {0: {"status": "BadAuthentication"}}
         return dict;
     r = requests.post(URL_TO_MORRIS_PORTFOLIOS_API+"/delete_association/"+portfolio+"/"+transaction)

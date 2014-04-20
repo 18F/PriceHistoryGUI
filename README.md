@@ -162,7 +162,7 @@ Here are the recommended steps:
 * Create a "logs" directory parallel to MorrisDataDecorator, PriceHistoryAPI, and PriceHistoryGUI.
 * Create an empty \_\_init\_\_.py file parallel to MorrisDataDecorator, PriceHistoryAPI, and PriceHistoryGUI.
 * Install the PriceHistoryAPI following the instructions found there.
-* Install the PriceHistoryGUI following the instructions found here.
+* Install the PriceHistoryGUI following the instructions found 
 * Install P3Auth.
 * Create a "configuration" directory parallel to P3Auth.
 * In P3Auth, edit "AuthBuilder"  to set your own salt in P3APISALT. This will be a secret that you keep private and will also set in your apache environment variables.  Then edit this line : "        username = "changeme"+str(i) " in order to set your own username (possibly you will want to complete change this mechanism.)
