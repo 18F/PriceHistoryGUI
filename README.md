@@ -12,8 +12,8 @@ sources/vendors, so this demonstration is weak compared to an instance loaded wi
 
 To log into this instance, please use the credentials:
 
-houstonUser99
-RpG0pRDyIrhbcBK82a3hqjvir
+> houstonUser99
+> RpG0pRDyIrhbcBK82a3hqjvir
 
 (This instance has been created primarily to support the upcoming Houston Hackathon (see below)). Feel free to create your own test portfolios.
 
@@ -34,14 +34,15 @@ In particular, I hope to prepare a vagrant script to ease the rather arduous ins
 This is part of the PriceHistory (P3) Project
 --------------------------------------
 
-The PriceHistory (P3) project is market research tool to allow search of purchase transactions.  It is modularized into 4 github repositories:
+The PriceHistory (P3) project is market research tool to allow search of purchase transactions.  It is modularized into 5 github repositories:
 
-1. [PriceHistoryGUI](https://github.com/18F/PriceHistoryGUI), 
-2. [PriceHistoryAPI](https://github.com/18F/PriceHistoryAPI), 
-3. [MorrisDataDecorator](https://github.com/18F/MorrisDataDecorator), 
-4. [P3Auth](https://github.com/18F/P3Auth).  
+1. [PriceHistoryInstall](https://github.com/18F/PriceHistoryGUI),
+2. [PriceHistoryGUI](https://github.com/18F/PriceHistoryGUI), 
+3. [PriceHistoryAPI](https://github.com/18F/PriceHistoryAPI), 
+4. [MorrisDataDecorator](https://github.com/18F/MorrisDataDecorator), 
+5. [PriceHistoryAuth](https://github.com/18F/PriceHistoryAuth).  
 
-To learn how to install the system, please refer to the documentation in the PriceHistoryGUI project.
+To learn how to install the system, please refer PriceHistoryInstall project, which contains a Vagrant install script.  That repo is actively under development in preparation of the Houston Hackathon.
 
 The name "PriceHistory" is descriptive: this project shows you prices that have been paid for things.  However, the name is applied to many projects, so "P3" is the specific name of this project.
 
