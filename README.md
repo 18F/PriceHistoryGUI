@@ -36,7 +36,7 @@ This is part of the PriceHistory (P3) Project
 
 The PriceHistory (P3) project is market research tool to allow search of purchase transactions.  It is modularized into 5 github repositories:
 
-1. [PriceHistoryInstall](https://github.com/18F/PriceHistoryGUI),
+1. [PriceHistoryInstall](https://github.com/18F/PriceHistoryInstall),
 2. [PriceHistoryGUI](https://github.com/18F/PriceHistoryGUI), 
 3. [PriceHistoryAPI](https://github.com/18F/PriceHistoryAPI), 
 4. [MorrisDataDecorator](https://github.com/18F/MorrisDataDecorator), 
