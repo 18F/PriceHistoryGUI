@@ -141,6 +141,59 @@ def login():
                     extra_login_methods=EXTRA_LOGIN_METHODS,
                     goog_anal_script=GoogleAnalyticsInclusionScript)
 
+
+@app.route('/UploadData')
+def upload():
+# For the hackathon, I'm not going to worry about security
+#     acsrf = request.query['antiCSRF']
+#     ses_id = request.query['session_id']
+#     if (not PriceHistoryAuth.auth.is_valid_acsrf(ses_id,acsrf)):
+#         return template('Login',message='Improper Credentials or Timeout.',
+#                     extra_login_methods=EXTRA_LOGIN_METHODS,
+#                         feedback_email=FEEDBACK_EMAIL,
+#                     footer_html=FOOTER_HTML,
+# goog_anal_script=GoogleAnalyticsInclusionScript)
+    
+#    PriceHistoryAuth.auth.update_acsrf(ses_id)
+
+    readCredentials()
+
+    search_string = request.forms.get('search_string')
+    search_string = search_string if search_string is not None else ""
+    commodity_id = request.forms.get('commodity_id')
+
+    return template('UploadData',message='',
+                     feedback_url=LocalURLToRecordFeedback,\
+                    footer_html=FOOTER_HTML,
+                    feedback_email=FEEDBACK_EMAIL,
+                    goog_anal_script=GoogleAnalyticsInclusionScript)
+
+@app.route('/UploadCSVFile',method='POST')
+def upload():
+# For the hackathon, I'm not going to worry about security
+#     acsrf = request.query['antiCSRF']
+#     ses_id = request.query['session_id']
+#     if (not PriceHistoryAuth.auth.is_valid_acsrf(ses_id,acsrf)):
+#         return template('Login',message='Improper Credentials or Timeout.',
+#                     extra_login_methods=EXTRA_LOGIN_METHODS,
+#                         feedback_email=FEEDBACK_EMAIL,
+#                     footer_html=FOOTER_HTML,
+# goog_anal_script=GoogleAnalyticsInclusionScript)
+    
+#    PriceHistoryAuth.auth.update_acsrf(ses_id)
+
+    csv_file = request.forms.get('csv_file')
+
+    payload = { 'username' : PricesPaidAPIUsername,\
+                                'password' : PricesPaidAPIPassword,\
+                                'csv_file' : csv_file
+                }
+
+    r = requests.post(URLToPPSearchApiSolr+"/AddCSVFile", data=payload, \
+                          auth=(PricesPaidAPIBasicAuthUsername, PricesPaidAPIBasicAuthPassword), verify=False)
+
+    return r.text;
+
 @app.route('/LoginViaMax')
 def loginViaMax():
     PriceHistoryAuth.LogActivity.logPageTurn("nosession","MaxLoginPage")

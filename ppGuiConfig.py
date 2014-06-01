@@ -3,6 +3,7 @@ BottlePortNumber = 8080
 BottleHostname = 'localhost'
 PathToDataFiles = "../cookedData"
 URLToPPSearchApiSolr = "http://127.0.0.1/apisolr"
+URLToPPSearchApiSolr = "http://127.0.0.1/apisolr"
 URLToSolr = 'http://localhost:8983/solr'
 
 LocalURLToRecordFeedback = '/gui/record_feedback'
