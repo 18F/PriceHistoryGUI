@@ -34,6 +34,7 @@
         <div>
           <ul class="nav navbar-nav">
             <li id="return_to_search" class="active"><a href="#">Search</a></li>
+            <li id="upload" class="active"><a href="#">Upload</a></li>
             <li id="logoutLink"><a href="#">Logout</a></li>
           </ul>
         </div><!-- /.navbar-collapse -->
@@ -173,6 +174,12 @@ Clicking on a column header will sort both the grid and the detail area by that 
     <input id="portfolioinput" type="hidden" name="portfolio" value="" />
 </form>
 
+
+<form id="fakeuploadform" method="post" action="UploadData">
+    <input type="hidden" name="antiCSRF" value="{{acsrf}}" />
+    <input type="hidden" name="session_id" value="{{session_id}}" />
+</form>
+
 <form method="get" id="fakeLogoutForm" action="./">
 </form>
 <form method="post" id="fakeReturnForm" action="./StartPageReturned">
@@ -265,7 +272,11 @@ $(document).ready(function(){
     $("#logoutLink").click(Logout);
 
     $("#return_to_search").click(function() {
-  $('#fakeReturnForm').submit();
+     $('#fakeReturnForm').submit();
+    });
+
+    $("#upload").click(function() {
+     $('#fakeuploadform').submit();
     });
 
     $("#pricespaid_logo").click(function() {

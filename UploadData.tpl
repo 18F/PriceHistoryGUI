@@ -55,7 +55,7 @@
     <div id="content">
 
 <div>
-PriceHistory requires a particular format for dynamic CSV upload.  You may find it helpful to use a <a href="http://deepinthecode.github.io/mr-csv-transformer/?UNITS,PRICE,AGENCY,VENDOR,PSC,DESCR,LONGDESCR,DATE,AWARDIDIDV,MANUFACTURER_NAME,MANUFACTURER_PART_NUMBER,BUREAU,CONTRACT_NUMBER,TO_ZIP_CODE,FROM_ZIP_CODE,UNIT_OF_ISSUE">tool</a> created by David Young, Drew Shefman and Robert Read from the "Mr. Data Converter" tool to put your CSV file into the PriceHistory format.
+PriceHistory requires a particular format for dynamic CSV upload.  You may find it helpful to use a <a href="http://deepinthecode.github.io/mr-csv-transformer/?targets=UNITS,PRICE,AGENCY,VENDOR,PSC,DESCR,LONGDESCR,DATE,AWARDIDIDV,MANUFACTURER_NAME,MANUFACTURER_PART_NUMBER,BUREAU,CONTRACT_NUMBER,TO_ZIP_CODE,FROM_ZIP_CODE,UNIT_OF_ISSUE">tool</a> created by David Young, Drew Shefman and Robert Read from the "Mr. Data Converter" tool to put your CSV file into the PriceHistory format.
 
 </div>
 
@@ -66,6 +66,15 @@ PriceHistory requires a particular format for dynamic CSV upload.  You may find 
 
 <!-- end of "content" -->
 </div>
+
+
+
+<form method="get" id="fakeLogoutForm" action="./">
+</form>
+<form method="post" id="fakeReturnForm" action="./StartPageReturned">
+    <input type="hidden" name="antiCSRF" value="{{acsrf}}" />
+    <input type="hidden" name="session_id" value="{{session_id}}" />
+</form>
 
 
 {{!footer_html}}
@@ -93,12 +102,12 @@ PriceHistory requires a particular format for dynamic CSV upload.  You may find 
   <script  src="../js/feedback_me/js/jquery.feedback_me.js"></script>
   <script  src="./js/StandardFunctions.js"></script>
   <script  src="./js/Utility.js"></script>
+  <script  src="./js/header.js"></script>
 
  <script>
 
 function performAddData() {
 	 var csv = $("#csv").val();
-	 alert("About to try to add"+csv);
 
       $.post("UploadCSVFile",
      { csv_file: csv
@@ -108,8 +117,16 @@ function performAddData() {
     };
 
 function processAddResults(data) {
-    alert("Maybe it worked:"+data);
 }
+
+$(document).ready(function(){
+    $("#logoutLink").click(Logout);
+
+    $("#return_to_search").click(function() {
+     $('#fakeReturnForm').submit();
+    });
+});
+
 </script>
 
 
